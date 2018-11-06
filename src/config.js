@@ -59,6 +59,11 @@ export default {
               "indexed": false,
               "name": "value",
               "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "errorCode",
+              "type": "uint256"
             }
           ],
           "name": "RequestFulfilled",
@@ -93,6 +98,10 @@ export default {
             {
               "name": "_value",
               "type": "string"
+            },
+            {
+              "name": "_errorCode",
+              "type": "uint256"
             }
           ],
           "name": "fillRequest",

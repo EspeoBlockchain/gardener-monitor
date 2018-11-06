@@ -8,6 +8,7 @@ class Request extends React.Component {
         <td>{this.props.id}</td>
         <td>{this.props.call}</td>
         <td>{this.props.value}</td>
+        <td>{this.props.error}</td>
       </tr>
     );
   }

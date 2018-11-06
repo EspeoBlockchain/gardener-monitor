@@ -21,11 +21,35 @@ class RequestList extends React.Component {
     oracleContract.events.allEvents()
       .on('data', (event) => {
         if(event.event === 'DataRequested') {
-          this.setState({ requests: Object.assign({}, this.state.requests, {[event.returnValues.id]: {id: event.returnValues.id, url: event.returnValues.url}})})
+          this.setState({
+            requests: Object.assign({},
+              this.state.requests,
+              {
+                [event.returnValues.id]: {
+                    id: event.returnValues.id,
+                    url: event.returnValues.url
+                }
+              }
+            )
+          })
         }
 
         if(event.event === 'RequestFulfilled') {
-          this.setState({ requests: Object.assign({}, this.state.requests, {[event.returnValues.id]: Object.assign({}, this.state.requests[event.returnValues.id], {value: event.returnValues.value})})})
+          this.setState({
+            requests: Object.assign({},
+              this.state.requests,
+              {
+                [event.returnValues.id]: Object.assign(
+                  {},
+                  this.state.requests[event.returnValues.id],
+                  {
+                    value: event.returnValues.value,
+                    errorCode: event.returnValues.errorCode
+                  }
+                )
+              }
+            )
+          })
         }
       })
   }
@@ -39,8 +63,9 @@ class RequestList extends React.Component {
           <th>ID</th>
           <th>CALL</th>
           <th>VALUE</th>
+          <th>ERROR</th>
         </tr>
-        { Object.entries(this.state.requests).map(([, request]) => <Request id={request.id} call={request.url} value={request.value}/>)}
+        { Object.entries(this.state.requests).map(([, request]) => <Request id={request.id} call={request.url} value={request.value} error={request.errorCode}/>)}
         </tbody>
       </table>
     );
