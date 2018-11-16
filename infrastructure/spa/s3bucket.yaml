@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+    This template is to deploy S3 for webhosting serve static content
+Parameters:
+
+  PMServerEnv:
+    Description: "Server Environment name."
+    ConstraintDescription: "Choose an Environment from the drop down"
+    Type: "String"
+    AllowedValues:
+      - "dev"
+      - "staging"
+      - "demo"
+      - "prod"
+
+Resources:
+
+  ############################################################################
+  # S3 Webhosting Bucket which will be used in CloudFront Distribution
+  # Serving Static content, no need for Lifecycle policy the data taken
+  # from repositories. (content can be rebuilt)
+  ############################################################################
+
+  S3CloudFront:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      AccessControl: "PublicRead"
+      BucketName: !Sub "oracle-espeo-${PMServerEnv}"
+      WebsiteConfiguration:
+        IndexDocument: "index.html"
+        ErrorDocument: "error.html"
+
+  S3CloudFrontPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref "S3CloudFront"
+      PolicyDocument:
+        Statement:
+          - Sid: "AllowStaticObjectDownload"
+            Action: "s3:GetObject"
+            Effect: 'Allow'
+            Resource: !Join ["", ["arn:aws:s3:::", !Ref "S3CloudFront", "/*"]]
+            Principal:
+              AWS: "*"
+    DependsOn: S3CloudFront
+
+Outputs:
+
+  S3CloudFrontDN:
+    Description: "S3 Webhosting Bucket Name"
+    Value: !GetAtt "S3CloudFront.DomainName"
+    Export:
+      Name: !Sub "oracle-espeo-${PMServerEnv}"

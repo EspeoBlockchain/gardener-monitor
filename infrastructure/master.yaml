@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+    This is a master template oracle-monitor
+###############################################################################################################
+
+Parameters:
+
+  PMTemplateURL:
+    Default: "https://s3-eu-west-1.amazonaws.com/espeo-internal"
+    Description: "Enter an existing S3 Cloudformation Bucket."
+    Type: "String"
+
+  PMServerEnv:
+    Description: "Server Environment name."
+    ConstraintDescription: "Choose an Environment from the drop down"
+    Type: "String"
+    AllowedValues:
+      - "dev"
+      - "staging"
+      - "demo"
+      - "prod"
+
+###############################################################################################################
+
+Resources:
+
+  MyIAMRole:
+    Type: "AWS::CloudFormation::Stack"
+    Properties:
+      TemplateURL: !Sub "${PMTemplateURL}/security/role.yaml"
+      TimeoutInMinutes: '5'
+
+  MyS3Bucket:
+    Type: "AWS::CloudFormation::Stack"
+    Properties:
+      TemplateURL: !Sub "${PMTemplateURL}/spa/s3bucket.yaml"
+      TimeoutInMinutes: '5'
+      Parameters:
+        PMServerEnv: !Ref "PMServerEnv"
+
+Outputs:
+
+  StaticPage:
+    Description: "SPA url"
+    Value: !GetAtt "MyS3Bucket.Outputs.S3CloudFrontDN"
+    Export:
+      Name: !Sub "${AWS::StackName}-SPA-URL"
