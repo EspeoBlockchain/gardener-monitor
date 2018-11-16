@@ -20,14 +20,15 @@ class RequestList extends React.Component {
 
     oracleContract.events.allEvents()
       .on('data', (event) => {
-        if(event.event === 'DataRequested') {
+        if(['DataRequested', 'DelayedDataRequested'].includes(event.event)) {
           this.setState({
             requests: Object.assign({},
               this.state.requests,
               {
                 [event.returnValues.id]: {
                     id: event.returnValues.id,
-                    url: event.returnValues.url
+                    url: event.returnValues.url,
+                    validFrom: event.returnValues.validFrom ? new Date(event.returnValues.validFrom * 1000) : new Date()
                 }
               }
             )
@@ -62,10 +63,11 @@ class RequestList extends React.Component {
         <tr>
           <th>ID</th>
           <th>CALL</th>
+          <th>VALID FROM</th>
           <th>VALUE</th>
           <th>ERROR</th>
         </tr>
-        { Object.entries(this.state.requests).map(([, request]) => <Request id={request.id} call={request.url} value={request.value} error={request.errorCode}/>)}
+        { Object.entries(this.state.requests).map(([, request]) => <Request request={request} />) }
         </tbody>
       </table>
     );

@@ -5,10 +5,11 @@ class Request extends React.Component {
   render() {
     return (
       <tr>
-        <td>{this.props.id}</td>
-        <td>{this.props.call}</td>
-        <td>{this.props.value}</td>
-        <td>{this.props.error}</td>
+        <td>{this.props.request.id}</td>
+        <td>{this.props.request.url}</td>
+        <td>{this.props.request.validFrom.toString()}</td>
+        <td>{this.props.request.value}</td>
+        <td>{this.props.request.errorCode}</td>
       </tr>
     );
   }
