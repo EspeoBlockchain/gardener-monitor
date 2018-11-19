@@ -1,0 +1,95 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: CodeBuild template
+
+Parameters:
+
+  PMArtifactsS3LocationArn:
+    Description: "Deploy location"
+    Type: "String"
+
+  PMArtifactsS3Name:
+    Description: "Deploy location name"
+    Type: "String"
+
+  PMCodeBuildRoleArn:
+    Description: "Code Build Role ARN"
+    Type: "String"
+
+  PMServerEnv:
+    Description: "Server Environment name."
+    ConstraintDescription: "Choose an Environment from the drop down"
+    Type: "String"
+    AllowedValues:
+      - "dev"
+      - "staging"
+      - "demo"
+      - "prod"
+
+Mappings:
+  EnvMap:
+    dev:
+      sourceBranch: develop
+    staging:
+      sourceBranch: staging
+    demo:
+      sourceBranch: demo
+    prod:
+      sourceBranch: master
+
+Resources:
+  CodeBuildAdminDev:
+    Type: "AWS::CodeBuild::Project"
+    Properties:
+      Name:
+        'Fn::Sub': '${PMServerEnv}-oracle-monitor'
+      ServiceRole: !Ref "PMCodeBuildRoleArn"
+      Artifacts:
+        Location: !Ref PMArtifactsS3LocationArn
+        Name: /
+        Type: "S3"
+      BadgeEnabled: false
+      Description: !Sub "Build LANDING SPA on ${PMServerEnv} environment"
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/nodejs:10.1.0
+        EnvironmentVariables:
+          - Name: BUILD_DESTINATION
+            Value: !Ref PMServerEnv
+            Type: PLAINTEXT
+          - Name: BRANCH_NAME
+            Value: !FindInMap ["EnvMap", !Ref PMServerEnv, "sourceBranch"]
+            Type: PLAINTEXT
+      Source:
+        Auth:
+          Type: OAUTH
+        Location:  https://github.com/gothinkster/react-redux-realworld-example-app
+        Type: GITHUB
+        BuildSpec: !Sub |
+          version: 0.2
+          phases:
+            install:
+              commands:
+                - echo Env variable $BUILD_DESTINATION
+                - apt-get update -y
+                - git fetch
+                - git branch working --track origin/$BRANCH_NAME
+                - git checkout working
+                - npm install
+            pre_build:
+              commands:
+                - echo install utils
+                - npm install grunt-cli -g
+                - npm install bower -g
+            build:
+              commands:
+                - echo Build started on `date`
+                - npm run build
+            post_build:
+              commands:
+                - aws s3 rm s3://${PMArtifactsS3Name} --recursive
+          artifacts:
+            files:
+              - '**/*'
+            base-directory: build

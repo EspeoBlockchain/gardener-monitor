@@ -51,3 +51,17 @@ Outputs:
     Value: !GetAtt "S3CloudFront.DomainName"
     Export:
       Name: !Sub "oracle-espeo-${PMServerEnv}"
+
+  S3CloudFrontDNName:
+    Description: "S3 Webhosting Bucket"
+    Value: !Sub "oracle-espeo-${PMServerEnv}"
+    Export:
+      Name: S3CloudFrontDNName
+
+  S3CloudFrontDNArn:
+    Description: "S3 Webhosting Bucket ARN"
+    Value: !GetAtt
+      - S3CloudFront
+      - Arn
+    Export:
+      Name: S3CloudFrontDNArn

@@ -38,6 +38,20 @@ Resources:
       Parameters:
         PMServerEnv: !Ref "PMServerEnv"
 
+  MyCodeBuild:
+    Type: "AWS::CloudFormation::Stack"
+    Properties:
+      TemplateURL: !Sub "${PMTemplateURL}/cicd/codebuild.yaml"
+      TimeoutInMinutes: '5'
+      Parameters:
+        PMServerEnv: !Ref "PMServerEnv"
+        PMArtifactsS3LocationArn: !GetAtt "MyS3Bucket.Outputs.S3CloudFrontDNArn"
+        PMArtifactsS3Name: !GetAtt "MyS3Bucket.Outputs.S3CloudFrontDNName"
+        PMCodeBuildRoleArn: !GetAtt "MyIAMRole.Outputs.CodeBuildRoleArn"
+    DependsOn:
+      - MyS3Bucket
+      - MyIAMRole
+
 Outputs:
 
   StaticPage:
