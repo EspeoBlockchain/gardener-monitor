@@ -15,7 +15,7 @@ class RequestList extends React.Component {
 
     const oracleContract = new web3.eth.Contract(
       config.contracts.oracle.abi,
-      config.contracts.oracle.address,
+      process.env.REACT_APP_ORACLE_ADDRESS,
     );
 
     oracleContract.events.allEvents()

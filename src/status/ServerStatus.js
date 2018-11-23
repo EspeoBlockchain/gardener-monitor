@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import config from '../config';
 
 class ServerStatus extends React.Component {
   constructor (props) {
@@ -20,7 +19,7 @@ class ServerStatus extends React.Component {
   }
 
   checkStatus() {
-    axios.get(config.statusUrl)
+    axios.get(process.env.REACT_APP_STATUS_URL)
       .then(() => this.setState({status: 'alive'}))
       .catch(() => this.setState({status: 'down'}));
   }

@@ -1,7 +1,4 @@
 export default {
-  "provider": {
-    "url": "ws://127.0.0.1:8545"
-  },
   "contracts": {
     "oracle": {
       "abi": [
@@ -156,8 +153,6 @@ export default {
           "type": "function"
         }
       ],
-      "address": "0xcfeb869f69431e42cdb54a4f4f105c19c080a601"
     }
   },
-  "statusUrl": "http://localhost:3001/status"
 };
