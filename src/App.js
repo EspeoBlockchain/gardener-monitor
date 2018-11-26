@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import RequestList from './requests/RequestList'
-import ServerStatus from './status/ServerStatus'
+import RequestList from './requests/RequestList';
+import ServerStatus from './status/ServerStatus';
 
 class App extends Component {
   render() {
@@ -13,7 +13,7 @@ class App extends Component {
           <h1 className="App-title">Oracle Monitor</h1>
         </header>
 
-        <ServerStatus/>
+        <ServerStatus />
         <RequestList />
       </div>
     );
