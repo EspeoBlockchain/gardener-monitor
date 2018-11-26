@@ -12,12 +12,6 @@ class ServerStatus extends React.Component {
     this.checkStatus();
   }
 
-  render() {
-    return <div>Server status:
-      <p style={{color: this.state.status === 'alive' ? 'green' : 'red'}}>{this.state.status}</p>
-    </div>;
-  }
-
   checkStatus() {
     axios.get(process.env.REACT_APP_STATUS_URL)
       .then(() => this.setState({status: 'alive'}))
@@ -30,6 +24,12 @@ class ServerStatus extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+  render() {
+    return <div>Server status:
+      <p style={{color: this.state.status === 'alive' ? 'green' : 'red'}}>{this.state.status}</p>
+    </div>;
   }
 }
 
