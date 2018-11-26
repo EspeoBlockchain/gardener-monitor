@@ -1,7 +1,7 @@
 import React from 'react';
 import Request from './Request';
 import web3 from '../utils/createAndUnlockWeb3';
-import config from '../config';
+import oracleAbi from '../abi/oracle.abi';
 
 
 class RequestList extends React.Component {
@@ -14,8 +14,8 @@ class RequestList extends React.Component {
 
 
     const oracleContract = new web3.eth.Contract(
-      config.contracts.oracle.abi,
-      config.contracts.oracle.address,
+      oracleAbi,
+      process.env.REACT_APP_ORACLE_ADDRESS,
     );
 
     oracleContract.events.allEvents()
