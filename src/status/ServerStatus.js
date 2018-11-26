@@ -1,7 +1,7 @@
-import React from 'react';
-import axios from 'axios';
+import { Component } from 'react';
+import { checkServerStatus } from '../api/serverApi';
 
-class ServerStatus extends React.Component {
+class ServerStatus extends Component {
   constructor (props) {
     super(props)
 
@@ -11,7 +11,7 @@ class ServerStatus extends React.Component {
   }
 
   checkStatus() {
-    axios.get(process.env.REACT_APP_STATUS_URL)
+    checkServerStatus()
       .then(() => this.setState({status: 'alive'}))
       .catch(() => this.setState({status: 'down'}));
   }
@@ -26,9 +26,11 @@ class ServerStatus extends React.Component {
   }
 
   render() {
-    return <div>Server status:
-      <p style={{color: this.state.status === 'alive' ? 'green' : 'red'}}>{this.state.status}</p>
-    </div>;
+    return (
+      <div>Server status:
+        <p style={{color: this.state.status === 'alive' ? 'green' : 'red'}}>{this.state.status}</p>
+      </div>
+    );
   }
 }
 
