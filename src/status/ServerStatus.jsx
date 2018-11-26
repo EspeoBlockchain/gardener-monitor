@@ -1,5 +1,5 @@
-import { Component } from 'react';
-import { checkServerStatus } from '../api/serverApi';
+import React, { Component } from 'react';
+import checkServerStatus from '../api/serverApi';
 
 class ServerStatus extends Component {
   constructor(props) {
@@ -26,10 +26,12 @@ class ServerStatus extends Component {
   }
 
   render() {
+    const { status } = this.state;
+
     return (
       <div>
 Server status:
-        <p style={{ color: this.state.status === 'alive' ? 'green' : 'red' }}>{this.state.status}</p>
+        <p style={{ color: status === 'alive' ? 'green' : 'red' }}>{status}</p>
       </div>
     );
   }

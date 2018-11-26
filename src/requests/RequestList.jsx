@@ -21,9 +21,11 @@ class RequestList extends React.Component {
     oracleContract.events.allEvents()
       .on('data', (event) => {
         if (['DataRequested', 'DelayedDataRequested'].includes(event.event)) {
+          const { requests } = this.state;
+
           this.setState({
             requests: Object.assign({},
-              this.state.requests,
+              requests,
               {
                 [event.returnValues.id]: {
                   id: event.returnValues.id,
