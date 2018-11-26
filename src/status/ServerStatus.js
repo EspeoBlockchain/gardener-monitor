@@ -8,8 +8,6 @@ class ServerStatus extends React.Component {
     this.state = {
       status: 'down'
     };
-
-    this.checkStatus();
   }
 
   checkStatus() {
@@ -18,7 +16,8 @@ class ServerStatus extends React.Component {
       .catch(() => this.setState({status: 'down'}));
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.checkStatus();
     this.interval = setInterval(() => this.checkStatus(), 5000);
   }
 
