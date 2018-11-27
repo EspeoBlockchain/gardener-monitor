@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/espeo/blockchain-oracle-monitor.svg?style=svg)](https://circleci.com/gh/espeo/blockchain-oracle-monitor)
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
