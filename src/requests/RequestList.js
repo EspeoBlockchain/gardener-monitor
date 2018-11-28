@@ -2,6 +2,7 @@ import React from 'react';
 import Request from './Request';
 import web3 from '../utils/createAndUnlockWeb3';
 import oracleAbi from '../abi/oracle.abi';
+import convertUnixToDate from '../utils/convertUnixToDate';
 
 
 class RequestList extends React.Component {
@@ -22,31 +23,35 @@ class RequestList extends React.Component {
       .on('data', (event) => {
         if (['DataRequested', 'DelayedDataRequested'].includes(event.event)) {
           const { requests } = this.state;
+          const { id, url, validFrom } = event.returnValues;
 
           this.setState({
             requests: Object.assign({},
               requests,
               {
-                [event.returnValues.id]: {
-                  id: event.returnValues.id,
-                  url: event.returnValues.url,
-                  validFrom: event.returnValues.validFrom ? new Date(event.returnValues.validFrom * 1000) : new Date(),
+                [id]: {
+                  id,
+                  url,
+                  validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
                 },
               }),
           });
         }
 
         if (event.event === 'RequestFulfilled') {
+          const { requests } = this.state;
+          const { id, value, errorCode } = event.returnValues;
+
           this.setState({
             requests: Object.assign({},
-              this.state.requests,
+              requests,
               {
-                [event.returnValues.id]: Object.assign(
+                [id]: Object.assign(
                   {},
-                  this.state.requests[event.returnValues.id],
+                  requests[id],
                   {
-                    value: event.returnValues.value,
-                    errorCode: event.returnValues.errorCode,
+                    value,
+                    errorCode,
                   },
                 ),
               }),
@@ -55,8 +60,9 @@ class RequestList extends React.Component {
       });
   }
 
-
   render() {
+    const { requests } = this.state;
+
     return (
       <table border="1" align="center">
         <tbody>
@@ -67,7 +73,8 @@ class RequestList extends React.Component {
             <th>VALUE</th>
             <th>ERROR</th>
           </tr>
-          { Object.entries(this.state.requests).map(([, request]) => <Request request={request} />) }
+          { Object.entries(requests)
+            .map(([, request]) => <Request request={request} />)}
         </tbody>
       </table>
     );

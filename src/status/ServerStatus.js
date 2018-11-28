@@ -10,12 +10,6 @@ class ServerStatus extends Component {
     };
   }
 
-  checkStatus() {
-    checkServerStatus()
-      .then(() => this.setState({ status: 'alive' }))
-      .catch(() => this.setState({ status: 'down' }));
-  }
-
   async componentDidMount() {
     await this.checkStatus();
     this.interval = setInterval(() => this.checkStatus(), 5000);
@@ -23,6 +17,12 @@ class ServerStatus extends Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+  checkStatus() {
+    checkServerStatus()
+      .then(() => this.setState({ status: 'alive' }))
+      .catch(() => this.setState({ status: 'down' }));
   }
 
   render() {
