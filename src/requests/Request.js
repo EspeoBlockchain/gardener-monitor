@@ -1,31 +1,32 @@
-import React from 'react';
+/* eslint-disable react/require-default-props */
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 
-const Request = ({ request }) => {
-  const {
-    id, url, validFrom, value, errorCode,
-  } = request;
+class Request extends PureComponent {
+  render() {
+    const {
+      id, url, validFrom, value, errorCode,
+    } = this.props;
 
-  return (
-    <tr>
-      <td>{id}</td>
-      <td>{url}</td>
-      <td>{validFrom.toString()}</td>
-      <td>{value}</td>
-      <td>{errorCode}</td>
-    </tr>
-  );
-};
+    return (
+      <tr>
+        <td>{id}</td>
+        <td>{url}</td>
+        <td>{validFrom.toString()}</td>
+        <td>{value}</td>
+        <td>{errorCode}</td>
+      </tr>
+    );
+  }
+}
 
 Request.propTypes = {
-  request: PropTypes.shape({
-    id: PropTypes.string,
-    url: PropTypes.string,
-    validFrom: PropTypes.number,
-    value: PropTypes.string,
-    errorCode: PropTypes.number,
-  }).isRequired,
+  id: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  validFrom: PropTypes.instanceOf(Date).isRequired,
+  value: PropTypes.string,
+  errorCode: PropTypes.number,
 };
 
 export default Request;

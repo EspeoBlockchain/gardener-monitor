@@ -25,16 +25,17 @@ class RequestList extends Component {
           const { requests } = this.state;
           const { id, url, validFrom } = event.returnValues;
 
+          const newRequest = {
+            id,
+            url,
+            validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
+          };
+
           this.setState({
-            requests: Object.assign({},
-              requests,
-              {
-                [id]: {
-                  id,
-                  url,
-                  validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
-                },
-              }),
+            requests: {
+              ...requests,
+              [newRequest.id]: newRequest,
+            },
           });
         }
 
@@ -42,19 +43,13 @@ class RequestList extends Component {
           const { requests } = this.state;
           const { id, value, errorCode } = event.returnValues;
 
+          const updatedRequest = { ...requests[id], value, errorCode };
+
           this.setState({
-            requests: Object.assign({},
-              requests,
-              {
-                [id]: Object.assign(
-                  {},
-                  requests[id],
-                  {
-                    value,
-                    errorCode,
-                  },
-                ),
-              }),
+            requests: {
+              ...requests,
+              [updatedRequest.id]: updatedRequest,
+            },
           });
         }
       });
@@ -74,7 +69,7 @@ class RequestList extends Component {
             <th>ERROR</th>
           </tr>
           { Object.entries(requests)
-            .map(([, request]) => <Request key={request.id} request={request} />)}
+            .map(([, request]) => <Request key={request.id} {...request} />)}
         </tbody>
       </table>
     );
