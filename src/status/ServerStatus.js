@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import checkServerStatus from '../api/serverApi';
+import { getServerStatus } from '../api/serverApi';
 
 class ServerStatus extends Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class ServerStatus extends Component {
   }
 
   checkStatus() {
-    checkServerStatus()
+    getServerStatus()
       .then(() => this.setState({ status: 'alive' }))
       .catch(() => this.setState({ status: 'down' }));
   }
