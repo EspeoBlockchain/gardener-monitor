@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Request from './Request';
 import web3 from '../utils/createAndUnlockWeb3';
 import oracleAbi from '../abi/oracle.abi';
 import convertUnixToDate from '../utils/convertUnixToDate';
 
 
-class RequestList extends React.Component {
+class RequestList extends Component {
   constructor(props) {
     super(props);
 
@@ -74,7 +74,7 @@ class RequestList extends React.Component {
             <th>ERROR</th>
           </tr>
           { Object.entries(requests)
-            .map(([, request]) => <Request request={request} />)}
+            .map(([, request]) => <Request key={request.id} request={request} />)}
         </tbody>
       </table>
     );
