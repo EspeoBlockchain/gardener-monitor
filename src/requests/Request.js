@@ -26,7 +26,7 @@ Request.propTypes = {
   url: PropTypes.string.isRequired,
   validFrom: PropTypes.instanceOf(Date).isRequired,
   value: PropTypes.string,
-  errorCode: PropTypes.number,
+  errorCode: PropTypes.string,
 };
 
 export default Request;
