@@ -2,13 +2,8 @@ import React, { Component } from 'react';
 import { getServerStatus } from '../api/serverApi';
 
 class ServerStatus extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      status: 'down',
-    };
-  }
+  interval: any;
+  state = { status: 'down' };
 
   async componentDidMount() {
     await this.checkStatus();
@@ -30,7 +25,7 @@ class ServerStatus extends Component {
 
     return (
       <div>
-Server status:
+        Server status:
         <p style={{ color: status === 'alive' ? 'green' : 'red' }}>{status}</p>
       </div>
     );
