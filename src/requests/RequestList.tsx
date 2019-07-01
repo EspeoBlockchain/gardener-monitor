@@ -13,7 +13,7 @@ class RequestList extends Component<{}, State> {
   state = {
     requests: {} as { [key: string]: any },
   };
-  constructor(props: any) {
+  constructor(props: {}) {
     super(props);
 
     const oracleContract = new web3.eth.Contract(

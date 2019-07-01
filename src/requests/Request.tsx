@@ -1,24 +1,14 @@
-/* eslint-disable react/require-default-props */
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 
-type Props = Partial<{
+interface Props {
   id: string;
   errorCode: string;
   value: string;
-  validFrom: string;
+  validFrom: Date;
   url: string;
-}>;
+};
 
 class Request extends PureComponent<Props> {
-
-  static propTypes = {
-    id: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    validFrom: PropTypes.instanceOf(Date).isRequired,
-    value: PropTypes.string,
-    errorCode: PropTypes.string,
-  };
 
   render() {
     const {

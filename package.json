@@ -7,7 +7,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint --fix src",
+    "lint": "tslint --config ./tslint.json --project ./tsconfig.json 'src/**/*.ts'",
     "copy-env": "if ! [ -e .env ]; then cp .env.tpl .env; fi;"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "eslint-plugin-import": "2.17.3",
     "eslint-plugin-jsx-a11y": "6.2.1",
     "eslint-plugin-react": "7.13.0",
+    "tslint": "^5.18.0",
     "typescript": "3.4"
   },
   "browserslist": {
