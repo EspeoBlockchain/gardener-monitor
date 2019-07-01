@@ -1,18 +1,18 @@
 import React, { PureComponent } from "react";
 import * as web3Contract from 'web3-eth-contract';
 
-import Request, { IRequest } from "./Request";
+import Request, { RequestProps } from "./Request";
 import web3 from "../utils/createAndUnlockWeb3";
 import oracleAbi from "../abi/oracle.abi";
 import convertUnixToDate from "../utils/convertUnixToDate";
 
 interface State {
-  requests: { [key: string]: IRequest };
+  requests: { [key: string]: RequestProps };
 }
 
 class RequestList extends PureComponent<{}, State> {
   state = {
-    requests: {} as { [key: string]: IRequest },
+    requests: {} as { [key: string]: RequestProps },
   };
   constructor(props: {}) {
     super(props);
@@ -71,7 +71,7 @@ class RequestList extends PureComponent<{}, State> {
             <th>VALUE</th>
             <th>ERROR</th>
           </tr>
-          {Object.values(requests).map((request: IRequest) => (
+          {Object.values(requests).map((request: RequestProps) => (
             <Request key={request.id} {...request} />
           ))}
         </tbody>

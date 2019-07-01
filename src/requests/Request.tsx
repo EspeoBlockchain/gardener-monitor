@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-export interface IRequest {
+export interface RequestProps {
   id: string;
   errorCode: string;
   value: string;
@@ -8,7 +8,7 @@ export interface IRequest {
   url: string;
 }
 
-class Request extends PureComponent<IRequest> {
+class Request extends PureComponent<RequestProps> {
 
   render() {
     const {
