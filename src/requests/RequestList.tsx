@@ -1,27 +1,28 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
+import * as web3Contract from 'web3-eth-contract';
 
-import Request from "./Request";
+import Request, { IRequest } from "./Request";
 import web3 from "../utils/createAndUnlockWeb3";
 import oracleAbi from "../abi/oracle.abi";
 import convertUnixToDate from "../utils/convertUnixToDate";
 
 interface State {
-  requests: { [key: string]: any };
+  requests: { [key: string]: IRequest };
 }
 
-class RequestList extends Component<{}, State> {
+class RequestList extends PureComponent<{}, State> {
   state = {
-    requests: {} as { [key: string]: any },
+    requests: {} as { [key: string]: IRequest },
   };
   constructor(props: {}) {
     super(props);
 
     const oracleContract = new web3.eth.Contract(
-      oracleAbi as any,
+      oracleAbi,
       process.env.REACT_APP_ORACLE_ADDRESS
     );
 
-    oracleContract.events.allEvents().on("data", (event: any) => {
+    oracleContract.events.allEvents().on("data", (event: web3Contract.EventData) => {
       if (["DataRequested", "DelayedDataRequested"].includes(event.event)) {
         const { requests } = this.state;
         const { id, url, validFrom } = event.returnValues;
@@ -70,7 +71,7 @@ class RequestList extends Component<{}, State> {
             <th>VALUE</th>
             <th>ERROR</th>
           </tr>
-          {Object.values(requests).map((request: any) => (
+          {Object.values(requests).map((request: IRequest) => (
             <Request key={request.id} {...request} />
           ))}
         </tbody>

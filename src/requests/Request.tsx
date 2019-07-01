@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 
-interface Props {
+export interface IRequest {
   id: string;
   errorCode: string;
   value: string;
   validFrom: Date;
   url: string;
-};
+}
 
-class Request extends PureComponent<Props> {
+class Request extends PureComponent<IRequest> {
 
   render() {
     const {
