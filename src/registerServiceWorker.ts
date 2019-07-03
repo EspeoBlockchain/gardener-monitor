@@ -1,5 +1,3 @@
-/* global window, navigator, fetch */
-/* eslint-disable no-console */
 // In production, we register a service worker to serve assets from local cache.
 
 // This lets the app load faster on subsequent visits in production, and gives
@@ -20,11 +18,10 @@ const isLocalhost = Boolean(
     ),
 );
 
-function registerValidSW(swUrl) {
+function registerValidSW(swUrl: string) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
-      /* eslint-disable-next-line */
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         installingWorker.onstatechange = () => {
@@ -50,7 +47,7 @@ function registerValidSW(swUrl) {
     });
 }
 
-function checkValidServiceWorker(swUrl) {
+function checkValidServiceWorker(swUrl: string) {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
     .then((response) => {
@@ -80,6 +77,7 @@ function checkValidServiceWorker(swUrl) {
 export default function register() {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
+    // @ts-ignore
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin

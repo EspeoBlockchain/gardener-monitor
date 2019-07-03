@@ -1,22 +1,25 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { getServerStatus } from '../api/serverApi';
 
-class ServerStatus extends Component {
-  constructor(props) {
-    super(props);
+export type Status = 'alive' | 'down';
 
-    this.state = {
-      status: 'down',
-    };
-  }
+export interface State {
+  status: Status
+}
+
+class ServerStatus extends PureComponent<{}, State> {
+  private interval: number;
+  state: State = {
+    status: 'down'
+  };
 
   async componentDidMount() {
     await this.checkStatus();
-    this.interval = setInterval(() => this.checkStatus(), 5000);
+    this.interval = window.setInterval(() => this.checkStatus(), 5000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    window.clearInterval(this.interval);
   }
 
   checkStatus() {
@@ -30,7 +33,7 @@ class ServerStatus extends Component {
 
     return (
       <div>
-Server status:
+        Server status:
         <p style={{ color: status === 'alive' ? 'green' : 'red' }}>{status}</p>
       </div>
     );
