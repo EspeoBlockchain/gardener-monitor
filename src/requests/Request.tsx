@@ -3,7 +3,7 @@ import { utils } from 'ethers';
 
 export interface RequestProps {
   id: string;
-  errorCode: utils.BigNumber | undefined;
+  errorCode?: utils.BigNumber;
   value: string;
   validFrom: Date;
   url: string;
