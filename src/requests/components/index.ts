@@ -1,13 +1,6 @@
-import { RequestTable } from './RequestTable';
-import { RequestTableTBody } from './RequestTableTBody';
-import { RequestTableTd } from './RequestTableTd';
-import { RequestTableTh } from './RequestTableTh';
-import { RequestTableTr } from './RequestTableTr';
+export * from './RequestTable';
+export * from './RequestTableTBody';
+export * from './RequestTableTd';
+export * from './RequestTableTh';
+export * from './RequestTableTr';
 
-export {
-  RequestTable,
-  RequestTableTBody,
-  RequestTableTh,
-  RequestTableTr,
-  RequestTableTd,
-};

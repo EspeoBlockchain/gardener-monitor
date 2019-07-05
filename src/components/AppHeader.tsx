@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const AppHeader = styled.header`
-  background-color: #222;
+  background-color: ${props => props.theme.colors.dark};
   height: 150px;
   padding: 20px;
-  color: white;
+  color: ${props => props.theme.colors.light};
 `;
