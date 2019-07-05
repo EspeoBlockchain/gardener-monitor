@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { getServerStatus } from '../api/serverApi';
+import { StatusIndicator } from './components/StatusIndicator';
 
 export type Status = 'alive' | 'down';
 
@@ -34,7 +35,7 @@ class ServerStatus extends PureComponent<{}, State> {
     return (
       <div>
         Server status:
-        <p style={{ color: status === 'alive' ? 'green' : 'red' }}>{status}</p>
+        <StatusIndicator {...this.state}>{status}</StatusIndicator>
       </div>
     );
   }

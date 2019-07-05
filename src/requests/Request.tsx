@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { utils } from 'ethers';
 
+import { RequestTableTr, RequestTableTd } from './components';
+
 export interface RequestProps {
   id: string;
   errorCode?: utils.BigNumber;
@@ -11,19 +13,20 @@ export interface RequestProps {
 
 class Request extends PureComponent<RequestProps> {
 
-  render() {
+  get requestEntries(): JSX.Element[] {
     const {
       id, url, validFrom, value, errorCode,
     } = this.props;
 
+    return [id, url, validFrom.toString(), value, errorCode ? errorCode.toHexString() : '']
+      .map((entry, index) => (<RequestTableTd key={`${entry}${index}`}>{entry}</RequestTableTd>));
+  }
+
+  render() {
     return (
-      <tr>
-        <td>{id}</td>
-        <td>{url}</td>
-        <td>{validFrom.toString()}</td>
-        <td>{value}</td>
-        <td>{errorCode ? errorCode.toHexString() : ''}</td>
-      </tr>
+      <RequestTableTr>
+        {this.requestEntries}
+      </RequestTableTr>
     );
   }
 }
