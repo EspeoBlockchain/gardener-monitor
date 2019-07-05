@@ -1,8 +1,8 @@
 import { RequestTable } from './RequestTable';
 import { RequestTableTBody } from './RequestTableTBody';
+import { RequestTableTd } from './RequestTableTd';
 import { RequestTableTh } from './RequestTableTh';
 import { RequestTableTr } from './RequestTableTr';
-import { RequestTableTd } from './RequestTableTd';
 
 export {
   RequestTable,
@@ -10,4 +10,4 @@ export {
   RequestTableTh,
   RequestTableTr,
   RequestTableTd,
-}
+};
