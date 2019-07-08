@@ -1,20 +1,24 @@
 import React from 'react';
+import { ThemeProvider } from 'styled-components';
+
+import { AppHeader, AppLogo, AppTitle, AppWrapper } from './components';
+import { defaultTheme } from './theme/defaultTheme';
 
 import logo from './logo.svg';
-import './App.css';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
 
 const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <h1 className="App-title">Oracle Monitor</h1>
-    </header>
-
-    <ServerStatus />
-    <RequestList />
-  </div>
+  <ThemeProvider theme={defaultTheme}>
+    <AppWrapper>
+      <AppHeader>
+        <AppLogo src={logo} alt='logo'/>
+        <AppTitle>Oracle Monitor</AppTitle>
+      </AppHeader>
+      <ServerStatus/>
+      <RequestList/>
+    </AppWrapper>
+  </ThemeProvider>
 );
 
 export default App;
