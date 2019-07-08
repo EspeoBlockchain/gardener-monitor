@@ -13,7 +13,7 @@ const App = () => (
     <AppWrapper>
       <AppHeader>
         <AppLogo src={logo} alt='logo'/>
-        <AppTitle>Oracle Monitor test</AppTitle>
+        <AppTitle>Oracle Monitor test 2</AppTitle>
       </AppHeader>
       <ServerStatus/>
       <RequestList/>
