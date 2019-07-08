@@ -1,12 +1,7 @@
 import 'styled-components';
+import { Theme } from './theme/defaultTheme';
 
 declare module 'styled-components' {
-  export interface DefaultTheme {
-    colors: {
-      light: string,
-      dark: string,
-      green: string,
-      red: string,
-    };
-  }
+  // tslint:disable-next-line:no-empty-interface
+  export interface DefaultTheme extends Theme {}
 }
