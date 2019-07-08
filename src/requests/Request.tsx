@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { utils } from 'ethers';
 
-import { RequestTableTr, RequestTableTd } from './components';
+import { RequestTableRow, RequestTableCell } from './components';
 
 export interface RequestProps {
   id: string;
@@ -19,14 +19,14 @@ class Request extends PureComponent<RequestProps> {
     } = this.props;
 
     return [id, url, validFrom.toString(), value, errorCode ? errorCode.toHexString() : '']
-      .map((entry, index) => (<RequestTableTd key={`${entry}${index}`}>{entry}</RequestTableTd>));
+      .map((entry, index) => (<RequestTableCell key={`${entry}${index}`}>{entry}</RequestTableCell>));
   }
 
   render() {
     return (
-      <RequestTableTr>
+      <RequestTableRow >
         {this.requestEntries}
-      </RequestTableTr>
+      </RequestTableRow>
     );
   }
 }

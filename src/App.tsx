@@ -1,6 +1,5 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-
 import { AppHeader, AppLogo, AppTitle, AppWrapper } from './components';
 import { defaultTheme } from './theme/defaultTheme';
 
@@ -12,11 +11,11 @@ const App = () => (
   <ThemeProvider theme={defaultTheme}>
     <AppWrapper>
       <AppHeader>
-        <AppLogo src={logo} alt='logo'/>
+        <AppLogo src={logo} alt='logo' />
         <AppTitle>Oracle Monitor test 2</AppTitle>
       </AppHeader>
-      <ServerStatus/>
-      <RequestList/>
+      <ServerStatus />
+      <RequestList />
     </AppWrapper>
   </ThemeProvider>
 );

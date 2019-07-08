@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import Table from '@material-ui/core/Table';
 
-export const RequestTable = styled.table`
+export const RequestTable = styled(Table)`
   border: 1px solid;
   margin-left: auto;
   margin-right: auto;
-`;
+` as typeof Table;

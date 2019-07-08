@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import * as web3Contract from 'web3-eth-contract';
 
-import { RequestTable, RequestTableTBody, RequestTableTh, RequestTableTr } from './components';
+import { RequestPaper, RequestTable, RequestTableBody, RequestTableCell, RequestTableHead, RequestTableRow } from './components';
 import Request, { RequestProps } from "./Request";
 import web3 from "../utils/createAndUnlockWeb3";
 import oracleAbi from "../abi/oracle.abi";
@@ -18,7 +18,7 @@ class RequestList extends PureComponent<{}, State> {
 
   get tableHeaders(): JSX.Element[] {
     return ["ID", "CALL", "VALID FROM", "VALUE", "ERROR"].map((entry) => (
-      <RequestTableTh key={entry}>{entry}</RequestTableTh>
+      <RequestTableCell key={entry}>{entry}</RequestTableCell>
     ))
   }
 
@@ -67,18 +67,32 @@ class RequestList extends PureComponent<{}, State> {
 
   render() {
     const { requests } = this.state;
-
     return (
-      <RequestTable>
-        <RequestTableTBody>
-          <RequestTableTr>
-            {this.tableHeaders}
-          </RequestTableTr>
-          {Object.values(requests).map((request: RequestProps) => (
-            <Request key={request.id} {...request} />
-          ))}
-        </RequestTableTBody>
-      </RequestTable>
+      <RequestPaper>
+        <RequestTable>
+          <RequestTableHead>
+            <RequestTableRow>
+              {this.tableHeaders}
+            </RequestTableRow>
+          </RequestTableHead>
+          <RequestTableBody>
+            {Object.values(requests).map((request: RequestProps) => (
+              <Request key={request.id} {...request} />
+            ))
+            }
+          </RequestTableBody>
+        </RequestTable>
+      </RequestPaper>
+      // <RequestTable>
+      //   <RequestTableTBody>
+      //     <RequestTableTr>
+      //       {this.tableHeaders}
+      //     </RequestTableTr>
+      //     {Object.values(requests).map((request: RequestProps) => (
+      //       <Request key={request.id} {...request} />
+      //     ))}
+      //   </RequestTableTBody>
+      // </RequestTable>
     );
   }
 }
