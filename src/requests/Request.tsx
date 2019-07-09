@@ -28,14 +28,23 @@ class Request extends PureComponent<RequestProps> {
     const {
       id, url, validFrom, value, errorCode
     } = this.props;
-console.log('====================================');
-console.log(this.props);
-console.log('====================================');
+
     return (
       <RequestTableRow>
         <RequestTableCell align="center">{id}</RequestTableCell>
         <RequestTableCell align="center">{url}</RequestTableCell>
-        <RequestTableCell align="center">{validFrom ? validFrom.toString() : ''}</RequestTableCell>
+        <RequestTableCell align="center">{
+          validFrom ? validFrom.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          }) : ''
+        }
+        </RequestTableCell>
         <RequestTableCell align="center">{value}</RequestTableCell>
         <RequestTableCell align="center">{errorCode ? errorCode.toHexString() : ''}</RequestTableCell>
       </RequestTableRow>
