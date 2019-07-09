@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 export const AppHeader = styled.header`
-  displey: flex;
+  display: flex;
   flex-direction: row;
-  align-items: space-between;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
   background-color: ${props => props.theme.colors.dark};
-  height: 150px;
+  min-height: 150px;
   padding: 20px;
   color: ${props => props.theme.colors.light};
 `;

@@ -3,6 +3,6 @@ import Table from '@material-ui/core/Table';
 
 export const RequestTable = styled(Table)`
   border: 1px solid;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: '100vw';
+  overflow-x: 'auto';
 ` as typeof Table;

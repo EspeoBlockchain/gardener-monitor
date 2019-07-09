@@ -17,9 +17,11 @@ class Request extends PureComponent<RequestProps> {
     const {
       id, url, validFrom, value, errorCode,
     } = this.props;
-
-    return [id, url, validFrom.toString(), value, errorCode ? errorCode.toHexString() : '']
-      .map((entry, index) => (<RequestTableCell key={`${entry}${index}`}>{entry}</RequestTableCell>));
+    const order = [3, 3, 3, 1, 2];
+    return [id, url, validFrom ? validFrom.toString() : '', value, errorCode ? errorCode.toHexString() : '']
+      .map((entry, index) => (
+        <RequestTableCell key={`${entry}${index}`}>{entry}</RequestTableCell>
+      ));
   }
 
   render() {
