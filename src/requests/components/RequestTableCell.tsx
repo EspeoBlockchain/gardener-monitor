@@ -4,5 +4,6 @@ import TableCell from '@material-ui/core/TableCell';
 
 export const RequestTableCell = styled(TableCell)`
     display: flex;
-    flex-wrap: nowrap;
+    max-width: 100px;
+    word-wrap: break-word;
 ` as typeof TableCell;

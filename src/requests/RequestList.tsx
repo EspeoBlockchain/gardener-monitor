@@ -18,7 +18,7 @@ class RequestList extends PureComponent<{}, State> {
 
   get tableHeaders(): JSX.Element[] {
     return ["ID", "CALL", "VALID FROM", "VALUE", "ERROR"].map((entry) => (
-      <RequestTableCell key={entry}>{entry}</RequestTableCell>
+      <RequestTableCell align="center" key={entry}>{entry}</RequestTableCell>
     ))
   }
 
@@ -68,23 +68,22 @@ class RequestList extends PureComponent<{}, State> {
   render() {
     const { requests } = this.state;
     return (
-      <RequestGrid item xs={12}>
-        <RequestPaper>
-          <RequestTable>
-            <RequestTableHead>
-              <RequestTableRow>
-                {this.tableHeaders}
-              </RequestTableRow>
-            </RequestTableHead>
-            <RequestTableBody>
-              {Object.values(requests).map((request: RequestProps) => (
+      <RequestPaper>
+        <RequestTable>
+          <RequestTableHead>
+            <RequestTableRow>
+              {this.tableHeaders}
+            </RequestTableRow>
+          </RequestTableHead>
+          <RequestTableBody>
+            {
+              Object.values(requests).map((request: RequestProps) => (
                 <Request key={request.id} {...request} />
               ))
-              }
-            </RequestTableBody>
-          </RequestTable>
-        </RequestPaper>
-      </RequestGrid>
+            }
+          </RequestTableBody>
+        </RequestTable>
+      </RequestPaper>
 
       // <RequestTable>
       //   <RequestTableTBody>
