@@ -32,8 +32,6 @@ class ServerStatus extends PureComponent<{}, State> {
   }
 
   render() {
-    const { status } = this.state;
-
     return (
       <StatusIndicatorContainer>
         <StatusIndicatorTitle>Server status:</StatusIndicatorTitle>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { AppHeader, AppLogo, AppTitle, AppWrapper } from './components';
+import { AppHeader, AppLogo, AppWrapper } from './components';
 import { defaultTheme } from './theme/defaultTheme';
 
 import logo from './images/gardener-logo_poziom.svg';
