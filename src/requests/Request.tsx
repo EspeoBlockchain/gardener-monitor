@@ -52,7 +52,7 @@ class Request extends PureComponent<RequestProps> {
       id, url, validFrom, value, errorCode,
     } = this.props;
     console.log('====================================');
-    console.log(errorCode ? parseInt(errorCode.toHexString(), 16) : 'waiting');
+    console.log(errorCode ? errorCode.toHexString() : 'waiting');
     console.log('====================================');
 
     return (

@@ -11,7 +11,6 @@ const App = () => (
   <ThemeProvider theme={defaultTheme}>
     <AppWrapper>
       <AppHeader>
-        {/* <AppTitle>Oracle Monitor</AppTitle> */}
         <AppLogo src={logo} alt='logo' />
         <ServerStatus />
       </AppHeader>
