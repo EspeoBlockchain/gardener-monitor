@@ -8,6 +8,6 @@ export const AppHeader = styled.header`
   flex-wrap: wrap;
   background-color: ${props => props.theme.colors.dark};
   min-height: 150px;
-  padding: 20px;
+  padding: 10px;
   color: ${props => props.theme.colors.light};
 `;
