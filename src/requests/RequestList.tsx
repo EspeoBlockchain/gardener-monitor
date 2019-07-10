@@ -84,17 +84,6 @@ class RequestList extends PureComponent<{}, State> {
           </RequestTableBody>
         </RequestTable>
       </RequestPaper>
-
-      // <RequestTable>
-      //   <RequestTableTBody>
-      //     <RequestTableTr>
-      //       {this.tableHeaders}
-      //     </RequestTableTr>
-      //     {Object.values(requests).map((request: RequestProps) => (
-      //       <Request key={request.id} {...request} />
-      //     ))}
-      //   </RequestTableTBody>
-      // </RequestTable>
     );
   }
 }
