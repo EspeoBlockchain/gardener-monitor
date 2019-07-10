@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import * as web3Contract from 'web3-eth-contract';
 
-import { RequestGrid, RequestPaper, RequestTable, RequestTableBody, RequestTableCell, RequestTableHead, RequestTableRow } from './components';
+import { RequestPaper, RequestTable, RequestTableBody, RequestTableCell, RequestTableHead, RequestTableRow } from './components';
 import Request, { RequestProps } from "./Request";
 import web3 from "../utils/createAndUnlockWeb3";
 import oracleAbi from "../abi/oracle.abi";
@@ -17,7 +17,7 @@ class RequestList extends PureComponent<{}, State> {
   };
 
   get tableHeaders(): JSX.Element[] {
-    return ["ID", "CALL", "VALID FROM", "VALUE", "ERROR"].map((entry) => (
+    return ["ID", "CALL", "VALID FROM", "VALUE", "STATUS"].map((entry) => (
       <RequestTableCell align="center" key={entry}>{entry}</RequestTableCell>
     ))
   }

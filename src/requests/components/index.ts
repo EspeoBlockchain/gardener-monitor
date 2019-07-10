@@ -4,4 +4,4 @@ export * from './RequestTableBody';
 export * from './RequestTableCell';
 export * from './RequestTableHead';
 export * from './RequestTableRow';
-export * from './RequestGrid';
+export * from './Loader';
