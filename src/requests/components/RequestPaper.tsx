@@ -3,5 +3,6 @@ import Paper from '@material-ui/core/Paper';
 
 export const RequestPaper = styled(Paper)`
     width: 100%;
-    overflow-x: auto;
+    height: 500px;
+    overflow: auto;
 ` as typeof Paper;
