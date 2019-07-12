@@ -28,19 +28,17 @@ class Request extends PureComponent<RequestProps> {
         default:
           return 'OK';
       }
-    } else if (code.length === 3) {
+    }
+    if (code.length === 3) {
       return `HTTP ERROR ${code}`;
     }
-    return 'OK';
+    return `OK`;
   };
 
   render() {
     const {
       id, url, validFrom, value, errorCode,
     } = this.props;
-    console.log('====================================');
-    console.log(errorCode ? errorCode.toHexString() : 'waiting');
-    console.log('====================================');
 
     return (
       <RequestTableRow>
@@ -58,7 +56,14 @@ class Request extends PureComponent<RequestProps> {
           }) : ''
         }
         </RequestTableCell>
-        <RequestTableCell align='center'>{errorCode ? (this.codeMapper(errorCode.toString()) === 'OK' ? value : 'ERROR') : <Loader>Loading...</Loader>}</RequestTableCell>
+        <RequestTableCell align='center'>
+          {
+            errorCode ?
+              (this.codeMapper(errorCode.toString()) === 'OK' ? value : 'ERROR')
+              :
+              <Loader>Loading...</Loader>
+          }
+        </RequestTableCell>
         <RequestTableCell align='center'>{errorCode ? this.codeMapper(errorCode.toString()) : <Loader>Loading...</Loader>}</RequestTableCell>
       </RequestTableRow>
     );
