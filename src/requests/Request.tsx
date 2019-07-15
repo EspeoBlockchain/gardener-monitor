@@ -12,27 +12,31 @@ export interface RequestProps {
   url: string;
 }
 
+enum ErrorCodes {
+  INVALID_CONTENT_TYPE = '1001',
+  INVALID_SELECTOR_DATA = '4000',
+  NO_MATCHING_ELEMENTS_FOUND = '4004',
+  INTERNAL_SERVER_ERROR = '5000',
+  OK = '0',
+}
+
 class Request extends PureComponent<RequestProps> {
 
   codeMapper(code: string): string {
-    if (code.length === 4) {
-      switch (code) {
-        case '1001':
-          return 'INVALID_CONTENT_TYPE';
-        case '4000':
-          return 'INVALID_SELECTOR_DATA';
-        case '4004':
-          return 'NO_MATCHING_ELEMENTS_FOUND';
-        case '5000':
-          return 'INTERNAL_SERVER_ERROR';
-        default:
-          return 'OK';
-      }
+    switch (code) {
+      case ErrorCodes.INVALID_CONTENT_TYPE:
+        return 'INVALID_CONTENT_TYPE';
+      case ErrorCodes.INVALID_SELECTOR_DATA:
+        return 'INVALID_SELECTOR_DATA';
+      case ErrorCodes.NO_MATCHING_ELEMENTS_FOUND:
+        return 'NO_MATCHING_ELEMENTS_FOUND';
+      case ErrorCodes.INTERNAL_SERVER_ERROR:
+        return 'INTERNAL_SERVER_ERROR';
+      case ErrorCodes.OK:
+        return 'OK';
+      default:
+        return `HTTP ERROR ${code}`;
     }
-    if (code.length === 3) {
-      return `HTTP ERROR ${code}`;
-    }
-    return `OK`;
   };
 
   render() {
