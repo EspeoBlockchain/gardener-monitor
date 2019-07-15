@@ -46,9 +46,9 @@ class Request extends PureComponent<RequestProps> {
 
     return (
       <RequestTableRow>
-        <RequestTableCell align='center'>{id}</RequestTableCell>
-        <RequestTableCell align='center'>{url}</RequestTableCell>
-        <RequestTableCell align='center'>{
+        <RequestTableCell>{id}</RequestTableCell>
+        <RequestTableCell>{url}</RequestTableCell>
+        <RequestTableCell>{
           validFrom ? validFrom.toLocaleDateString('en-US', {
             weekday: 'long',
             year: 'numeric',
@@ -60,7 +60,7 @@ class Request extends PureComponent<RequestProps> {
           }) : ''
         }
         </RequestTableCell>
-        <RequestTableCell align='center'>
+        <RequestTableCell>
           {
             errorCode ?
               (this.codeMapper(errorCode.toString()) === 'OK' ? value : 'ERROR')
@@ -68,7 +68,7 @@ class Request extends PureComponent<RequestProps> {
               <Loader>Loading...</Loader>
           }
         </RequestTableCell>
-        <RequestTableCell align='center'>{errorCode ? this.codeMapper(errorCode.toString()) : <Loader>Loading...</Loader>}</RequestTableCell>
+        <RequestTableCell>{errorCode ? this.codeMapper(errorCode.toString()) : <Loader>Loading...</Loader>}</RequestTableCell>
       </RequestTableRow>
     );
   }

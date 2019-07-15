@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import TableBody from '@material-ui/core/TableBody';
 
-export const RequestTableBody = styled(TableBody)`
-`  as typeof TableBody;
+export const RequestTableBody = styled.div`
+    display: flex;
+    flex-direction: column;
+
+`;

@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import * as web3Contract from 'web3-eth-contract';
 
-import { RequestPaper, RequestTable, RequestTableBody, RequestTableCell, RequestTableHead, RequestTableRow } from './components';
+import { RequestTable, RequestTableBody, RequestTableCell, RequestTableHead, RequestTableHeadRow, RequestTableHeadCell, RequestTableRow } from './components';
 import Request, { RequestProps } from "./Request";
 import web3 from "../utils/createAndUnlockWeb3";
 import oracleAbi from "../abi/oracle.abi";
@@ -18,7 +18,7 @@ class RequestList extends PureComponent<{}, State> {
 
   get tableHeaders(): JSX.Element[] {
     return ["ID", "CALL", "VALID FROM", "VALUE", "STATUS"].map((entry) => (
-      <RequestTableCell align="center" key={entry}>{entry}</RequestTableCell>
+      <RequestTableHeadCell key={entry}>{entry}</RequestTableHeadCell>
     ))
   }
 
@@ -68,22 +68,20 @@ class RequestList extends PureComponent<{}, State> {
   render() {
     const { requests } = this.state;
     return (
-      <RequestPaper>
-        <RequestTable>
-          <RequestTableHead>
-            <RequestTableRow>
-              {this.tableHeaders}
-            </RequestTableRow>
-          </RequestTableHead>
-          <RequestTableBody>
-            {
-              Object.values(requests).map((request: RequestProps) => (
-                <Request key={request.id} {...request} />
-              ))
-            }
-          </RequestTableBody>
-        </RequestTable>
-      </RequestPaper>
+      <RequestTable>
+        <RequestTableHead>
+          <RequestTableHeadRow>
+            {this.tableHeaders}
+          </RequestTableHeadRow>
+        </RequestTableHead>
+        <RequestTableBody>
+          {
+            Object.values(requests).map((request: RequestProps) => (
+              <Request key={request.id} {...request} />
+            ))
+          }
+        </RequestTableBody>
+      </RequestTable>
     );
   }
 }

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-export const RequestTableCell = styled.div`
+export const RequestTableHeadRow = styled.div`
     display: flex;
     flex-direction: row;
-    width: 20%;
 `;

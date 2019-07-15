@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import Table from '@material-ui/core/Table';
 
-export const RequestTable = styled(Table)`
-` as typeof Table;
+export const RequestTable = styled.div`
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+`;
