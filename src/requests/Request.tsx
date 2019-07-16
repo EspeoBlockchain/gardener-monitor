@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 
-import { RequestTableCell, RequestTableRow, Loader } from './components';
+import { RequestTableCell, RequestTableRow, RequestLabel, Loader } from './components';
 import { utils } from 'ethers';
+import { Labels } from './namespace';
 
 export interface RequestProps {
   id: string;
@@ -42,28 +43,35 @@ class Request extends PureComponent<RequestProps> {
 
   render() {
     const {
-      id, url, validFrom, value, errorCode, isOdd, labels
+      id, url, validFrom, value, errorCode, isOdd,
     } = this.props;
 
     return (
       <RequestTableRow isOdd={isOdd}>
         <RequestTableCell>
-        {id}
-        </RequestTableCell>
-        <RequestTableCell>{url}</RequestTableCell>
-        <RequestTableCell>{
-          validFrom ? validFrom.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-          }) : ''
-        }
+          <RequestLabel>{Labels.id}</RequestLabel>
+          {id}
         </RequestTableCell>
         <RequestTableCell>
+          <RequestLabel>{Labels.call}</RequestLabel>
+          {url}
+        </RequestTableCell>
+        <RequestTableCell>
+          <RequestLabel>{Labels.valid}</RequestLabel>
+          {
+            validFrom ? validFrom.toLocaleDateString('en-US', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+            }) : ''
+          }
+        </RequestTableCell>
+        <RequestTableCell>
+          <RequestLabel>{Labels.value}</RequestLabel>
           {
             errorCode ?
               (this.codeMapper(errorCode.toString()) === 'OK' ? value : 'ERROR')
@@ -71,7 +79,12 @@ class Request extends PureComponent<RequestProps> {
               <Loader>Loading...</Loader>
           }
         </RequestTableCell>
-        <RequestTableCell>{errorCode ? this.codeMapper(errorCode.toString()) : <Loader>Loading...</Loader>}</RequestTableCell>
+        <RequestTableCell>
+          <RequestLabel>{Labels.status}</RequestLabel>
+          {
+            errorCode ? this.codeMapper(errorCode.toString()) : <Loader>Loading...</Loader>
+          }
+        </RequestTableCell>
       </RequestTableRow>
     );
   }
