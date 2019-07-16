@@ -3,13 +3,13 @@ import React, { PureComponent } from 'react';
 import { RequestTableCell, RequestTableRow, Loader } from './components';
 import { utils } from 'ethers';
 
-
 export interface RequestProps {
   id: string;
   errorCode?: utils.BigNumber;
   value: string;
   validFrom: Date;
   url: string;
+  isOdd: boolean;
 }
 
 enum ErrorCodes {
@@ -41,11 +41,11 @@ class Request extends PureComponent<RequestProps> {
 
   render() {
     const {
-      id, url, validFrom, value, errorCode,
+      id, url, validFrom, value, errorCode, isOdd,
     } = this.props;
 
     return (
-      <RequestTableRow>
+      <RequestTableRow isOdd={isOdd}>
         <RequestTableCell>{id}</RequestTableCell>
         <RequestTableCell>{url}</RequestTableCell>
         <RequestTableCell>{
