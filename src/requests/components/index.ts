@@ -7,4 +7,5 @@ export * from './RequestTableHeadRow';
 export * from './RequestTableRow';
 export * from './RequestTableCell';
 export * from './RequestLabel';
+export * from './RequestContent';
 export * from './Loader';
