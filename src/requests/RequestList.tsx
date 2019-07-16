@@ -1,11 +1,12 @@
 import React, { PureComponent } from "react";
 import * as web3Contract from 'web3-eth-contract';
 
-import { RequestTable, RequestTableBody, RequestTableCell, RequestTableHead, RequestTableHeadRow, RequestTableHeadCell, RequestTableRow } from './components';
+import { RequestTableWrapper, RequestTable, RequestTableBody, RequestTableCell, RequestTableHead, RequestTableHeadRow, RequestTableHeadCell, RequestTableRow } from './components';
 import Request, { RequestProps } from "./Request";
 import web3 from "../utils/createAndUnlockWeb3";
 import oracleAbi from "../abi/oracle.abi";
 import convertUnixToDate from "../utils/convertUnixToDate";
+import { Labels } from "./namespace";
 
 interface State {
   requests: { [key: string]: RequestProps };
@@ -17,8 +18,8 @@ class RequestList extends PureComponent<{}, State> {
   };
 
   get tableHeaders(): JSX.Element[] {
-    return ["ID", "CALL", "VALID FROM", "VALUE", "STATUS"].map((entry) => (
-      <RequestTableHeadCell key={entry}>{entry}</RequestTableHeadCell>
+    return Object.values(Labels).map((label) => (
+      <RequestTableHeadCell key={label}>{label}</RequestTableHeadCell>
     ))
   }
 
@@ -68,20 +69,168 @@ class RequestList extends PureComponent<{}, State> {
   render() {
     const { requests } = this.state;
     return (
-      <RequestTable>
-        <RequestTableHead>
-          <RequestTableHeadRow>
-            {this.tableHeaders}
-          </RequestTableHeadRow>
-        </RequestTableHead>
-        <RequestTableBody>
-          {
-            Object.values(requests).map((request: RequestProps) => (
-              <Request key={request.id} {...request} />
-            ))
-          }
-        </RequestTableBody>
-      </RequestTable>
+      <RequestTableWrapper>
+        <RequestTable>
+          <RequestTableHead>
+            <RequestTableHeadRow>
+              {this.tableHeaders}
+            </RequestTableHeadRow>
+          </RequestTableHead>
+          <RequestTableBody>
+            {
+              Object.values(requests).map((request: RequestProps, index: number) => (
+                <Request labels={this.tableHeaders} isOdd={index % 2} key={request.id} {...request} />
+              ))
+            }
+            {/* <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>0x238c6a5f7f88249b9176fab25bfd8fabaa815acda3bd7b933c78cf98f92027e6</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow> <RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow>
+            <RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow><RequestTableRow>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+              <RequestTableCell>test</RequestTableCell>
+            </RequestTableRow> */}
+          </RequestTableBody>
+        </RequestTable>
+      </RequestTableWrapper>
     );
   }
 }

@@ -10,6 +10,7 @@ export interface RequestProps {
   validFrom: Date;
   url: string;
   isOdd: boolean;
+  labels: string[];
 }
 
 enum ErrorCodes {
@@ -41,12 +42,14 @@ class Request extends PureComponent<RequestProps> {
 
   render() {
     const {
-      id, url, validFrom, value, errorCode, isOdd,
+      id, url, validFrom, value, errorCode, isOdd, labels
     } = this.props;
 
     return (
       <RequestTableRow isOdd={isOdd}>
-        <RequestTableCell>{id}</RequestTableCell>
+        <RequestTableCell>
+        {id}
+        </RequestTableCell>
         <RequestTableCell>{url}</RequestTableCell>
         <RequestTableCell>{
           validFrom ? validFrom.toLocaleDateString('en-US', {
