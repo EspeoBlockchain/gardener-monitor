@@ -6,7 +6,8 @@ export const defaultTheme = {
     red: '#f00',
   },
   appHeader: {
-    height: '150px',
+    desktopHeight: '170px',
+    mobileHeight: '70px',
     padding: '10px',
   },
   fontSizes: {

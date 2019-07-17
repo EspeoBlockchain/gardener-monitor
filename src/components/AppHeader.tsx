@@ -8,8 +8,16 @@ export const AppHeader = styled.header`
   align-items: center;
   flex-wrap: wrap;
   background-color: ${props => props.theme.colors.dark};
-  min-height: ${props => props.theme.appHeader.height};
+  min-height: ${props => props.theme.appHeader.desktopHeight};
   height: 100%;
   padding: ${props => props.theme.appHeader.padding};
   color: ${props => props.theme.colors.light};
+  @media (max-width: 768px) {
+    box-sizing: border-box;
+    height: ${props => props.theme.appHeader.mobileHeight};
+    top: 0;
+    left: 0;
+    width: 100%;
+    position: absolute;
+    }
 `;
