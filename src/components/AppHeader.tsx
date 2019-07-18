@@ -9,7 +9,6 @@ export const AppHeader = styled.header`
   flex-wrap: wrap;
   background-color: ${props => props.theme.colors.dark};
   min-height: ${props => props.theme.appHeader.desktopHeight};
-  height: 100%;
   padding: ${props => props.theme.appHeader.padding};
   color: ${props => props.theme.colors.light};
   @media (max-width: 768px) {
