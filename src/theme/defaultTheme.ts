@@ -17,6 +17,9 @@ export const defaultTheme = {
     medium: '12px',
     large: '16px',
   },
+  maxWidths: {
+    mobile: '768px',
+  },
   fadeInfadeOut:
     keyframes`
   {

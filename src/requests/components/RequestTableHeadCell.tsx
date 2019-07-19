@@ -5,7 +5,7 @@ export const RequestTableHeadCell = styled.th`
     text-align: center;
     padding: 10px;
     width: 20%;
-    @media (max-width: 768px) {
+    @media (max-width: ${props => props.theme.maxWidths.mobile}) {
         display: none;
     }
 `;

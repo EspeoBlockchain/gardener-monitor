@@ -5,7 +5,7 @@ export const RequestContent = styled.div`
     display: block;
     padding: 10px;
     height: 100%;
-    @media (max-width: 768px) {
+    @media (max-width: ${props => props.theme.maxWidths.mobile}) {
         width: 70%;
     }
 `;

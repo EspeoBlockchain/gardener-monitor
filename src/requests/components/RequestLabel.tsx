@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const RequestLabel = styled.div`
     display: none;
-    @media (max-width: 768px) {
+    @media (max-width: ${props => props.theme.maxWidths.mobile}) {
         display: flex;
         flex-direction: column;
         justify-content: center;

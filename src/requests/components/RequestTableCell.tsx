@@ -8,7 +8,7 @@ export const RequestTableCell = styled.td`
     word-wrap: break-word;
     font-size: ${props => props.theme.fontSizes.medium};
     border-bottom: 1px solid grey;
-    @media (max-width: 768px) {
+    @media (max-width: ${props => props.theme.maxWidths.mobile}) {
         box-sizing: border-box;
         display: flex;
         flex-direction: row;

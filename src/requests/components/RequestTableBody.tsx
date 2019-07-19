@@ -9,7 +9,7 @@ export const RequestTableBody = styled.tbody`
     top: 210px;
     flex-direction: column;
 
-@media (max-width: 768px) {
+@media (max-width: ${props => props.theme.maxWidths.mobile}) {
     display: block;
     position: static;
     height: 100%;

@@ -7,7 +7,6 @@ export const StatusIndicatorContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 30%;
-  max-width: 100%;
 
   @media only screen and (max-width: 415px) {
   width: 100%;

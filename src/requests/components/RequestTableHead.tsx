@@ -9,7 +9,7 @@ export const RequestTableHead = styled.thead`
     color: white;
     border: 1px solid #13927C;
 
-    @media (max-width: 768px) {
+    @media (max-width: ${props => props.theme.maxWidths.mobile}) {
         display: block;
         position: static;
         border: none;

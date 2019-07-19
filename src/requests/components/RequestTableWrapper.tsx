@@ -4,7 +4,7 @@ export const RequestTableWrapper = styled.div`
     font-family: 'Montserrat', sans-serif;
     overflow: auto;
     width: 100%;
-    @media (max-width: 768px) {
+    @media (max-width: ${props => props.theme.maxWidths.mobile}) {
         position: absolute;
         top: ${props => props.theme.appHeader.desktopHeight};
         bottom: 0;
