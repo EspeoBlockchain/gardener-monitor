@@ -8,12 +8,12 @@ export const AppHeader = styled.header`
   align-items: center;
   flex-wrap: wrap;
   background-color: ${props => props.theme.colors.dark};
-  min-height: ${props => props.theme.appHeader.desktopHeight};
+  height: ${props => props.theme.appHeader.desktopHeight};
   padding: ${props => props.theme.appHeader.padding};
   color: ${props => props.theme.colors.light};
   @media (max-width: 768px) {
     box-sizing: border-box;
-    height: ${props => props.theme.appHeader.mobileHeight};
+    height: ${props => props.theme.appHeader.smallMobileHeight};
     top: 0;
     left: 0;
     width: 100%;

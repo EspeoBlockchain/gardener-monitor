@@ -11,8 +11,9 @@ export const defaultTheme = {
     grey: '#808080',
   },
   appHeader: {
-    desktopHeight: '210px',
-    mobileHeight: '90px',
+    desktopHeight: '170px',
+    mobileHeight: '70px',
+    smallMobileHeight: '210px',
     padding: '10px',
   },
   fonts: {
@@ -25,6 +26,7 @@ export const defaultTheme = {
   },
   maxWidths: {
     mobile: '768px',
+    smallMobile: '415px',
   },
   fadeInfadeOut:
     keyframes`
