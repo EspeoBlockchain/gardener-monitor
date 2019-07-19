@@ -8,7 +8,7 @@ export const defaultTheme = {
     red: '#f00',
     gardenerBackgroundColor: '#13927C',
     lightGrey: '#F1F1F1',
-    grey: '#808080'
+    grey: '#808080',
   },
   appHeader: {
     desktopHeight: '170px',
