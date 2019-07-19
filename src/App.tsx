@@ -1,10 +1,9 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-
-import { AppHeader, AppLogo, AppTitle, AppWrapper } from './components';
+import { AppHeader, AppLogo, AppWrapper } from './components';
 import { defaultTheme } from './theme/defaultTheme';
 
-import logo from './logo.svg';
+import logo from './images/gardener-logo_horizontal.svg';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
 
@@ -12,11 +11,10 @@ const App = () => (
   <ThemeProvider theme={defaultTheme}>
     <AppWrapper>
       <AppHeader>
-        <AppLogo src={logo} alt='logo'/>
-        <AppTitle>Oracle Monitor</AppTitle>
+        <AppLogo src={logo} alt='logo' />
+        <ServerStatus />
       </AppHeader>
-      <ServerStatus/>
-      <RequestList/>
+      <RequestList />
     </AppWrapper>
   </ThemeProvider>
 );

@@ -4,5 +4,10 @@ import { State } from '../ServerStatus';
 export type Props = ThemedStyledProps<State, DefaultTheme>;
 
 export const StatusIndicator = styled.p<Props>`
-  color: ${(props: Props) => props.status === 'alive' ? props.theme.colors.green : props.theme.colors.red}
+  align-self: center;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background-color: ${({ status, theme }: Props) => status === 'alive' ? theme.colors.green : theme.colors.red};
+  animation: ${props => props.theme.fadeInfadeOut} 2s infinite;
 `;

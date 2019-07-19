@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { getServerStatus } from '../api/serverApi';
 import { StatusIndicator } from './components/StatusIndicator';
+import { StatusIndicatorContainer } from './components/StatusIndicatorContainer';
+import { StatusIndicatorTitle } from './components/StatusIndicatorTitle';
 
 export type Status = 'alive' | 'down';
 
@@ -30,13 +32,11 @@ class ServerStatus extends PureComponent<{}, State> {
   }
 
   render() {
-    const { status } = this.state;
-
     return (
-      <div>
-        Server status:
-        <StatusIndicator {...this.state}>{status}</StatusIndicator>
-      </div>
+      <StatusIndicatorContainer>
+        <StatusIndicatorTitle>Server status:</StatusIndicatorTitle>
+        <StatusIndicator {...this.state}></StatusIndicator>
+      </StatusIndicatorContainer>
     );
   }
 }

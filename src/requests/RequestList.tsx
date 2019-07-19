@@ -1,11 +1,12 @@
 import React, { PureComponent } from "react";
 import * as web3Contract from 'web3-eth-contract';
 
-import { RequestTable, RequestTableTBody, RequestTableTh, RequestTableTr } from './components';
+import { RequestTableWrapper, RequestTable, RequestTableBody, RequestTableHead, RequestTableHeadRow, RequestTableHeadCell } from './components';
 import Request, { RequestProps } from "./Request";
 import web3 from "../utils/createAndUnlockWeb3";
 import oracleAbi from "../abi/oracle.abi";
 import convertUnixToDate from "../utils/convertUnixToDate";
+import { Labels } from "./namespace";
 
 interface State {
   requests: { [key: string]: RequestProps };
@@ -17,8 +18,8 @@ class RequestList extends PureComponent<{}, State> {
   };
 
   get tableHeaders(): JSX.Element[] {
-    return ["ID", "CALL", "VALID FROM", "VALUE", "ERROR"].map((entry) => (
-      <RequestTableTh key={entry}>{entry}</RequestTableTh>
+    return Object.values(Labels).map((label) => (
+      <RequestTableHeadCell key={label}>{label}</RequestTableHeadCell>
     ))
   }
 
@@ -67,18 +68,23 @@ class RequestList extends PureComponent<{}, State> {
 
   render() {
     const { requests } = this.state;
-
     return (
-      <RequestTable>
-        <RequestTableTBody>
-          <RequestTableTr>
-            {this.tableHeaders}
-          </RequestTableTr>
-          {Object.values(requests).map((request: RequestProps) => (
-            <Request key={request.id} {...request} />
-          ))}
-        </RequestTableTBody>
-      </RequestTable>
+      <RequestTableWrapper>
+        <RequestTable>
+          <RequestTableHead>
+            <RequestTableHeadRow>
+              {this.tableHeaders}
+            </RequestTableHeadRow>
+          </RequestTableHead>
+          <RequestTableBody>
+            {
+              Object.values(requests).map((request, index) => (
+                <Request labels={this.tableHeaders} isOdd={index % 2} key={request.id} {...request} />
+              ))
+            }
+          </RequestTableBody>
+        </RequestTable>
+      </RequestTableWrapper>
     );
   }
 }
