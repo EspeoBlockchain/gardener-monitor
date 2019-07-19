@@ -11,8 +11,8 @@ export const defaultTheme = {
     grey: '#808080',
   },
   appHeader: {
-    desktopHeight: '170px',
-    mobileHeight: '70px',
+    desktopHeight: '210px',
+    mobileHeight: '90px',
     padding: '10px',
   },
   fonts: {

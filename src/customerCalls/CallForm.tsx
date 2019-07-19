@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react'
-import { CallFormButton, CallFormInput } from './components';
+import { CallFormButton, CallFormInput, CallFormWrapper  } from './components';
 
 export default class CallForm extends PureComponent {
     render() {
         return (
-            <div>
+            <CallFormWrapper>
                 <CallFormInput></CallFormInput>
-                <CallFormButton></CallFormButton>
-            </div>
+                <CallFormButton>Call</CallFormButton>
+            </CallFormWrapper>
         )
     }
 }
