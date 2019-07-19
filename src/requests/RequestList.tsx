@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import * as web3Contract from 'web3-eth-contract';
 
-import { RequestTableWrapper, RequestTable, RequestTableBody, RequestTableCell, RequestTableHead, RequestTableHeadRow, RequestTableHeadCell, RequestTableRow } from './components';
+import { RequestTableWrapper, RequestTable, RequestTableBody, RequestTableHead, RequestTableHeadRow, RequestTableHeadCell } from './components';
 import Request, { RequestProps } from "./Request";
 import web3 from "../utils/createAndUnlockWeb3";
 import oracleAbi from "../abi/oracle.abi";

@@ -1,4 +1,4 @@
-import styled, { DefaultTheme, ThemedStyledProps, keyframes } from 'styled-components';
+import styled, { DefaultTheme, ThemedStyledProps } from 'styled-components';
 import { State } from '../ServerStatus';
 
 export type Props = ThemedStyledProps<State, DefaultTheme>;
