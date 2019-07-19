@@ -7,9 +7,9 @@ export const RequestLabel = styled.div`
         flex-direction: column;
         justify-content: center;
         width: 30%;
-        background-color: #13927C;
+        background-color: ${props => props.theme.colors.gardenerBackgroundColor};
         box-sizing: border-box;
-        color: white;
+        color: ${props => props.theme.colors.light};
         padding: 10px;
     }
 `;

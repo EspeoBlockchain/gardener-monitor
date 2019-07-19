@@ -4,10 +4,10 @@ export const RequestTableHead = styled.thead`
     position: absolute;
     width: 100%;
     display: inherit;
-    background-color: #13927C;
+    background-color: ${props => props.theme.colors.gardenerBackgroundColor};
     box-sizing: border-box;
-    color: white;
-    border: 1px solid #13927C;
+    color: ${props => props.theme.colors.light};
+    border: 1px solid ${props => props.theme.colors.gardenerBackgroundColor};
 
     @media (max-width: ${props => props.theme.maxWidths.mobile}) {
         display: block;

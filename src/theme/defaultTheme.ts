@@ -6,11 +6,17 @@ export const defaultTheme = {
     light: '#fff',
     green: '#080',
     red: '#f00',
+    gardenerBackgroundColor: '#13927C',
+    lightGrey: '#F1F1F1',
+    grey: '#808080'
   },
   appHeader: {
     desktopHeight: '170px',
     mobileHeight: '70px',
     padding: '10px',
+  },
+  fonts: {
+    primary: 'Montserrat',
   },
   fontSizes: {
     small: '8px',
