@@ -1,3 +1,5 @@
+import { keyframes } from 'styled-components';
+
 export const defaultTheme = {
   colors: {
     dark: '#222',
@@ -14,7 +16,15 @@ export const defaultTheme = {
     small: '8px',
     medium: '12px',
     large: '16px',
+  },
+  fadeInfadeOut:
+    keyframes`
+  {
+    0% { opacity: 0; }
+    50%   { opacity: 1; }
+    100% { opacity: 0; }
   }
+`,
 };
 
 export type Theme = typeof defaultTheme;
