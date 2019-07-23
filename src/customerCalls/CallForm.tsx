@@ -1,8 +1,16 @@
 import React, { PureComponent } from 'react'
 import { CallFormButton, CallFormInput, CallFormWrapper } from './components';
+import web3 from "../utils/createAndUnlockWeb3";
+import usingOracleAbi from "../abi/usingOracle.abi";
+import { log } from 'util';
 
 type State = { query: string };
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
+
+export const usingOracleContract = new web3.eth.Contract(
+    usingOracleAbi,
+    process.env.REACT_APP_USING_ORACLE_ADDRESS
+);
 
 export default class CallForm extends PureComponent<State> {
     static defaultProps = { query: '' };
@@ -18,7 +26,8 @@ export default class CallForm extends PureComponent<State> {
     }
 
     handleSubmit = () => {
-
+        usingOracleContract.methods.request(this.state.query)
+            .send()
     }
 
     render() {
