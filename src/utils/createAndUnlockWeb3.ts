@@ -13,6 +13,7 @@ if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined
         web3.eth.defaultAccount = defaultAccount;
     })
 } else {
+    alert('please install MetaMask plugin to your browser');
     // @ts-ignore
     const localProvider = new Web3.providers.WebsocketProvider(process.env.REACT_APP_NODE_URL);
     // @ts-ignore
