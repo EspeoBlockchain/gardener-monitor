@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { CallFormButton, CallFormInput, CallFormWrapper } from './components';
+import { CallFormButton, CallFormInput, CallFormWrapper, CallFormSelect, CallFormOption } from './components';
 import web3 from "../utils/createAndUnlockWeb3";
 import usingOracleAbi from "../abi/usingOracle.abi";
 
@@ -39,9 +39,17 @@ export default class CallForm extends PureComponent<State> {
     render() {
         return (
             <CallFormWrapper>
-                <CallFormInput value={this.state.query} onChange={this.handleChange} >
+                <CallFormInput
+                    value={this.state.query}
+                    onChange={this.handleChange}
+                >
                 </CallFormInput>
                 <CallFormButton onClick={this.handleSubmit} >Call</CallFormButton>
+                <CallFormSelect>
+                    <CallFormOption>one</CallFormOption>
+                    <CallFormOption>two</CallFormOption>
+                    <CallFormOption>three</CallFormOption>
+                </CallFormSelect>
             </CallFormWrapper>
         )
     }
