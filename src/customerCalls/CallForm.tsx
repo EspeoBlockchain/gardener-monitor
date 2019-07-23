@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import { CallFormButton, CallFormInput, CallFormWrapper } from './components';
 import web3 from "../utils/createAndUnlockWeb3";
 import usingOracleAbi from "../abi/usingOracle.abi";
-import { log } from 'util';
 
 type State = { query: string };
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
@@ -26,8 +25,15 @@ export default class CallForm extends PureComponent<State> {
     }
 
     handleSubmit = () => {
+        if (this.state.query === '') {
+            alert('put valid url for call')
+            return;
+        }
         usingOracleContract.methods.request(this.state.query)
-            .send()
+            .send();
+        this.setState({
+            query: '',
+        })
     }
 
     render() {
