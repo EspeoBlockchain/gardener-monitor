@@ -15,7 +15,7 @@ export interface RequestProps {
 }
 
 enum ErrorCodes {
-  INVALID_URL = '1001',
+  INVALID_URL = '1000',
   INVALID_CONTENT_TYPE = '1001',
   INVALID_SELECTOR_DATA = '4000',
   NO_MATCHING_ELEMENTS_FOUND = '4004',
