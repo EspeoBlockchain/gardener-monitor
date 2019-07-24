@@ -4,7 +4,7 @@ export const CallFormWrapper = styled.div`
     font-family: ${props => props.theme.fonts.primary};
     box-sizing: border-box;
     max-height: 80px;
-    width: 50%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

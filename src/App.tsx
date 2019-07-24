@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { AppHeader, AppLogo, AppWrapper } from './components';
+import { AppHeader, AppHeaderLeft, AppHeaderCenter, AppHeaderRight, AppLogo, AppHeaderNews, AppHeaderProof, AppWrapper } from './components';
 import { defaultTheme } from './theme/defaultTheme';
 
 import logo from './images/gardener-logo_horizontal.svg';
@@ -12,9 +12,17 @@ const App = () => (
   <ThemeProvider theme={defaultTheme}>
     <AppWrapper>
       <AppHeader>
-        <AppLogo src={logo} alt='logo' />
-        <CallForm />
-        <ServerStatus />
+        <AppHeaderLeft>
+          <AppHeaderNews>NEWS</AppHeaderNews>
+          <AppHeaderProof>PROOF</AppHeaderProof>
+        </AppHeaderLeft>
+        <AppHeaderCenter>
+          <AppLogo src={logo} alt='logo' />
+          <CallForm />
+        </AppHeaderCenter>
+        <AppHeaderRight>
+          <ServerStatus />
+        </AppHeaderRight>
       </AppHeader>
       <RequestList />
     </AppWrapper>
