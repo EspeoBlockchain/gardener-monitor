@@ -5,5 +5,6 @@ export const CallFormInput = styled.input`
     height: 25px;
     border-radius: 5px;
     outline: none;
-    font-size: ${props => props.theme.fontSizes.medium}
+    font-size: ${props => props.theme.fontSizes.medium};
+    text-align: center;
 `;
