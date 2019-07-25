@@ -5,7 +5,7 @@ export const AppHeaderRight = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 20%;
+    width: 25%;
     @media only screen and (max-width: 415px) {
         width: 100%;
 
