@@ -6,5 +6,6 @@ export const AppLogo = styled.img`
   width: 100%;
   max-width: 100%;
   @media only screen and (max-width: 415px) {
+    max-height: 40px;
 }
 `;

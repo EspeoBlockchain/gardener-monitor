@@ -10,5 +10,6 @@ export const StatusIndicatorContainer = styled.div`
 
   @media only screen and (max-width: 415px) {
   width: 100%;
+  flex-direction: row;
 }
 `;

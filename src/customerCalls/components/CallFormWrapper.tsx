@@ -8,7 +8,6 @@ export const CallFormWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: ${props => props.theme.appHeader.padding};
     @media only screen and (max-width: 415px) {
         flex-direction: row;
         width: 100%;

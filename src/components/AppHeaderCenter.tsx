@@ -5,4 +5,7 @@ export const AppHeaderCenter = styled.div`
     flex-direction: column;
     align-items: center;
     width: 50%;
+    @media only screen and (max-width: 415px) {
+        width: 100%;
+}
 `;
