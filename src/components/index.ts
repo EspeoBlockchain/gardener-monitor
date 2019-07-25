@@ -6,3 +6,4 @@ export * from './AppHeaderCenter';
 export * from './AppHeaderRight';
 export * from './AppHeaderNews';
 export * from './AppHeaderProof';
+export * from './AppHeaderLogoLinkWrapper';
