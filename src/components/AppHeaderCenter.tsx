@@ -6,7 +6,7 @@ export const AppHeaderCenter = styled.div`
     flex-direction: column;
     align-items: center;
     width: 50%;
-    @media only screen and (max-width: 415px) {
+    @media only screen and (max-width: ${props => props.theme.maxWidths.smallMobile}) {
         width: 100%;
 }
 `;

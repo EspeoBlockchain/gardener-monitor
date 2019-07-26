@@ -8,7 +8,7 @@ export const StatusIndicatorContainer = styled.div`
   align-items: center;
   width: 20%;
 
-  @media only screen and (max-width: 415px) {
+  @media only screen and (max-width: ${props => props.theme.maxWidths.smallMobile}) {
   width: 100%;
   flex-direction: row;
 }

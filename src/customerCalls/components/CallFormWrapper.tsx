@@ -8,7 +8,7 @@ export const CallFormWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    @media only screen and (max-width: 415px) {
+    @media only screen and (max-width: ${props => props.theme.maxWidths.smallMobile}) {
         flex-direction: row;
         width: 100%;
     }

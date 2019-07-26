@@ -5,7 +5,7 @@ export const AppLogo = styled.img`
   max-height: 80px;
   width: 100%;
   max-width: 100%;
-  @media only screen and (max-width: 415px) {
+  @media only screen and (max-width: ${props => props.theme.maxWidths.smallMobile}) {
     max-height: 40px;
 }
 `;
