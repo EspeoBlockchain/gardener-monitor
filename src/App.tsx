@@ -7,9 +7,9 @@ import logo from './images/gardener-logo_horizontal.svg';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
 import CallForm from './customerCalls/CallForm';
-import { GARDENER_WEBSITE_URL } from './config';
+import { gardenerWebsiteUrl } from './config';
 
-const url = GARDENER_WEBSITE_URL;
+const url = gardenerWebsiteUrl;
 
 const App = () => (
   <ThemeProvider theme={defaultTheme}>

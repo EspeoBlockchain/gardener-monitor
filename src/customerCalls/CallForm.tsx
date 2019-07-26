@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { CallFormButton, CallFormInput, CallFormDataList, CallFormWrapper, CallFormOption } from './components';
 import web3 from "../utils/createAndUnlockWeb3";
 import usingOracleAbi from "../abi/usingOracle.abi";
+import { temperatureInNYUrl, bitcoinPriceUrl, usdPriceUrl } from '../config';
 
 type State = { query: string };
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
@@ -30,8 +31,12 @@ export default class CallForm extends PureComponent<State> {
             alert('put valid url for call')
             return;
         }
+        if (usingOracleContract.defaultAccount === undefined) {
+            alert('please install and use MetaMask');
+            return;
+        }
         usingOracleContract.methods.request(this.state.query)
-            .send();
+            .send()
         this.setState({
             query: '',
         })
@@ -47,19 +52,17 @@ export default class CallForm extends PureComponent<State> {
                 ></CallFormInput>
                 <CallFormDataList id="endpoints">
                     <CallFormOption
-                        value={'json(https://api.coindesk.com/v1/bpi/currentprice.json).bpi.USD.rate_float'}
+                        value={bitcoinPriceUrl}
                     >
                         Bitcoin price in USD
                     </CallFormOption>
                     <CallFormOption
-                        value={'json(https://api.exchangeratesapi.io/latest).rates.USD'}
+                        value={usdPriceUrl}
                     >
                         EUR price based on USD
                         </CallFormOption>
                     <CallFormOption
-                        value={
-                            'json(https://samples.openweathermap.org/data/2.5/weather?id=5128638&appid=b6907d289e10d714a6e88b30761fae22).main.temp'
-                        }
+                        value={temperatureInNYUrl}
                     >
                         Temperature in New York
                     </CallFormOption>
