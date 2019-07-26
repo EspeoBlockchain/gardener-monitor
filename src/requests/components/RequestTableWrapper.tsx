@@ -10,5 +10,8 @@ export const RequestTableWrapper = styled.div`
         bottom: 0;
         left: 0;
         overflow: auto;
-    }
+    };
+    @media (max-width: ${props => props.theme.maxWidths.smallMobile}) {
+        top: ${props => props.theme.appHeader.smallMobileHeight};
+    };
 `;

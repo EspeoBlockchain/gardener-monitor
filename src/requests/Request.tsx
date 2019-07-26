@@ -15,6 +15,7 @@ export interface RequestProps {
 }
 
 enum ErrorCodes {
+  INVALID_URL = '1000',
   INVALID_CONTENT_TYPE = '1001',
   INVALID_SELECTOR_DATA = '4000',
   NO_MATCHING_ELEMENTS_FOUND = '4004',
@@ -26,6 +27,8 @@ class Request extends PureComponent<RequestProps> {
 
   codeMapper(code: string): string {
     switch (code) {
+      case ErrorCodes.INVALID_URL:
+        return 'INVALID_URL';
       case ErrorCodes.INVALID_CONTENT_TYPE:
         return 'INVALID_CONTENT_TYPE';
       case ErrorCodes.INVALID_SELECTOR_DATA:

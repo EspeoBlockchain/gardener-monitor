@@ -35,7 +35,6 @@ class RequestList extends PureComponent<{}, State> {
       if (["DataRequested", "DelayedDataRequested"].includes(event.event)) {
         const { requests } = this.state;
         const { id, url, validFrom } = event.returnValues;
-
         const newRequest = {
           id,
           url,
@@ -68,6 +67,7 @@ class RequestList extends PureComponent<{}, State> {
 
   render() {
     const { requests } = this.state;
+
     return (
       <RequestTableWrapper>
         <RequestTable>
