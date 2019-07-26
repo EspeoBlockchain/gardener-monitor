@@ -4,7 +4,7 @@ let web3: any;
 // @ts-ignore
 if (typeof window.ethereum.selectedAddress !== 'undefined' || (typeof window.web3 !== 'undefined')) {
     // @ts-ignore
-    const provider = window[ethereum] || window.web3.currentProvider;
+    const provider = window.ethereum || window.web3.currentProvider;
     // @ts-ignore
     web3 = new Web3(provider);
     // @ts-ignore
