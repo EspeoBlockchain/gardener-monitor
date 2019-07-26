@@ -8,23 +8,23 @@ export default [
         outputs: [
             {
                 name: '',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         payable: false,
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
             {
                 name: '_oracle',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         payable: false,
         stateMutability: 'nonpayable',
-        type: 'constructor'
+        type: 'constructor',
     },
     {
         anonymous: false,
@@ -32,16 +32,16 @@ export default [
             {
                 indexed: true,
                 name: 'id',
-                type: 'bytes32'
+                type: 'bytes32',
             },
             {
                 indexed: false,
                 name: 'url',
-                type: 'string'
-            }
+                type: 'string',
+            },
         ],
         name: 'DataRequestedFromOracle',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
@@ -49,74 +49,74 @@ export default [
             {
                 indexed: true,
                 name: 'id',
-                type: 'bytes32'
+                type: 'bytes32',
             },
             {
                 indexed: false,
                 name: 'value',
-                type: 'string'
+                type: 'string',
             },
             {
                 indexed: false,
                 name: 'errorCode',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'DataReadFromOracle',
-        type: 'event'
+        type: 'event',
     },
     {
         constant: false,
         inputs: [
             {
                 name: '_url',
-                type: 'string'
-            }
+                type: 'string',
+            },
         ],
         name: 'request',
         outputs: [],
         payable: false,
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         constant: false,
         inputs: [
             {
                 name: '_url',
-                type: 'string'
+                type: 'string',
             },
             {
                 name: '_delay',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'delayedRequest',
         outputs: [],
         payable: false,
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         constant: false,
         inputs: [
             {
                 name: '_id',
-                type: 'bytes32'
+                type: 'bytes32',
             },
             {
                 name: '_value',
-                type: 'string'
+                type: 'string',
             },
             {
                 name: '_errorCode',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: '__callback',
         outputs: [],
         payable: false,
         stateMutability: 'nonpayable',
-        type: 'function'
-    }
+        type: 'function',
+    },
 ] as AbiItem[];
