@@ -1,34 +1,34 @@
-import React, { PureComponent } from 'react'
-import { CallFormButton, CallFormInput, CallFormDataList, CallFormWrapper, CallFormOption } from './components';
-import web3 from "../utils/createAndUnlockWeb3";
-import usingOracleAbi from "../abi/usingOracle.abi";
-import { temperatureInNYUrl, bitcoinPriceUrl, usdPriceUrl } from '../config';
+import React, { PureComponent } from 'react';
+import usingOracleAbi from '../abi/usingOracle.abi';
+import { bitcoinPriceUrl, pressure, usdPriceUrl } from '../config';
+import web3 from '../utils/createAndUnlockWeb3';
+import { CallFormButton, CallFormDataList, CallFormInput, CallFormOption, CallFormWrapper } from './components';
 
-type State = { query: string };
+interface State { query: string; }
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
 
 export const usingOracleContract = new web3.eth.Contract(
     usingOracleAbi,
-    process.env.REACT_APP_USING_ORACLE_ADDRESS
+    process.env.REACT_APP_USING_ORACLE_ADDRESS,
 );
 
 export default class CallForm extends PureComponent<State> {
     static defaultProps = { query: '' };
     state: State = {
         query: '',
-    }
+    };
 
     handleChange = (event: InputEvent | SelectEvent): void => {
         event.preventDefault();
         this.setState({
             query: event.target.value,
-        })
+        });
     }
 
     handleSubmit = () => {
         if (this.state.query === '') {
-            alert('put valid url for call')
+            alert('put valid url for call');
             return;
         }
         if (usingOracleContract.defaultAccount === undefined) {
@@ -36,10 +36,10 @@ export default class CallForm extends PureComponent<State> {
             return;
         }
         usingOracleContract.methods.request(this.state.query)
-            .send()
+            .send();
         this.setState({
             query: '',
-        })
+        });
     }
 
     render() {
@@ -48,9 +48,9 @@ export default class CallForm extends PureComponent<State> {
                 <CallFormInput
                     value={this.state.query}
                     onChange={this.handleChange}
-                    list="endpoints"
+                    list='endpoints'
                 ></CallFormInput>
-                <CallFormDataList id="endpoints">
+                <CallFormDataList id='endpoints'>
                     <CallFormOption
                         value={bitcoinPriceUrl}
                     >
@@ -62,13 +62,13 @@ export default class CallForm extends PureComponent<State> {
                         EUR price based on USD
                         </CallFormOption>
                     <CallFormOption
-                        value={temperatureInNYUrl}
+                        value={pressure}
                     >
-                        Temperature in New York
+                        Pressure in New York
                     </CallFormOption>
                 </CallFormDataList>
                 <CallFormButton onClick={this.handleSubmit} >Call</CallFormButton>
             </CallFormWrapper >
-        )
+        );
     }
 }
