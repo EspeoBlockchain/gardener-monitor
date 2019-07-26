@@ -57,7 +57,9 @@ export default class CallForm extends PureComponent<State> {
                         EUR price based on USD
                         </CallFormOption>
                     <CallFormOption
-                        value={'json(https://samples.openweathermap.org/data/2.5/weather?id=5128638&appid=b6907d289e10d714a6e88b30761fae22).main.temp'}
+                        value={
+                            'json(https://samples.openweathermap.org/data/2.5/weather?id=5128638&appid=b6907d289e10d714a6e88b30761fae22).main.temp'
+                        }
                     >
                         Temperature in New York
                     </CallFormOption>
