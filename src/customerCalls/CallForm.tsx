@@ -8,12 +8,15 @@ interface State { query: string; }
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
 
+interface Props {
+    handleTransactionHash: (arg: string) => void;
+}
 export const usingOracleContract = new web3.eth.Contract(
     usingOracleAbi,
     process.env.REACT_APP_USING_ORACLE_ADDRESS,
 );
 
-export default class CallForm extends PureComponent<State> {
+export default class CallForm extends PureComponent<Props, State> {
     static defaultProps = { query: '' };
     state: State = {
         query: '',
@@ -25,6 +28,10 @@ export default class CallForm extends PureComponent<State> {
             query: event.target.value,
         });
     }
+    // @ts-ignore
+    passHashToProps = (hash) => {
+        this.props.handleTransactionHash(hash);
+    }
 
     handleSubmit = () => {
         if (this.state.query === '') {
@@ -35,11 +42,23 @@ export default class CallForm extends PureComponent<State> {
             alert('please install and use MetaMask');
             return;
         }
-        usingOracleContract.methods.request(this.state.query)
-            .send();
-        this.setState({
-            query: '',
-        });
+        try {
+            usingOracleContract.methods.request(this.state.query)
+                .send()
+                // @ts-ignore
+                .once('transactionHash', (hash) => {
+                    // @ts-ignore
+                    this.passHashToProps(hash);
+                })
+                .on('error', console.error)
+            this.setState({
+                query: '',
+            });
+        } catch (error) {
+            console.log(error);
+
+        }
+
     }
 
     render() {
@@ -49,7 +68,8 @@ export default class CallForm extends PureComponent<State> {
                     value={this.state.query}
                     onChange={this.handleChange}
                     list='endpoints'
-                ></CallFormInput>
+                >
+                </CallFormInput>
                 <CallFormDataList id='endpoints'>
                     <CallFormOption
                         value={bitcoinPriceUrl}

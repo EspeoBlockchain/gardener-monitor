@@ -4,7 +4,8 @@ export const RequestTableCell = styled.td`
     box-sizing: border-box;
     text-align: center;
     padding: 10px;
-    width: 20%;
+    /* width: 20%; */
+    width: 100vw;
     word-wrap: break-word;
     font-size: ${props => props.theme.fontSizes.medium};
     border-bottom: 1px solid ${props => props.theme.colors.grey};

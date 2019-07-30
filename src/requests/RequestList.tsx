@@ -1,18 +1,33 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import * as web3Contract from 'web3-eth-contract';
 
-import { RequestTableWrapper, RequestTable, RequestTableBody, RequestTableHead, RequestTableHeadRow, RequestTableHeadCell } from './components';
-import Request, { RequestProps } from "./Request";
-import web3 from "../utils/createAndUnlockWeb3";
-import oracleAbi from "../abi/oracle.abi";
-import convertUnixToDate from "../utils/convertUnixToDate";
-import { Labels } from "./namespace";
+import oracleAbi from '../abi/oracle.abi';
+import convertUnixToDate from '../utils/convertUnixToDate';
+import web3 from '../utils/createAndUnlockWeb3';
+import {
+  RequestTable,
+  RequestTableBody,
+  RequestTableHead,
+  RequestTableHeadCell,
+  RequestTableHeadRow,
+  RequestTableWrapper,
+} from './components';
+import { Labels } from './namespace';
+import Request, { RequestProps } from './Request';
 
 interface State {
-  requests: { [key: string]: RequestProps };
+  requests: {
+    [key: string]: RequestProps,
+  };
 }
 
-class RequestList extends PureComponent<{}, State> {
+interface Props {
+  requests: {
+    [key: string]: RequestProps,
+  };
+  handleUpdateState: any;
+}
+class RequestList extends PureComponent<Props, State> {
   state = {
     requests: {} as { [key: string]: RequestProps },
   };
@@ -20,54 +35,56 @@ class RequestList extends PureComponent<{}, State> {
   get tableHeaders(): JSX.Element[] {
     return Object.values(Labels).map((label) => (
       <RequestTableHeadCell key={label}>{label}</RequestTableHeadCell>
-    ))
+    ));
   }
 
-  constructor(props: {}) {
+  constructor(props: Props) {
     super(props);
+
+    const handleUpdateState = (updatedState: object): any => {
+      this.props.handleUpdateState(updatedState);
+    };
 
     const oracleContract = new web3.eth.Contract(
       oracleAbi,
-      process.env.REACT_APP_ORACLE_ADDRESS
+      process.env.REACT_APP_ORACLE_ADDRESS,
     );
 
-    oracleContract.events.allEvents().on("data", (event: web3Contract.EventData) => {
-      if (["DataRequested", "DelayedDataRequested"].includes(event.event)) {
-        const { requests } = this.state;
-        const { id, url, validFrom } = event.returnValues;
-        const newRequest = {
-          id,
-          url,
-          validFrom: validFrom ? convertUnixToDate(validFrom) : new Date()
-        };
-
-        this.setState({
-          requests: {
-            ...requests,
-            [newRequest.id]: newRequest
+    oracleContract.events.allEvents()
+      .on('data', (event: web3Contract.EventData) => {
+        if (['DataRequested', 'DelayedDataRequested'].includes(event.event)) {
+          const { requests } = this.props;
+          if (Object.entries(requests).length === 0 && requests.constructor === Object) {
+            return;
           }
-        });
-      }
+          const { id, url, validFrom } = event.returnValues;
+          // @ts-ignore
+          const { transactionHash } = event;
+          delete Object.assign(requests, { [id]: requests[transactionHash] })[transactionHash];
+          const updatedRequest = {
+            ...requests[id],
+            id,
+            url,
+            validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
+          };
+          handleUpdateState(updatedRequest);
+        }
 
-      if (event.event === "RequestFulfilled") {
-        const { requests } = this.state;
-        const { id, value, errorCode } = event.returnValues;
-
-        const updatedRequest = { ...requests[id], value, errorCode };
-
-        this.setState({
-          requests: {
-            ...requests,
-            [updatedRequest.id]: updatedRequest
+        if (event.event === 'RequestFulfilled') {
+          const { requests } = this.props;
+          if (Object.entries(requests).length === 0 && requests.constructor === Object) {
+            return;
           }
-        });
-      }
-    });
+          const { id, value, errorCode } = event.returnValues;
+          const updatedRequest = { ...requests[id], value, errorCode };
+          handleUpdateState(updatedRequest);
+        }
+      })
+      .on('error', console.error)
   }
 
   render() {
-    const { requests } = this.state;
-
+    const { requests } = this.props;
     return (
       <RequestTableWrapper>
         <RequestTable>
@@ -79,7 +96,7 @@ class RequestList extends PureComponent<{}, State> {
           <RequestTableBody>
             {
               Object.values(requests).map((request, index) => (
-                <Request labels={this.tableHeaders} isOdd={index % 2} key={request.id} {...request} />
+                <Request labels={this.tableHeaders} isOdd={index % 2} key={index} {...request} />
               ))
             }
           </RequestTableBody>
