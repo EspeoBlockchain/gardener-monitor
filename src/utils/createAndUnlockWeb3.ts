@@ -15,14 +15,18 @@ if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined
         });
     }
     catch (error) {
-        console.log('error', error);
-
+        console.log('web3error', error);
     }
 } else {
-    // @ts-ignore
-    const localProvider = new Web3.providers.WebsocketProvider(process.env.REACT_APP_NODE_URL);
-    // @ts-ignore
-    web3 = new Web3(localProvider);
+    try {
+        // @ts-ignore
+        const localProvider = new Web3.providers.WebsocketProvider(process.env.REACT_APP_NODE_URL);
+        // @ts-ignore
+        web3 = new Web3(localProvider);
+    }
+    catch (error) {
+        console.log('web3error', error);
+    }
 }
 
 export default web3;

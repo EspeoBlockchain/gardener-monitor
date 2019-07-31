@@ -5,29 +5,28 @@ import {
   AppHeaderCenter,
   AppHeaderLeft,
   AppHeaderLogoLinkWrapper,
-  AppHeaderRight,
-  AppHeaderProof,
   AppHeaderNews,
+  AppHeaderProof,
+  AppHeaderRight,
   AppLogo,
-  AppWrapper
+  AppWrapper,
 } from './components';
+import { RequestProps } from './requests/Request';
 import { defaultTheme } from './theme/defaultTheme';
-import { RequestProps } from "./requests/Request";
 
+import { gardenerWebsiteUrl } from './config';
+import CallForm from './customerCalls/CallForm';
 import logo from './images/gardener-logo_horizontal.svg';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
-import CallForm from './customerCalls/CallForm';
-import { gardenerWebsiteUrl } from './config';
 
 const url = gardenerWebsiteUrl;
 
 interface State {
   requests: {
     [key: string]: RequestProps,
-  },
+  };
 }
-
 
 class App extends React.Component {
 
@@ -40,22 +39,22 @@ class App extends React.Component {
     const newRequest = {
       hash,
     };
-    //@ts-ignore
+    // @ts-ignore
     this.setState({
       requests: {
         ...requests,
-        [newRequest.hash]: newRequest
-      }
+        [newRequest.hash]: newRequest,
+      },
     });
   }
-  //@ts-ignore
+  // @ts-ignore
   handleUpdateState = (updatedState) => {
     const { requests } = this.state;
     this.setState({
       requests: {
         ...requests,
         [updatedState.id]: updatedState,
-      }
+      },
     });
   }
 
@@ -69,7 +68,7 @@ class App extends React.Component {
               <AppHeaderProof>PROOF</AppHeaderProof>
             </AppHeaderLeft>
             <AppHeaderCenter>
-              <AppHeaderLogoLinkWrapper href={url} target="_blank" rel="noopener noreferrer">
+              <AppHeaderLogoLinkWrapper href={url} target='_blank' rel='noopener noreferrer'>
                 <AppLogo src={logo} alt='logo' />
               </AppHeaderLogoLinkWrapper>
               <CallForm handleTransactionHash={this.handleTransactionHash} />
@@ -81,7 +80,7 @@ class App extends React.Component {
           <RequestList requests={this.state.requests} handleUpdateState={this.handleUpdateState} />
         </AppWrapper>
       </ThemeProvider>
-    )
+    );
   }
 
 }

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
-import { RequestTableCell, RequestTableRow, RequestLabel, RequestContent, Loader } from './components';
 import { utils } from 'ethers';
+import { Loader, RequestContent, RequestLabel, RequestTableCell, RequestTableRow } from './components';
 import { Labels } from './namespace';
 
 export interface RequestProps {
@@ -44,33 +44,33 @@ class Request extends PureComponent<RequestProps> {
       default:
         return `HTTP ERROR ${code}`;
     }
-  };
+  }
 
   render() {
     const {
       id, url, validFrom, value, errorCode, isOdd,
     } = this.props;
     return (
-      errorCode ?
-        <RequestTableRow isOdd={isOdd}>
-          <RequestTableCell>
-            <RequestLabel>
-              {Labels.id}
-            </RequestLabel>
-            <RequestContent>
-              {id}
-            </RequestContent>
-          </RequestTableCell>
-          <RequestTableCell>
-            <RequestLabel>{Labels.call}</RequestLabel>
-            <RequestContent>
-              {url}
-            </RequestContent>
-          </RequestTableCell>
-          <RequestTableCell>
-            <RequestLabel>{Labels.valid}</RequestLabel>
-            <RequestContent>
-              {
+      <RequestTableRow isOdd={isOdd}>
+        <RequestTableCell>
+          <RequestLabel>
+            {Labels.id}
+          </RequestLabel>
+          <RequestContent>
+            {id ? id : <Loader>Mining, it can take a while...</Loader>}
+          </RequestContent>
+        </RequestTableCell>
+        <RequestTableCell>
+          <RequestLabel>{Labels.call}</RequestLabel>
+          <RequestContent>
+            {url ? url : <Loader>Loading...</Loader>}
+          </RequestContent>
+        </RequestTableCell>
+        <RequestTableCell>
+          <RequestLabel>{Labels.valid}</RequestLabel>
+          <RequestContent>
+            {
+              validFrom ?
                 validFrom.toLocaleDateString('en-US', {
                   weekday: 'long',
                   year: 'numeric',
@@ -80,35 +80,93 @@ class Request extends PureComponent<RequestProps> {
                   minute: '2-digit',
                   second: '2-digit',
                 })
-              }
-            </RequestContent>
-          </RequestTableCell>
-          <RequestTableCell>
-            <RequestLabel>{Labels.value}</RequestLabel>
-            <RequestContent>
-              {
+                :
+                <Loader>Loading...</Loader>
+            }
+          </RequestContent>
+        </RequestTableCell>
+        <RequestTableCell>
+          <RequestLabel>{Labels.value}</RequestLabel>
+          <RequestContent>
+            {
+              errorCode ?
                 this.codeMapper(errorCode.toString()) === 'OK' ? value : 'ERROR'
-              }
-            </RequestContent>
-          </RequestTableCell>
-          <RequestTableCell>
-            <RequestLabel>{Labels.status}</RequestLabel>
-            <RequestContent>
-              {
+                :
+                <Loader>Loading...</Loader>
+            }
+          </RequestContent>
+        </RequestTableCell>
+        <RequestTableCell>
+          <RequestLabel>{Labels.status}</RequestLabel>
+          <RequestContent>
+            {
+              errorCode
+                ?
                 this.codeMapper(errorCode.toString())
-              }
-            </RequestContent>
-          </RequestTableCell>
-        </RequestTableRow>
-        :
-        <RequestTableRow isOdd={isOdd}>
-          <RequestTableCell>
-            <RequestLabel></RequestLabel>
-            <RequestContent>
-              <Loader>Loading...</Loader>
-            </RequestContent>
-          </RequestTableCell>
-        </RequestTableRow>
+                :
+                <Loader>Loading...</Loader>
+            }
+          </RequestContent>
+        </RequestTableCell>
+      </RequestTableRow>
+      // errorCode ?
+      //   <RequestTableRow isOdd={isOdd}>
+      //     <RequestTableCell>
+      //       <RequestLabel>
+      //         {Labels.id}
+      //       </RequestLabel>
+      //       <RequestContent>
+      //         {id}
+      //       </RequestContent>
+      //     </RequestTableCell>
+      //     <RequestTableCell>
+      //       <RequestLabel>{Labels.call}</RequestLabel>
+      //       <RequestContent>
+      //         {url}
+      //       </RequestContent>
+      //     </RequestTableCell>
+      //     <RequestTableCell>
+      //       <RequestLabel>{Labels.valid}</RequestLabel>
+      //       <RequestContent>
+      //         {
+      //           validFrom.toLocaleDateString('en-US', {
+      //             weekday: 'long',
+      //             year: 'numeric',
+      //             month: 'long',
+      //             day: 'numeric',
+      //             hour: '2-digit',
+      //             minute: '2-digit',
+      //             second: '2-digit',
+      //           })
+      //         }
+      //       </RequestContent>
+      //     </RequestTableCell>
+      //     <RequestTableCell>
+      //       <RequestLabel>{Labels.value}</RequestLabel>
+      //       <RequestContent>
+      //         {
+      //           this.codeMapper(errorCode.toString()) === 'OK' ? value : 'ERROR'
+      //         }
+      //       </RequestContent>
+      //     </RequestTableCell>
+      //     <RequestTableCell>
+      //       <RequestLabel>{Labels.status}</RequestLabel>
+      //       <RequestContent>
+      //         {
+      //           this.codeMapper(errorCode.toString())
+      //         }
+      //       </RequestContent>
+      //     </RequestTableCell>
+      //   </RequestTableRow>
+      //   :
+      //   <RequestTableRow isOdd={isOdd}>
+      //     <RequestTableCell>
+      //       <RequestLabel></RequestLabel>
+      //       <RequestContent>
+      //         <Loader>Loading...</Loader>
+      //       </RequestContent>
+      //     </RequestTableCell>
+      //   </RequestTableRow>
     );
   }
 }

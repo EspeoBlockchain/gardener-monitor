@@ -4,7 +4,10 @@ import { bitcoinPriceUrl, pressure, usdPriceUrl } from '../config';
 import web3 from '../utils/createAndUnlockWeb3';
 import { CallFormButton, CallFormDataList, CallFormInput, CallFormOption, CallFormWrapper } from './components';
 
-interface State { query: string; }
+interface State {
+    query: string;
+    networkType: string;
+}
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
 
@@ -20,8 +23,16 @@ export default class CallForm extends PureComponent<Props, State> {
     static defaultProps = { query: '' };
     state: State = {
         query: '',
+        networkType: '',
     };
-
+    componentDidMount() {
+        web3.eth.net.getNetworkType()
+            .then((result: any) => {
+                this.setState({
+                    networkType: result
+                })
+            });
+    }
     handleChange = (event: InputEvent | SelectEvent): void => {
         event.preventDefault();
         this.setState({
@@ -34,34 +45,43 @@ export default class CallForm extends PureComponent<Props, State> {
     }
 
     handleSubmit = () => {
+        if (this.state.networkType !== process.env.REACT_APP_NETWORK_TYPE) {
+            alert('please use Ropsten Test Network');
+            return;
+        }
         if (this.state.query === '') {
             alert('put valid url for call');
             return;
         }
         if (usingOracleContract.defaultAccount === undefined) {
-            alert('please install and use MetaMask');
+            alert();
             return;
         }
         try {
             usingOracleContract.methods.request(this.state.query)
                 .send()
                 // @ts-ignore
+                // .on('error', (error: any) => {
+                //     console.log('gites', error.message);
+                // })
+                // @ts-ignore
                 .once('transactionHash', (hash) => {
                     // @ts-ignore
                     this.passHashToProps(hash);
                 })
-                .on('error', console.error)
+                .on('error', (x: any) => {
+                    console.log(x.message)
+                });
             this.setState({
                 query: '',
             });
-        } catch (error) {
-            console.log(error);
-
         }
-
+        catch (error) { console.log('error', error) }
     }
 
     render() {
+        console.log(this.state);
+
         return (
             <CallFormWrapper>
                 <CallFormInput
