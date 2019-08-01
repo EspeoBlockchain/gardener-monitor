@@ -12,7 +12,7 @@ type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
 
 interface Props {
-    handleTransactionHash: (arg: string) => void;
+    handleTransactionHashAndUrl: (arg1: string, arg2L: string) => void;
 }
 export const usingOracleContract = new web3.eth.Contract(
     usingOracleAbi,
@@ -40,8 +40,8 @@ export default class CallForm extends PureComponent<Props, State> {
         });
     }
     // @ts-ignore
-    passHashToProps = (hash) => {
-        this.props.handleTransactionHash(hash);
+    passHashAndUrlToProps = (hash, url) => {
+        this.props.handleTransactionHashAndUrl(hash, url);
     }
 
     handleSubmit = () => {
@@ -58,16 +58,13 @@ export default class CallForm extends PureComponent<Props, State> {
             return;
         }
         try {
-            usingOracleContract.methods.request(this.state.query)
+            const { query } = this.state;
+            usingOracleContract.methods.request(query)
                 .send()
-                // @ts-ignore
-                // .on('error', (error: any) => {
-                //     console.log('gites', error.message);
-                // })
                 // @ts-ignore
                 .once('transactionHash', (hash) => {
                     // @ts-ignore
-                    this.passHashToProps(hash);
+                    this.passHashAndUrlToProps(hash, query);
                 })
                 .on('error', (x: any) => {
                     console.log(x.message)
@@ -80,8 +77,6 @@ export default class CallForm extends PureComponent<Props, State> {
     }
 
     render() {
-        console.log(this.state);
-
         return (
             <CallFormWrapper>
                 <CallFormInput

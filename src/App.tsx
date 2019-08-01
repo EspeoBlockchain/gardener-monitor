@@ -20,7 +20,6 @@ import logo from './images/gardener-logo_horizontal.svg';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
 
-const url = gardenerWebsiteUrl;
 
 interface State {
   requests: {
@@ -34,10 +33,11 @@ class App extends React.Component {
     requests: {} as { [key: string]: RequestProps },
   };
 
-  handleTransactionHash = (hash: string) => {
+  handleTransactionHashAndUrl = (hash: string, url: string) => {
     const { requests } = this.state;
     const newRequest = {
       hash,
+      url
     };
     // @ts-ignore
     this.setState({
@@ -68,10 +68,10 @@ class App extends React.Component {
               <AppHeaderProof>PROOF</AppHeaderProof>
             </AppHeaderLeft>
             <AppHeaderCenter>
-              <AppHeaderLogoLinkWrapper href={url} target='_blank' rel='noopener noreferrer'>
+              <AppHeaderLogoLinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
                 <AppLogo src={logo} alt='logo' />
               </AppHeaderLogoLinkWrapper>
-              <CallForm handleTransactionHash={this.handleTransactionHash} />
+              <CallForm handleTransactionHashAndUrl={this.handleTransactionHashAndUrl} />
             </AppHeaderCenter>
             <AppHeaderRight>
               <ServerStatus />
