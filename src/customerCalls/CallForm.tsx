@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import usingOracleAbi from '../abi/usingOracle.abi';
 import { bitcoinPriceUrl, pressure, usdPriceUrl } from '../config';
 import web3 from '../utils/createAndUnlockWeb3';
-import { CallFormButton, CallFormDataList, CallFormInput, CallFormOption, CallFormWrapper } from './components';
+import { CallFormDataList, CallFormInput, CallFormOption, CallFormWrapper } from './components';
+import { Button } from '../utils/Button';
 
 interface State {
     query: string;
@@ -12,7 +13,8 @@ type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
 
 interface Props {
-    handleTransactionHashAndUrl: (arg1: string, arg2L: string) => void;
+    handleTransactionHashAndUrl: (arg1: string, arg2: string) => void;
+    handleModal: (arg1: boolean, arg2: any) => void;
 }
 export const usingOracleContract = new web3.eth.Contract(
     usingOracleAbi,
@@ -46,15 +48,23 @@ export default class CallForm extends PureComponent<Props, State> {
 
     handleSubmit = () => {
         if (this.state.networkType !== process.env.REACT_APP_NETWORK_TYPE) {
-            alert('please use Ropsten Test Network');
+            const message = 'Please use Ropsten test network.';
+            this.props.handleModal(true, message);
             return;
         }
         if (this.state.query === '') {
-            alert('put valid url for call');
+            const message = 'Please put a valid url.';
+            this.props.handleModal(true, message);
             return;
         }
         if (usingOracleContract.defaultAccount === undefined) {
-            alert();
+            const message = (
+                <>
+                    <h1>Please use MetaMask</h1>
+                    <a href='https://metamask.io' target='_blank'>MetaMask</a>
+                </>
+            )
+            this.props.handleModal(true, message);
             return;
         }
         try {
@@ -102,7 +112,7 @@ export default class CallForm extends PureComponent<Props, State> {
                         Pressure in New York
                     </CallFormOption>
                 </CallFormDataList>
-                <CallFormButton onClick={this.handleSubmit} >Call</CallFormButton>
+                <Button onClick={this.handleSubmit} >Call</Button>
             </CallFormWrapper >
         );
     }

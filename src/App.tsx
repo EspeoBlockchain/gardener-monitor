@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider, isStyledComponent } from 'styled-components';
 import {
   AppHeader,
   AppHeaderCenter,
@@ -11,6 +11,7 @@ import {
   AppLogo,
   AppWrapper,
 } from './components';
+import Modal from './utils/Modal';
 import { RequestProps } from './requests/Request';
 import { defaultTheme } from './theme/defaultTheme';
 
@@ -25,12 +26,16 @@ interface State {
   requests: {
     [key: string]: RequestProps,
   };
+  isModalOpen: boolean;
+  modalMessage: any;
 }
 
 class App extends React.Component {
 
   state = {
     requests: {} as { [key: string]: RequestProps },
+    isModalOpen: false,
+    modalMessage: ''
   };
 
   handleTransactionHashAndUrl = (hash: string, url: string) => {
@@ -57,29 +62,53 @@ class App extends React.Component {
       },
     });
   }
+  //@ts-ignore
+  toggleModal = () => {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen
+    });
+  }
+
+  handleModal = (modalState: boolean, modalMessage: any) => {
+    this.setState({
+      isModalOpen: modalState,
+      modalMessage
+    });
+  }
 
   render() {
     return (
-      <ThemeProvider theme={defaultTheme}>
-        <AppWrapper>
-          <AppHeader>
-            <AppHeaderLeft>
-              <AppHeaderNews>NEWS</AppHeaderNews>
-              <AppHeaderProof>PROOF</AppHeaderProof>
-            </AppHeaderLeft>
-            <AppHeaderCenter>
-              <AppHeaderLogoLinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
-                <AppLogo src={logo} alt='logo' />
-              </AppHeaderLogoLinkWrapper>
-              <CallForm handleTransactionHashAndUrl={this.handleTransactionHashAndUrl} />
-            </AppHeaderCenter>
-            <AppHeaderRight>
-              <ServerStatus />
-            </AppHeaderRight>
-          </AppHeader>
-          <RequestList requests={this.state.requests} handleUpdateState={this.handleUpdateState} />
-        </AppWrapper>
-      </ThemeProvider>
+      !this.state.isModalOpen ?
+        <ThemeProvider theme={defaultTheme}>
+          <AppWrapper>
+            <AppHeader>
+              <AppHeaderLeft>
+                <AppHeaderNews>NEWS</AppHeaderNews>
+                <AppHeaderProof>PROOF</AppHeaderProof>
+              </AppHeaderLeft>
+              <AppHeaderCenter>
+                <AppHeaderLogoLinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
+                  <AppLogo src={logo} alt='logo' />
+                </AppHeaderLogoLinkWrapper>
+                <CallForm handleModal={this.handleModal} handleTransactionHashAndUrl={this.handleTransactionHashAndUrl} />
+              </AppHeaderCenter>
+              <AppHeaderRight>
+                <ServerStatus />
+              </AppHeaderRight>
+            </AppHeader>
+            <RequestList requests={this.state.requests} handleUpdateState={this.handleUpdateState} />
+          </AppWrapper>
+        </ThemeProvider>
+        :
+        //@ts-ignore
+        <ThemeProvider theme={defaultTheme}>
+          <Modal
+            show={this.state.isModalOpen}
+            onClose={this.toggleModal}
+          >
+            {this.state.modalMessage}
+          </Modal>
+        </ThemeProvider>
     );
   }
 
