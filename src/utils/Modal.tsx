@@ -1,6 +1,6 @@
 import React from 'react';
-import { ModalContent, ModalFooter, ModalWindow, ModalWrapper } from './components';
 import { Button } from '../utils/Button';
+import { ModalContent, ModalFooter, ModalWindow, ModalWrapper } from './components';
 
 interface Props {
     show: boolean;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, isStyledComponent } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import {
   AppHeader,
   AppHeaderCenter,
@@ -11,16 +11,15 @@ import {
   AppLogo,
   AppWrapper,
 } from './components';
-import Modal from './utils/Modal';
 import { RequestProps } from './requests/Request';
 import { defaultTheme } from './theme/defaultTheme';
+import Modal from './utils/Modal';
 
 import { gardenerWebsiteUrl } from './config';
 import CallForm from './customerCalls/CallForm';
 import logo from './images/gardener-logo_horizontal.svg';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
-
 
 interface State {
   requests: {
@@ -35,16 +34,15 @@ class App extends React.Component {
   state = {
     requests: {} as { [key: string]: RequestProps },
     isModalOpen: false,
-    modalMessage: ''
+    modalMessage: '',
   };
 
   handleTransactionHashAndUrl = (hash: string, url: string) => {
     const { requests } = this.state;
     const newRequest = {
       hash,
-      url
+      url,
     };
-    // @ts-ignore
     this.setState({
       requests: {
         ...requests,
@@ -52,8 +50,7 @@ class App extends React.Component {
       },
     });
   }
-  // @ts-ignore
-  handleUpdateState = (updatedState) => {
+  handleUpdateState = (updatedState: any) => {
     const { requests } = this.state;
     this.setState({
       requests: {
@@ -62,17 +59,16 @@ class App extends React.Component {
       },
     });
   }
-  //@ts-ignore
   toggleModal = () => {
     this.setState({
-      isModalOpen: !this.state.isModalOpen
+      isModalOpen: !this.state.isModalOpen,
     });
   }
 
   handleModal = (modalState: boolean, modalMessage: any) => {
     this.setState({
       isModalOpen: modalState,
-      modalMessage
+      modalMessage,
     });
   }
 
@@ -100,7 +96,6 @@ class App extends React.Component {
           </AppWrapper>
         </ThemeProvider>
         :
-        //@ts-ignore
         <ThemeProvider theme={defaultTheme}>
           <Modal
             show={this.state.isModalOpen}

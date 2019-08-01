@@ -13,9 +13,8 @@ if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined
             const defaultAccount = account[0];
             web3.eth.defaultAccount = defaultAccount;
         });
-    }
-    catch (error) {
-        console.log('web3error', error);
+    } catch (error) {
+        console.error(error);
     }
 } else {
     try {
@@ -23,9 +22,8 @@ if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined
         const localProvider = new Web3.providers.WebsocketProvider(process.env.REACT_APP_NODE_URL);
         // @ts-ignore
         web3 = new Web3(localProvider);
-    }
-    catch (error) {
-        console.log('web3error', error);
+    } catch (error) {
+        console.error(error);
     }
 }
 

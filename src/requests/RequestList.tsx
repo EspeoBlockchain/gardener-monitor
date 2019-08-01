@@ -58,7 +58,6 @@ class RequestList extends PureComponent<Props, State> {
             return;
           }
           const { id, validFrom } = event.returnValues;
-          // @ts-ignore
           const { transactionHash } = event;
           delete Object.assign(requests, { [id]: requests[transactionHash] })[transactionHash];
           const updatedRequest = {
@@ -75,11 +74,14 @@ class RequestList extends PureComponent<Props, State> {
             return;
           }
           const { id, value, errorCode } = event.returnValues;
+          if (!requests[id]) {
+            return;
+          }
           const updatedRequest = { ...requests[id], value, errorCode };
           handleUpdateState(updatedRequest);
         }
       })
-      .on('error', console.error)
+      .on('error', console.error);
   }
 
   render() {
