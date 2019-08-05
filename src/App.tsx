@@ -16,7 +16,7 @@ import { defaultTheme } from './theme/defaultTheme';
 import Modal from './utils/Modal';
 
 import { gardenerWebsiteUrl } from './config';
-import CallForm from './customerCalls/CallForm';
+import { CallForm } from './customerCalls/CallForm';
 import logo from './images/gardener-logo_horizontal.svg';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
@@ -26,10 +26,10 @@ interface State {
     [key: string]: RequestProps,
   };
   isModalOpen: boolean;
-  modalMessage: any;
+  modalMessage: string;
 }
 
-class App extends React.Component {
+class App extends React.Component<{}, State> {
 
   state = {
     requests: {} as { [key: string]: RequestProps },
@@ -50,6 +50,7 @@ class App extends React.Component {
       },
     });
   }
+  // requests: {} as { [key: string]: RequestProps },
   handleUpdateState = (updatedState: any) => {
     const { requests } = this.state;
     this.setState({
@@ -60,12 +61,12 @@ class App extends React.Component {
     });
   }
   toggleModal = () => {
-    this.setState({
-      isModalOpen: !this.state.isModalOpen,
-    });
+    this.setState(prevState => ({
+      isModalOpen: !prevState.isModalOpen,
+    }));
   }
 
-  handleModal = (modalState: boolean, modalMessage: any) => {
+  handleModal = (modalState: boolean, modalMessage: string) => {
     this.setState({
       isModalOpen: modalState,
       modalMessage,
