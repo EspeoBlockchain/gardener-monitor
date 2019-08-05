@@ -21,7 +21,7 @@ export const usingOracleContract = new web3.eth.Contract(
     process.env.REACT_APP_USING_ORACLE_ADDRESS,
 );
 
-export default class CallForm extends PureComponent<Props, State> {
+export class CallForm extends PureComponent<Props, State> {
     static defaultProps = { query: '' };
     state: State = {
         query: '',
