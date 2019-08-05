@@ -97,7 +97,7 @@ class RequestList extends PureComponent<Props, State> {
           <RequestTableBody>
             {
               Object.values(requests).map((request, index) => (
-                <Request labels={this.tableHeaders} isOdd={index % 2} key={index} {...request} />
+                <Request labels={this.tableHeaders} isOdd={Boolean(index % 2)} key={index} {...request} />
               ))
             }
           </RequestTableBody>
