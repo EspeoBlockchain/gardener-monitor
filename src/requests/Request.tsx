@@ -5,15 +5,15 @@ import { Loader, RequestContent, RequestLabel, RequestTableCell, RequestTableRow
 import { Labels } from './namespace';
 
 export interface RequestProps {
-  id: string;
+  id?: string;
   errorCode?: utils.BigNumber;
-  value: string;
-  validFrom: Date;
-  url: string;
-  isOdd: boolean;
-  labels: string[];
-  transactionHash: string;
-  handleUpdateState: object;
+  value?: string;
+  validFrom?: Date;
+  url?: string;
+  isOdd?: boolean;
+  labels?: JSX.Element[];
+  transactionHash?: string;
+  handleUpdateState?: object;
 }
 
 enum ErrorCodes {
