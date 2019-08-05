@@ -22,16 +22,16 @@ export const usingOracleContract = new web3.eth.Contract(
 );
 
 export class CallForm extends PureComponent<Props, State> {
-    static defaultProps = { query: '' };
     state: State = {
         query: '',
         networkType: '',
     };
     componentDidMount() {
         web3.eth.net.getNetworkType()
-            .then((result: any) => {
+            .then((result: string, query: string) => {
                 this.setState({
                     networkType: result,
+                    query: '',
                 });
             });
     }
@@ -46,7 +46,7 @@ export class CallForm extends PureComponent<Props, State> {
     }
 
     handleSubmit = () => {
-        if (usingOracleContract.defaultAccount === undefined) {
+        if (usingOracleContract.defaultAccount === 'undefined') {
             const message = (
                 <>
                     <h1>Please use MetaMask</h1>
@@ -62,42 +62,35 @@ export class CallForm extends PureComponent<Props, State> {
             return;
         }
         if (this.state.query === '') {
-            const message = 'Please put a valid url.';
-            this.props.handleModal(true, message);
+            this.props.handleModal(true, 'Please put a valid url.');
             return;
         }
-        try {
-            const { query } = this.state;
-            usingOracleContract.methods.request(query)
-                .send()
-                .once('transactionHash', (hash: string) => {
-                    this.passHashAndUrlToProps(hash, query);
-                })
-                .on('error', (error: any) => {
-                    let message = '';
-                    if (error.toString().includes('User denied transaction signature.')) {
-                        message = 'User denied transaction signature.';
-                        this.props.handleModal(true, message);
-                        return;
-                    }
-                    if (error.toString().includes('Error: WalletMiddleware - Invalid "from" address.')) {
-                        message = 'Error: WalletMiddleware - Invalid "from" address.';
-                        this.props.handleModal(true, message);
-                        return;
-                    }
-                    if (error.toString().includes('gas')) {
-                        message = 'You are out of gas!';
-                        this.props.handleModal(true, message);
-                        return;
-                    }
-                    message = 'Something went wrong, please try again';
-                    this.props.handleModal(true, message);
+
+        const { query } = this.state;
+        usingOracleContract.methods.request(query)
+            .send()
+            .once('transactionHash', (hash: string) => {
+                this.passHashAndUrlToProps(hash, query);
+            })
+            .on('error', (error: any) => {
+                if (error.toString().includes('User denied transaction signature.')) {
+                    this.props.handleModal(true, 'User denied transaction signature.');
                     return;
-                });
-            this.setState({
-                query: '',
+                }
+                if (error.toString().includes('Error: WalletMiddleware - Invalid "from" address.')) {
+                    this.props.handleModal(true, 'Error: WalletMiddleware - Invalid "from" address.');
+                    return;
+                }
+                if (error.toString().includes('gas')) {
+                    this.props.handleModal(true, 'You are out of gas!');
+                    return;
+                }
+                this.props.handleModal(true, 'Something went wrong, please try again');
+                return;
             });
-        } catch (error) { console.error(error); }
+        this.setState({
+            query: '',
+        });
     }
 
     render() {

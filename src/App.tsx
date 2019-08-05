@@ -50,7 +50,6 @@ class App extends React.Component<{}, State> {
       },
     });
   }
-  // requests: {} as { [key: string]: RequestProps },
   handleUpdateState = (updatedState: any) => {
     const { requests } = this.state;
     this.setState({
