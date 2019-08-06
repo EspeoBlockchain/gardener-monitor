@@ -1,15 +1,14 @@
-import * as Web3 from 'web3';
+import Web3 from 'web3';
 
-let web3: any;
-// @ts-ignore
+type MetamaskWeb3 = any; // metamask web3 has different structure than standard one
+
+let web3: Web3 | MetamaskWeb3;
+
 if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
     try {
-        // @ts-ignore
         const provider = window.ethereum || window.web3.currentProvider;
-        // @ts-ignore
         web3 = new Web3(provider);
-        // @ts-ignore
-        window.ethereum.enable().then((account: any) => {
+        window.ethereum.enable().then((account: string[]) => {
             const defaultAccount = account[0];
             web3.eth.defaultAccount = defaultAccount;
         });
@@ -18,9 +17,7 @@ if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined
     }
 } else {
     try {
-        // @ts-ignore
         const localProvider = new Web3.providers.WebsocketProvider(process.env.REACT_APP_NODE_URL);
-        // @ts-ignore
         web3 = new Web3(localProvider);
     } catch (error) {
         console.error(error);
