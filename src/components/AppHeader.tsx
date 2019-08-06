@@ -11,7 +11,7 @@ export const AppHeader = styled.header`
   height: ${props => props.theme.appHeader.desktopHeight};
   padding: ${props => props.theme.appHeader.padding};
   color: ${props => props.theme.colors.light};
-  @media (max-width: 768px) {
+  @media (max-width: ${props => props.theme.maxWidths.mobile}) {
     box-sizing: border-box;
     height: auto;
     top: 0;

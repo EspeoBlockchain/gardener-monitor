@@ -13,7 +13,7 @@ export const defaultTheme = {
   appHeader: {
     desktopHeight: '170px',
     mobileHeight: '70px',
-    smallMobileHeight: '210px',
+    smallMobileHeight: '180px',
     padding: '10px',
   },
   fonts: {

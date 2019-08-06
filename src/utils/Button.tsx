@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export const CallFormButton = styled.button`
-    width: 30%;
+export const Button = styled.button`
+    min-width: 20%;
     height: 25px;
     border-radius: 5px;
     outline: none;
