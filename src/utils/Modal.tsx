@@ -4,7 +4,7 @@ import { ModalContent, ModalFooter, ModalWindow, ModalWrapper } from './componen
 
 interface Props {
     show: boolean;
-    onClose: any;
+    onClose: () => void;
 }
 
 class Modal extends React.Component<Props> {
