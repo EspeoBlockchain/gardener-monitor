@@ -44,9 +44,8 @@ export class CallForm extends PureComponent<Props, State> {
     passHashAndUrlToProps = (hash: string, url: string) => {
         this.props.handleTransactionHashAndUrl(hash, url);
     }
-
     handleSubmit = () => {
-        if (typeof usingOracleContract.defaultAccount === 'undefined') {
+        if (typeof web3.eth.defaultAccount === 'undefined') {
             const message = (
                 <>
                     <h1>Please use MetaMask</h1>
@@ -65,7 +64,6 @@ export class CallForm extends PureComponent<Props, State> {
             this.props.handleModal(true, 'Please put a valid url.');
             return;
         }
-
         const { query } = this.state;
         usingOracleContract.methods.request(query)
             .send()
