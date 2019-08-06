@@ -28,10 +28,10 @@ export class CallForm extends PureComponent<Props, State> {
     };
     componentDidMount() {
         web3.eth.net.getNetworkType()
-            .then((result: string, query: string) => {
+            .then((result: string) => {
                 this.setState({
+                    ...this.state,
                     networkType: result,
-                    query: '',
                 });
             });
     }
@@ -46,7 +46,7 @@ export class CallForm extends PureComponent<Props, State> {
     }
 
     handleSubmit = () => {
-        if (usingOracleContract.defaultAccount === 'undefined') {
+        if (typeof usingOracleContract.defaultAccount === 'undefined') {
             const message = (
                 <>
                     <h1>Please use MetaMask</h1>
