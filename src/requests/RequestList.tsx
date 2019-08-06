@@ -13,23 +13,24 @@ import {
   RequestTableWrapper,
 } from './components';
 import { Labels } from './namespace';
-import Request, { RequestProps } from './Request';
+import Request from './Request';
+import { RequestStatus } from '../domain';
 
 interface State {
   requests: {
-    [key: string]: RequestProps,
+    [key: string]: RequestStatus,
   };
 }
 
 interface Props {
   requests: {
-    [key: string]: RequestProps,
+    [key: string]: RequestStatus,
   };
-  handleUpdateState: any;
+  handleUpdateState: (requestStatus: RequestStatus) => void;
 }
 class RequestList extends PureComponent<Props, State> {
-  state = {
-    requests: {} as { [key: string]: RequestProps },
+  state: State = {
+    requests: {},
   };
 
   get tableHeaders(): JSX.Element[] {
@@ -41,7 +42,7 @@ class RequestList extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const handleUpdateState = (updatedState: object): any => {
+    const handleUpdateState = (updatedState: RequestStatus) => {
       this.props.handleUpdateState(updatedState);
     };
 
@@ -74,6 +75,7 @@ class RequestList extends PureComponent<Props, State> {
             return;
           }
           const { id, value, errorCode } = event.returnValues;
+
           if (!requests[id]) {
             return;
           }

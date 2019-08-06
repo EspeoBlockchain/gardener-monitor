@@ -11,7 +11,7 @@ import {
   AppLogo,
   AppWrapper,
 } from './components';
-import { RequestProps } from './requests/Request';
+import { RequestStatus } from './domain/requestStatus';
 import { defaultTheme } from './theme/defaultTheme';
 import Modal from './utils/Modal';
 
@@ -23,7 +23,7 @@ import ServerStatus from './status/ServerStatus';
 
 interface State {
   requests: {
-    [key: string]: RequestProps,
+    [key: string]: RequestStatus,
   };
   isModalOpen: boolean;
   modalMessage: string;
@@ -31,8 +31,8 @@ interface State {
 
 class App extends React.Component<{}, State> {
 
-  state = {
-    requests: {} as { [key: string]: RequestProps },
+  state: State = {
+    requests: {},
     isModalOpen: false,
     modalMessage: '',
   };
@@ -46,11 +46,11 @@ class App extends React.Component<{}, State> {
     this.setState({
       requests: {
         ...requests,
-        [newRequest.hash]: newRequest,
+        [newRequest.hash]: { ...requests[newRequest.hash], hash, url },
       },
     });
   }
-  handleUpdateState = (updatedState: any) => {
+  handleUpdateState = (updatedState: RequestStatus) => {
     const { requests } = this.state;
     this.setState({
       requests: {
@@ -60,9 +60,10 @@ class App extends React.Component<{}, State> {
     });
   }
   toggleModal = () => {
-    this.setState(prevState => ({
-      isModalOpen: !prevState.isModalOpen,
-    }));
+    this.setState({
+      ...this.state,
+      isModalOpen: !this.state.isModalOpen,
+    });
   }
 
   handleModal = (modalState: boolean, modalMessage: string) => {

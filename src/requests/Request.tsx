@@ -1,20 +1,8 @@
 import React, { PureComponent } from 'react';
+import { RequestStatus } from '../domain';
 
-import { utils } from 'ethers';
 import { Loader, RequestContent, RequestLabel, RequestTableCell, RequestTableRow } from './components';
 import { Labels } from './namespace';
-
-export interface RequestProps {
-  id?: string;
-  errorCode?: utils.BigNumber;
-  value?: string;
-  validFrom?: Date;
-  url?: string;
-  isOdd?: boolean;
-  labels?: JSX.Element[];
-  transactionHash?: string;
-  handleUpdateState?: {};
-}
 
 enum ErrorCodes {
   INVALID_URL = '1000',
@@ -25,7 +13,7 @@ enum ErrorCodes {
   OK = '0',
 }
 
-class Request extends PureComponent<RequestProps> {
+class Request extends PureComponent<RequestStatus> {
 
   codeMapper(code: string): string {
     switch (code) {
