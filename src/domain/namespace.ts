@@ -4,4 +4,5 @@ export enum Labels {
     valid = 'VALID FROM',
     value = 'VALUE',
     status = 'STATUS',
+    link = 'LINK',
 }

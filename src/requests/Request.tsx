@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
 import { RequestStatus } from '../domain';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { Loader, RequestContent, RequestLabel, RequestTableCell, RequestTableRow } from './components';
-import { Labels } from './namespace';
+import { LinkWrapper } from '../utils/LinkWrapper';
+import { Labels } from '../domain/namespace';
 
 enum ErrorCodes {
   INVALID_URL = '1000',
@@ -36,7 +39,7 @@ class Request extends PureComponent<RequestStatus> {
 
   render() {
     const {
-      id, url, validFrom, value, errorCode, isOdd,
+      id, url, validFrom, value, errorCode, isOdd, hash,
     } = this.props;
     return (
       <RequestTableRow isOdd={isOdd}>
@@ -88,9 +91,27 @@ class Request extends PureComponent<RequestStatus> {
           <RequestLabel>{Labels.status}</RequestLabel>
           <RequestContent>
             {
-              errorCode
-                ?
+              errorCode ?
                 this.codeMapper(errorCode.toString())
+                :
+                <Loader>Loading...</Loader>
+            }
+          </RequestContent>
+        </RequestTableCell>
+        <RequestTableCell>
+          <RequestLabel>{Labels.value}</RequestLabel>
+          <RequestContent>
+            {
+              hash ?
+                <LinkWrapper
+                  href={`https://ropsten.etherscan.io/tx/${hash}`}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <FontAwesomeIcon
+                    icon={faExternalLinkAlt}
+                  />
+                </LinkWrapper>
                 :
                 <Loader>Loading...</Loader>
             }
