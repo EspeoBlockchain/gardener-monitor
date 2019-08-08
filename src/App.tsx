@@ -21,6 +21,7 @@ import { CallForm } from './customerCalls/CallForm';
 import logo from './images/gardener-logo_horizontal.svg';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
+import { number } from 'prop-types';
 
 interface State {
   requests: {
@@ -28,6 +29,9 @@ interface State {
   };
   isModalOpen: boolean;
   modalMessage: string;
+  totalPages: number[];
+  requestsPerPage: number;
+  currentPage: number;
 }
 
 class App extends React.Component<{}, State> {
@@ -36,10 +40,19 @@ class App extends React.Component<{}, State> {
     requests: {},
     isModalOpen: false,
     modalMessage: '',
+    totalPages: [],
+    requestsPerPage: 10,
+    currentPage: 0,
   };
 
   handleTransactionHashAndUrl = (hash: string, url: string) => {
-    const { requests } = this.state;
+    let totalPagesCount = [];
+    for (let i = 1;
+      i <= Math.ceil(Object.keys(this.state.requests).length / this.state.requestsPerPage);
+      i++) {
+      totalPagesCount.push(i);
+    }
+    const { requests, totalPages } = this.state;
     const newRequest = {
       hash,
       url,
@@ -49,6 +62,7 @@ class App extends React.Component<{}, State> {
         ...requests,
         [newRequest.hash]: { ...requests[newRequest.hash], hash, url },
       },
+      totalPages: totalPagesCount,
     });
   }
   handleUpdateState = (updatedState: RequestStatus) => {
@@ -96,7 +110,11 @@ class App extends React.Component<{}, State> {
             </AppHeader>
             <RequestList requests={this.state.requests} handleUpdateState={this.handleUpdateState} />
             <AppFooter>
-              Footer
+              <span>&laquo;</span>
+              <span>{this.state.totalPages}</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
             </AppFooter>
           </AppWrapper>
         </ThemeProvider>
