@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import {
+  AppFooter,
   AppHeader,
   AppHeaderCenter,
   AppHeaderLeft,
@@ -94,6 +95,9 @@ class App extends React.Component<{}, State> {
               </AppHeaderRight>
             </AppHeader>
             <RequestList requests={this.state.requests} handleUpdateState={this.handleUpdateState} />
+            <AppFooter>
+              Footer
+            </AppFooter>
           </AppWrapper>
         </ThemeProvider>
         :
