@@ -5,6 +5,7 @@ import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { Loader, RequestContent, RequestLabel, RequestTableCell, RequestTableRow } from './components';
 import { LinkWrapper } from '../utils/LinkWrapper';
+import { etherScanUrl } from '../config';
 import { Labels } from '../domain/namespace';
 
 enum ErrorCodes {
@@ -104,7 +105,7 @@ class Request extends PureComponent<RequestStatus> {
             {
               hash ?
                 <LinkWrapper
-                  href={`https://ropsten.etherscan.io/tx/${hash}`}
+                  href={etherScanUrl + hash}
                   target='_blank'
                   rel='noopener noreferrer'
                 >
