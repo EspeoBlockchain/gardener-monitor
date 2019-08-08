@@ -12,9 +12,8 @@ import {
   RequestTableHeadRow,
   RequestTableWrapper,
 } from './components';
-import { Labels } from './namespace';
+import { Labels, RequestStatus } from '../domain';
 import Request from './Request';
-import { RequestStatus } from '../domain';
 
 interface State {
   requests: {

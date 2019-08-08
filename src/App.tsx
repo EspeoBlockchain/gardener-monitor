@@ -4,13 +4,13 @@ import {
   AppHeader,
   AppHeaderCenter,
   AppHeaderLeft,
-  AppHeaderLogoLinkWrapper,
   AppHeaderNews,
   AppHeaderProof,
   AppHeaderRight,
   AppLogo,
   AppWrapper,
 } from './components';
+import { LinkWrapper } from './utils/LinkWrapper'
 import { RequestStatus } from './domain/requestStatus';
 import { defaultTheme } from './theme/defaultTheme';
 import Modal from './utils/Modal';
@@ -84,9 +84,9 @@ class App extends React.Component<{}, State> {
                 <AppHeaderProof>PROOF</AppHeaderProof>
               </AppHeaderLeft>
               <AppHeaderCenter>
-                <AppHeaderLogoLinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
+                <LinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
                   <AppLogo src={logo} alt='logo' />
-                </AppHeaderLogoLinkWrapper>
+                </LinkWrapper>
                 <CallForm handleModal={this.handleModal} handleTransactionHashAndUrl={this.handleTransactionHashAndUrl} />
               </AppHeaderCenter>
               <AppHeaderRight>
