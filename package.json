@@ -14,11 +14,13 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "@types/react-select": "^3.0.2",
     "axios": "0.19.0",
     "prop-types": "15.6.2",
     "react": "16.8",
     "react-dom": "16.8",
     "react-scripts": "3.0.1",
+    "react-select": "^3.0.4",
     "styled-components": "^4.3.2",
     "web3": "1.0.0-beta.55",
     "web3-utils": "^1.2.0"

@@ -5,9 +5,12 @@ import { Button } from '../utils/Button';
 import web3 from '../utils/createAndUnlockWeb3';
 import { CallFormDataList, CallFormInput, CallFormOption, CallFormWrapper } from './components';
 
+import Select from 'react-select';
+
 interface State {
     query: string;
     networkType: string;
+    selectedOption: any;
 }
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
@@ -21,10 +24,17 @@ export const usingOracleContract = new web3.eth.Contract(
     process.env.REACT_APP_USING_ORACLE_ADDRESS,
 );
 
+const options = [
+    { value: bitcoinPriceUrl, label: 'Bitcoin price' },
+    { value: pressureUrl, label: 'Pressure in NY' },
+    { value: usdPriceUrl, label: 'EUR price based on USD' },
+];
+
 export class CallForm extends PureComponent<Props, State> {
     state: State = {
         query: '',
         networkType: '',
+        selectedOption: null,
     };
     componentDidMount() {
         web3.eth.net.getNetworkType()
@@ -35,12 +45,21 @@ export class CallForm extends PureComponent<Props, State> {
                 });
             });
     }
-    handleChange = (event: InputEvent | SelectEvent): void => {
-        event.preventDefault();
+    // handleChange = (event: InputEvent | SelectEvent): void => {
+    //     event.preventDefault();
+    //     this.setState({
+    //         query: event.target.value,
+    //     });
+    // }
+
+    handleChange = (selectedOption: any) => {
         this.setState({
-            query: event.target.value,
+            selectedOption,
+            query: selectedOption.value,
         });
-    }
+        console.log(`Option selected:`, selectedOption);
+    };
+
     passHashAndUrlToProps = (hash: string, url: string) => {
         this.props.handleTransactionHashAndUrl(hash, url);
     }
@@ -92,33 +111,46 @@ export class CallForm extends PureComponent<Props, State> {
     }
 
     render() {
+        const { query, selectedOption } = this.state;
+
         return (
             <CallFormWrapper>
-                <CallFormInput
-                    value={this.state.query}
+                <Select
+                    value={selectedOption}
                     onChange={this.handleChange}
-                    list='endpoints'
-                >
-                </CallFormInput>
-                <CallFormDataList id='endpoints'>
-                    <CallFormOption
-                        value={bitcoinPriceUrl}
-                    >
-                        Bitcoin price in USD
-                    </CallFormOption>
-                    <CallFormOption
-                        value={usdPriceUrl}
-                    >
-                        EUR price based on USD
-                        </CallFormOption>
-                    <CallFormOption
-                        value={pressureUrl}
-                    >
-                        Pressure in New York
-                    </CallFormOption>
-                </CallFormDataList>
+                    options={options}
+                    inputValue={query}
+                    
+                />
                 <Button onClick={this.handleSubmit} >Call</Button>
-            </CallFormWrapper >
+            </CallFormWrapper>
+
+            // <CallFormWrapper>
+            //     <CallFormInput
+            //         value={this.state.query}
+            //         onChange={this.handleChange}
+            //         list='endpoints'
+            //     >
+            //     </CallFormInput>
+            //     <CallFormDataList id='endpoints'>
+            //         <CallFormOption
+            //             value={bitcoinPriceUrl}
+            //         >
+            //             Bitcoin price in USD
+            //         </CallFormOption>
+            //         <CallFormOption
+            //             value={usdPriceUrl}
+            //         >
+            //             EUR price based on USD
+            //             </CallFormOption>
+            //         <CallFormOption
+            //             value={pressureUrl}
+            //         >
+            //             Pressure in New York
+            //         </CallFormOption>
+            //     </CallFormDataList>
+            //     <Button onClick={this.handleSubmit} >Call</Button>
+            // </CallFormWrapper >
         );
     }
 }
