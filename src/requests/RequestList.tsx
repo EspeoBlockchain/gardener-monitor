@@ -59,7 +59,7 @@ class RequestList extends PureComponent<Props, State> {
           }
           const { id, validFrom, url } = event.returnValues;
           console.log(event);
-          
+
           const { transactionHash } = event;
           delete Object.assign(requests, { [id]: requests[transactionHash] })[transactionHash];
           const updatedRequest = {
@@ -92,7 +92,7 @@ class RequestList extends PureComponent<Props, State> {
   render() {
     const { requests } = this.props;
     console.log('requests', requests);
-    
+
     return (
       <RequestTableWrapper>
         <RequestTable>
