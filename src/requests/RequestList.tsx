@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import * as web3Contract from 'web3-eth-contract';
 
 import oracleAbi from '../abi/oracle.abi';
+import { Labels, RequestStatus } from '../domain';
 import convertUnixToDate from '../utils/convertUnixToDate';
 import web3 from '../utils/createAndUnlockWeb3';
 import {
@@ -12,7 +13,6 @@ import {
   RequestTableHeadRow,
   RequestTableWrapper,
 } from './components';
-import { Labels, RequestStatus } from '../domain';
 import Request from './Request';
 
 interface State {

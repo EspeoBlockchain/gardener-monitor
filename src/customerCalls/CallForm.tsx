@@ -41,6 +41,7 @@ export class CallForm extends PureComponent<Props, State> {
             query: event.target.value,
         });
     }
+
     passHashAndUrlToProps = (hash: string, url: string) => {
         this.props.handleTransactionHashAndUrl(hash, url);
     }
