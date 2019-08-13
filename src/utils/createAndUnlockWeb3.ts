@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 
-let web3: Web3;
+let web3!: Web3;
 
 if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
     try {
@@ -14,7 +14,7 @@ if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined
     }
 } else {
     try {
-        const localProvider = new Web3.providers.WebsocketProvider(process.env.REACT_APP_NODE_URL);
+        const localProvider = new Web3.providers.WebsocketProvider(process.env.REACT_APP_NODE_URL as string);
         web3 = new Web3(localProvider);
     } catch (error) {
         console.error(error);
