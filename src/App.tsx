@@ -1,7 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import {
-  AppFooter,
   AppHeader,
   AppHeaderCenter,
   AppHeaderLeft,
@@ -11,9 +10,9 @@ import {
   AppLogo,
   AppWrapper,
 } from './components';
-import { LinkWrapper } from './utils/LinkWrapper'
 import { RequestStatus } from './domain/requestStatus';
 import { defaultTheme } from './theme/defaultTheme';
+import { LinkWrapper } from './utils/LinkWrapper';
 import Modal from './utils/Modal';
 
 import { gardenerWebsiteUrl } from './config';
@@ -21,7 +20,6 @@ import { CallForm } from './customerCalls/CallForm';
 import logo from './images/gardener-logo_horizontal.svg';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
-import { number } from 'prop-types';
 
 interface State {
   requests: {

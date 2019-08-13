@@ -7,14 +7,14 @@ import { StatusIndicatorTitle } from './components/StatusIndicatorTitle';
 export type Status = 'alive' | 'down';
 
 export interface State {
-  status: Status
+  status: Status;
 }
 
 class ServerStatus extends PureComponent<{}, State> {
-  private interval: number;
   state: State = {
-    status: 'down'
+    status: 'down',
   };
+  private interval: number;
 
   async componentDidMount() {
     await this.checkStatus();

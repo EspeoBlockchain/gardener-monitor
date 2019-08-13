@@ -1,12 +1,12 @@
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { PureComponent } from 'react';
 import { RequestStatus } from '../domain';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 
-import { Loader, RequestContent, RequestLabel, RequestTableCell, RequestTableRow } from './components';
-import { LinkWrapper } from '../utils/LinkWrapper';
 import { etherScanUrl } from '../config';
 import { Labels } from '../domain/namespace';
+import { LinkWrapper } from '../utils/LinkWrapper';
+import { Loader, RequestContent, RequestLabel, RequestTableCell, RequestTableRow } from './components';
 
 enum ErrorCodes {
   INVALID_URL = '1000',
