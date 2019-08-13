@@ -57,12 +57,16 @@ class RequestList extends PureComponent<Props, State> {
           if (Object.entries(requests).length === 0 && requests.constructor === Object) {
             return;
           }
-          const { id, validFrom } = event.returnValues;
+          const { id, validFrom, url } = event.returnValues;
+          console.log(event);
+          
           const { transactionHash } = event;
           delete Object.assign(requests, { [id]: requests[transactionHash] })[transactionHash];
           const updatedRequest = {
             ...requests[id],
             id,
+            url,
+            hash: transactionHash,
             validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
           };
           handleUpdateState(updatedRequest);
@@ -87,6 +91,8 @@ class RequestList extends PureComponent<Props, State> {
 
   render() {
     const { requests } = this.props;
+    console.log('requests', requests);
+    
     return (
       <RequestTableWrapper>
         <RequestTable>
