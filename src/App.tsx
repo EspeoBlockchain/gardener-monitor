@@ -96,14 +96,14 @@ class App extends React.Component<{}, State> {
             <RequestList requests={this.state.requests} handleUpdateState={this.handleUpdateState} />
           </AppWrapper>
         </ThemeProvider>
-        :
-        <ThemeProvider theme={defaultTheme}>
+        :   
+        <ThemeProvider  theme={defaultTheme}>
           <Modal
-            show={this.state.isModalOpen}
-            onClose={this.toggleModal}
-          >
-            {this.state.modalMessage}
-          </Modal>
+        show={this.state.isModalOpen}
+        onClose={this.toggleModal}
+      >
+        {this.state.modalMessage}
+        </Modal>
         </ThemeProvider>
     );
   }

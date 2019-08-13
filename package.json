@@ -21,7 +21,6 @@
     "react": "16.8",
     "react-dom": "16.8",
     "react-scripts": "3.0.1",
-    "react-select": "^3.0.4",
     "styled-components": "^4.3.2",
     "web3": "1.0.0-beta.55",
     "web3-utils": "^1.2.0"

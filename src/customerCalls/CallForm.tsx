@@ -8,7 +8,6 @@ import { CallFormDataList, CallFormInput, CallFormOption, CallFormWrapper } from
 interface State {
     query: string;
     networkType: string;
-    selectedOption: any;
 }
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
@@ -26,7 +25,6 @@ export class CallForm extends PureComponent<Props, State> {
     state: State = {
         query: '',
         networkType: '',
-        selectedOption: null,
     };
     componentDidMount() {
         web3.eth.net.getNetworkType()
