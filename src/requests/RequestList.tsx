@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import * as web3Contract from 'web3-eth-contract';
 
 import oracleAbi from '../abi/oracle.abi';
+import { Labels, RequestStatus } from '../domain';
 import convertUnixToDate from '../utils/convertUnixToDate';
 import web3 from '../utils/createAndUnlockWeb3';
 import {
@@ -11,15 +12,9 @@ import {
   RequestTableHeadCell,
   RequestTableHeadRow,
   RequestTableWrapper,
+  FetchingDataLoader,
 } from './components';
-import { Labels, RequestStatus } from '../domain';
 import Request from './Request';
-
-interface State {
-  requests: {
-    [key: string]: RequestStatus,
-  };
-}
 
 interface Props {
   requests: {
@@ -27,10 +22,15 @@ interface Props {
   };
   handleUpdateState: (requestStatus: RequestStatus) => void;
 }
+
+interface State {
+  lastBlock: number;
+  isLoading: boolean;
+}
+
 class RequestList extends PureComponent<Props, State> {
-  state: State = {
-    requests: {},
-  };
+  public oracleContract: any;
+  public handleUpdateState: any;
 
   get tableHeaders(): JSX.Element[] {
     return Object.values(Labels).map((label) => (
@@ -38,19 +38,24 @@ class RequestList extends PureComponent<Props, State> {
     ));
   }
 
+  state = {
+    lastBlock: 0,
+    isLoading: true,
+  }
+
   constructor(props: Props) {
     super(props);
 
-    const handleUpdateState = (updatedState: RequestStatus) => {
+    this.handleUpdateState = (updatedState: RequestStatus) => {
       this.props.handleUpdateState(updatedState);
     };
 
-    const oracleContract = new web3.eth.Contract(
+    this.oracleContract = new web3.eth.Contract(
       oracleAbi,
       process.env.REACT_APP_ORACLE_ADDRESS,
     );
 
-    oracleContract.events.allEvents()
+    this.oracleContract.events.allEvents()
       .on('data', (event: web3Contract.EventData) => {
         if (['DataRequested', 'DelayedDataRequested'].includes(event.event)) {
           const { requests } = this.props;
@@ -65,7 +70,7 @@ class RequestList extends PureComponent<Props, State> {
             id,
             validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
           };
-          handleUpdateState(updatedRequest);
+          this.handleUpdateState(updatedRequest);
         }
 
         if (event.event === 'RequestFulfilled') {
@@ -79,14 +84,61 @@ class RequestList extends PureComponent<Props, State> {
             return;
           }
           const updatedRequest = { ...requests[id], value, errorCode };
-          handleUpdateState(updatedRequest);
+          this.handleUpdateState(updatedRequest);
         }
       })
       .on('error', console.error);
   }
 
+  public getLastRequests = (numOfBlocks: number) => {
+    const eventsCount = this.state.lastBlock - numOfBlocks;
+    console.log('eC', this.state.lastBlock, eventsCount);
+
+    this.oracleContract.getPastEvents("allEvents",
+      {
+        fromBlock: eventsCount,
+        toBlock: 'latest',
+      })
+      .then((events: any) => {
+        const { requests } = this.props;
+        events.forEach((event: any) => {
+          const { transactionHash } = event;
+          const { errorCode, id, value, validFrom, url } = event.returnValues;
+          const updatedRequest = {
+            ...requests[id],
+            id,
+            hash: transactionHash,
+            validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
+            value,
+            errorCode,
+            url,
+          };
+          this.handleUpdateState(updatedRequest);
+          this.setState({
+            isLoading: false,
+          })
+        })
+      })
+
+  }
+
+  componentDidMount() {
+    web3.eth.getBlockNumber()
+      .then(data => {
+        this.setState({
+          lastBlock: data,
+        }, () => {
+          this.getLastRequests(50000);
+        })
+      });
+  }
+
   render() {
     const { requests } = this.props;
+    // const arr = Object.assign([], requests);
+    // arr.reverse();
+    console.log('jol', this.state, requests);
+
     return (
       <RequestTableWrapper>
         <RequestTable>
@@ -97,9 +149,14 @@ class RequestList extends PureComponent<Props, State> {
           </RequestTableHead>
           <RequestTableBody>
             {
-              Object.values(requests).map((request, index) => (
-                <Request labels={this.tableHeaders} isOdd={Boolean(index % 2)} key={index} {...request} />
-              ))
+              (!this.state.isLoading) ?
+                Object.values(requests).map((request, index) => (
+                  <Request labels={this.tableHeaders} isOdd={Boolean(index % 2)} key={index} {...request} />
+                ))
+                :
+                <FetchingDataLoader>
+                  Fetching data from the last 50 000 blocks...
+              </FetchingDataLoader>
             }
           </RequestTableBody>
         </RequestTable>

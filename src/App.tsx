@@ -2,6 +2,7 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import {
   AppFooter,
+  AppFooterSpan,
   AppHeader,
   AppHeaderCenter,
   AppHeaderLeft,
@@ -21,7 +22,6 @@ import { CallForm } from './customerCalls/CallForm';
 import logo from './images/gardener-logo_horizontal.svg';
 import RequestList from './requests/RequestList';
 import ServerStatus from './status/ServerStatus';
-import { number } from 'prop-types';
 
 interface State {
   requests: {
@@ -29,9 +29,9 @@ interface State {
   };
   isModalOpen: boolean;
   modalMessage: string;
-  totalPages: number[];
   requestsPerPage: number;
   currentPage: number;
+  myArr: any;
 }
 
 class App extends React.Component<{}, State> {
@@ -40,19 +40,45 @@ class App extends React.Component<{}, State> {
     requests: {},
     isModalOpen: false,
     modalMessage: '',
-    totalPages: [],
     requestsPerPage: 10,
-    currentPage: 0,
+    currentPage: 1,
+    myArr: [],
   };
+  //@ts-ignore
+  constructor(props) {
+    super(props);
+//for pagination!!!
+
+
+    // const { requests, currentPage, requestsPerPage } = this.state;
+    // const requestsLength = Object.keys(requests).length;
+    // let pagesCount: number = Math.ceil(requestsLength / requestsPerPage);
+    // const indexOfLastPost: number = currentPage * requestsPerPage - 1;
+    // const indexOfFirstPost: number = indexOfLastPost - requestsPerPage + 1;
+    // //@ts-ignore
+    // const arrayOfRequests = Object.entries(requests).map((e) => ({ [e[0]]: e[1] }));
+
+    // const requestsToPage = () => {
+    //   let actualPageRequests = [];
+    //   for (let index = indexOfFirstPost; index <= indexOfLastPost; index++) {
+    //     actualPageRequests.push(arrayOfRequests[index]);
+    //   }
+    //   return actualPageRequests;
+
+    // }
+  }
+  componentDidMount() {
+    
+    this.setState({
+      myArr: [],
+
+    })
+    //@ts-ignore
+    // this.requestsToPage();
+  }
 
   handleTransactionHashAndUrl = (hash: string, url: string) => {
-    let totalPagesCount = [];
-    for (let i = 1;
-      i <= Math.ceil(Object.keys(this.state.requests).length / this.state.requestsPerPage);
-      i++) {
-      totalPagesCount.push(i);
-    }
-    const { requests, totalPages } = this.state;
+    const { requests } = this.state;
     const newRequest = {
       hash,
       url,
@@ -62,7 +88,6 @@ class App extends React.Component<{}, State> {
         ...requests,
         [newRequest.hash]: { ...requests[newRequest.hash], hash, url },
       },
-      totalPages: totalPagesCount,
     });
   }
   handleUpdateState = (updatedState: RequestStatus) => {
@@ -110,11 +135,11 @@ class App extends React.Component<{}, State> {
             </AppHeader>
             <RequestList requests={this.state.requests} handleUpdateState={this.handleUpdateState} />
             <AppFooter>
-              <span>&laquo;</span>
-              <span>{this.state.totalPages}</span>
-              <span>2</span>
-              <span>3</span>
-              <span>4</span>
+              <AppFooterSpan>&laquo;</AppFooterSpan>
+              <AppFooterSpan>1</AppFooterSpan>
+              <AppFooterSpan>2</AppFooterSpan>
+              <AppFooterSpan>3</AppFooterSpan>
+              <AppFooterSpan>4</AppFooterSpan>
             </AppFooter>
           </AppWrapper>
         </ThemeProvider>
