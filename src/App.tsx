@@ -12,6 +12,7 @@ import {
   AppLogo,
   AppWrapper,
 } from './components';
+import Pagination from './AppPagination';
 import { LinkWrapper } from './utils/LinkWrapper'
 import { RequestStatus } from './domain/requestStatus';
 import { defaultTheme } from './theme/defaultTheme';
@@ -29,8 +30,8 @@ interface State {
   };
   isModalOpen: boolean;
   modalMessage: JSX.Element | string;
-  requestsPerPage: number;
   currentPage: number;
+  postsPerPage: number;
 }
 
 class App extends React.Component<{}, State> {
@@ -39,41 +40,10 @@ class App extends React.Component<{}, State> {
     requests: {},
     isModalOpen: false,
     modalMessage: '',
-    requestsPerPage: 10,
     currentPage: 1,
+    postsPerPage: 10,
   };
-  //@ts-ignore
-  constructor(props) {
-    super(props);
-    //for pagination!!!
 
-
-    // const { requests, currentPage, requestsPerPage } = this.state;
-    // const requestsLength = Object.keys(requests).length;
-    // let pagesCount: number = Math.ceil(requestsLength / requestsPerPage);
-    // const indexOfLastPost: number = currentPage * requestsPerPage - 1;
-    // const indexOfFirstPost: number = indexOfLastPost - requestsPerPage + 1;
-    // //@ts-ignore
-    // const arrayOfRequests = Object.entries(requests).map((e) => ({ [e[0]]: e[1] }));
-
-    // const requestsToPage = () => {
-    //   let actualPageRequests = [];
-    //   for (let index = indexOfFirstPost; index <= indexOfLastPost; index++) {
-    //     actualPageRequests.push(arrayOfRequests[index]);
-    //   }
-    //   return actualPageRequests;
-
-    // }
-  }
-  componentDidMount() {
-
-    this.setState({
-
-
-    })
-    //@ts-ignore
-    // this.requestsToPage();
-  }
 
   handleTransactionHashAndUrl = (hash: string, url: string) => {
     const { requests } = this.state;
@@ -111,10 +81,26 @@ class App extends React.Component<{}, State> {
     });
   }
 
+  handlePaginate = (number: any) => {
+    this.setState({
+      currentPage: number,
+    });
+  }
+
   render() {
+    const { currentPage, postsPerPage } = this.state;
     const requestsArray = Object.entries(this.state.requests).reverse().map(element => {
       return element[1];
     });
+
+    const getIndexOfLastPost = currentPage + postsPerPage;
+    const indexOfFirstPost = getIndexOfLastPost - postsPerPage;
+    const currentPosts = requestsArray.slice(indexOfFirstPost, getIndexOfLastPost);
+    const totalPosts = requestsArray.length;
+    console.log('====================================');
+    console.log('currentPosts', currentPosts);
+    console.log('====================================');
+
     return (
       !this.state.isModalOpen ?
         <ThemeProvider theme={defaultTheme}>
@@ -134,14 +120,9 @@ class App extends React.Component<{}, State> {
                 <ServerStatus />
               </AppHeaderRight>
             </AppHeader>
-            <RequestList requests={this.state.requests} requestsArray={requestsArray} handleUpdateState={this.handleUpdateState} />
+            <RequestList requests={this.state.requests} requestsArray={currentPosts} handleUpdateState={this.handleUpdateState} />
             <AppFooter>
-              <AppFooterSpan>&laquo;</AppFooterSpan>
-              <AppFooterSpan>1</AppFooterSpan>
-              <AppFooterSpan>2</AppFooterSpan>
-              <AppFooterSpan>3</AppFooterSpan>
-              <AppFooterSpan>4</AppFooterSpan>
-              <AppFooterSpan>&raquo;</AppFooterSpan>
+              <Pagination postsPerPage={postsPerPage} totalPosts={totalPosts} paginate={this.handlePaginate} />
             </AppFooter>
           </AppWrapper>
         </ThemeProvider>
