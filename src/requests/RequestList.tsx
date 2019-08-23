@@ -20,6 +20,7 @@ interface Props {
   requests: {
     [key: string]: RequestStatus,
   };
+  requestsArray: RequestStatus[];
   handleUpdateState: (requestStatus: RequestStatus) => void;
 }
 
@@ -92,34 +93,39 @@ class RequestList extends PureComponent<Props, State> {
 
   public getLastRequests = (numOfBlocks: number) => {
     const eventsCount = this.state.lastBlock - numOfBlocks;
-    console.log('eC', this.state.lastBlock, eventsCount);
-
     this.oracleContract.getPastEvents("allEvents",
       {
         fromBlock: eventsCount,
         toBlock: 'latest',
       })
       .then((events: any) => {
-        const { requests } = this.props;
         events.forEach((event: any) => {
-          const { transactionHash } = event;
-          const { errorCode, id, value, validFrom, url } = event.returnValues;
-          const updatedRequest = {
-            ...requests[id],
-            id,
-            hash: transactionHash,
-            validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
-            value,
-            errorCode,
-            url,
-          };
-          this.handleUpdateState(updatedRequest);
+          if (event.event === 'DataRequested') {
+            const { id, validFrom, url } = event.returnValues;
+            const { transactionHash } = event;
+            const newRequest = {
+              id,
+              validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
+              url,
+              hash: transactionHash,
+            }
+            this.handleUpdateState(newRequest);
+          }
+
+          if (event.event === 'RequestFulfilled') {
+            const { requests } = this.props;
+            const { id, errorCode, value } = event.returnValues;
+            if (!requests[id]) {
+              return;
+            }
+            const updatedRequest = { ...requests[id], value, errorCode };
+            this.handleUpdateState(updatedRequest);
+          }
           this.setState({
             isLoading: false,
           })
         })
       })
-
   }
 
   componentDidMount() {
@@ -128,17 +134,16 @@ class RequestList extends PureComponent<Props, State> {
         this.setState({
           lastBlock: data,
         }, () => {
-          this.getLastRequests(50000);
+          this.getLastRequests(10000);
         })
       });
   }
 
   render() {
-    const { requests } = this.props;
-    // const arr = Object.assign([], requests);
-    // arr.reverse();
-    console.log('jol', this.state, requests);
-
+    const { requestsArray } = this.props;
+    console.log('====================================');
+    console.log(requestsArray);
+    console.log('====================================');
     return (
       <RequestTableWrapper>
         <RequestTable>
@@ -148,9 +153,10 @@ class RequestList extends PureComponent<Props, State> {
             </RequestTableHeadRow>
           </RequestTableHead>
           <RequestTableBody>
+
             {
               (!this.state.isLoading) ?
-                Object.values(requests).map((request, index) => (
+                Object.values(requestsArray).map((request, index) => (
                   <Request labels={this.tableHeaders} isOdd={Boolean(index % 2)} key={index} {...request} />
                 ))
                 :
@@ -160,7 +166,7 @@ class RequestList extends PureComponent<Props, State> {
             }
           </RequestTableBody>
         </RequestTable>
-      </RequestTableWrapper>
+      </RequestTableWrapper >
     );
   }
 }

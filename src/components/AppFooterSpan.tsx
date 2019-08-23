@@ -7,9 +7,9 @@ export const AppFooterSpan = styled.span`
     text-decoration: none;
     transition: background-color .3s;
     border: 1px solid #ddd;
-    :active {
-    background-color: ${props => props.theme.colors.gardenerBackgroundColor};
-    color: white;
-    border: 1px solid ${props => props.theme.colors.gardenerBackgroundColor};
+        :active {
+            background-color: ${props => props.theme.colors.gardenerBackgroundColor};
+            color: white;
+            border: 1px solid ${props => props.theme.colors.gardenerBackgroundColor};
 }
 `;

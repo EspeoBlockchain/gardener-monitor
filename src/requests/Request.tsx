@@ -54,7 +54,8 @@ class Request extends PureComponent<RequestStatus> {
         <RequestTableCell>
           <RequestLabel>{Labels.call}</RequestLabel>
           <RequestContent>
-            {url ? url : <Loader>Loading...</Loader>}
+            {/* {url ? url : <Loader>Loading...</Loader>} */}
+            {url ? url : <Loader>Mining, it can take a while...</Loader>}
           </RequestContent>
         </RequestTableCell>
         <RequestTableCell>
@@ -83,7 +84,7 @@ class Request extends PureComponent<RequestStatus> {
               errorCode ?
                 this.codeMapper(errorCode.toString()) === 'OK' ? value : 'ERROR'
                 :
-                <Loader>Loading...</Loader>
+                <Loader>Mining, it can take a while...</Loader>
             }
           </RequestContent>
         </RequestTableCell>
@@ -94,7 +95,7 @@ class Request extends PureComponent<RequestStatus> {
               errorCode ?
                 this.codeMapper(errorCode.toString())
                 :
-                <Loader>Loading...</Loader>
+                <Loader>Mining, it can take a while...</Loader>
             }
           </RequestContent>
         </RequestTableCell>
@@ -113,7 +114,7 @@ class Request extends PureComponent<RequestStatus> {
                   />
                 </LinkWrapper>
                 :
-                <Loader>Loading...</Loader>
+                <Loader>Mining, it can take a while...</Loader>
             }
           </RequestContent>
         </RequestTableCell>

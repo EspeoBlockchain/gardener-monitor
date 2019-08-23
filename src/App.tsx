@@ -28,10 +28,9 @@ interface State {
     [key: string]: RequestStatus,
   };
   isModalOpen: boolean;
-  modalMessage: string;
+  modalMessage: JSX.Element | string;
   requestsPerPage: number;
   currentPage: number;
-  myArr: any;
 }
 
 class App extends React.Component<{}, State> {
@@ -42,12 +41,11 @@ class App extends React.Component<{}, State> {
     modalMessage: '',
     requestsPerPage: 10,
     currentPage: 1,
-    myArr: [],
   };
   //@ts-ignore
   constructor(props) {
     super(props);
-//for pagination!!!
+    //for pagination!!!
 
 
     // const { requests, currentPage, requestsPerPage } = this.state;
@@ -68,9 +66,9 @@ class App extends React.Component<{}, State> {
     // }
   }
   componentDidMount() {
-    
+
     this.setState({
-      myArr: [],
+
 
     })
     //@ts-ignore
@@ -106,7 +104,7 @@ class App extends React.Component<{}, State> {
     });
   }
 
-  handleModal = (modalState: boolean, modalMessage: string) => {
+  handleModal = (modalState: boolean, modalMessage: JSX.Element | string) => {
     this.setState({
       isModalOpen: modalState,
       modalMessage,
@@ -114,6 +112,9 @@ class App extends React.Component<{}, State> {
   }
 
   render() {
+    const requestsArray = Object.entries(this.state.requests).reverse().map(element => {
+      return element[1];
+    });
     return (
       !this.state.isModalOpen ?
         <ThemeProvider theme={defaultTheme}>
@@ -133,13 +134,14 @@ class App extends React.Component<{}, State> {
                 <ServerStatus />
               </AppHeaderRight>
             </AppHeader>
-            <RequestList requests={this.state.requests} handleUpdateState={this.handleUpdateState} />
+            <RequestList requests={this.state.requests} requestsArray={requestsArray} handleUpdateState={this.handleUpdateState} />
             <AppFooter>
               <AppFooterSpan>&laquo;</AppFooterSpan>
               <AppFooterSpan>1</AppFooterSpan>
               <AppFooterSpan>2</AppFooterSpan>
               <AppFooterSpan>3</AppFooterSpan>
               <AppFooterSpan>4</AppFooterSpan>
+              <AppFooterSpan>&raquo;</AppFooterSpan>
             </AppFooter>
           </AppWrapper>
         </ThemeProvider>
