@@ -28,6 +28,9 @@ export const defaultTheme = {
     mobile: '768px',
     smallMobile: '415px',
   },
+  heights: {
+    desktop: '850px',
+  },
   fadeInfadeOut:
     keyframes`
   {

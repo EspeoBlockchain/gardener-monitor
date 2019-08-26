@@ -134,16 +134,13 @@ class RequestList extends PureComponent<Props, State> {
         this.setState({
           lastBlock: data,
         }, () => {
-          this.getLastRequests(10000);
+          this.getLastRequests(50000);
         })
       });
   }
 
   render() {
     const { requestsArray } = this.props;
-    console.log('====================================');
-    console.log(requestsArray);
-    console.log('====================================');
     return (
       <RequestTableWrapper>
         <RequestTable>

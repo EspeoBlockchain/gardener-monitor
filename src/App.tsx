@@ -2,7 +2,6 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import {
   AppFooter,
-  AppFooterSpan,
   AppHeader,
   AppHeaderCenter,
   AppHeaderLeft,
@@ -81,7 +80,7 @@ class App extends React.Component<{}, State> {
     });
   }
 
-  handlePaginate = (number: any) => {
+  handlePaginate = (number: number) => {
     this.setState({
       currentPage: number,
     });
@@ -93,13 +92,10 @@ class App extends React.Component<{}, State> {
       return element[1];
     });
 
-    const getIndexOfLastPost = currentPage + postsPerPage;
+    const getIndexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = getIndexOfLastPost - postsPerPage;
     const currentPosts = requestsArray.slice(indexOfFirstPost, getIndexOfLastPost);
     const totalPosts = requestsArray.length;
-    console.log('====================================');
-    console.log('currentPosts', currentPosts);
-    console.log('====================================');
 
     return (
       !this.state.isModalOpen ?
@@ -122,7 +118,7 @@ class App extends React.Component<{}, State> {
             </AppHeader>
             <RequestList requests={this.state.requests} requestsArray={currentPosts} handleUpdateState={this.handleUpdateState} />
             <AppFooter>
-              <Pagination postsPerPage={postsPerPage} totalPosts={totalPosts} paginate={this.handlePaginate} />
+              <Pagination currentPage={currentPage} postsPerPage={postsPerPage} totalPosts={totalPosts} paginate={this.handlePaginate} />
             </AppFooter>
           </AppWrapper>
         </ThemeProvider>

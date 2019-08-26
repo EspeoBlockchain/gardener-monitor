@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const RequestTableBody = styled.tbody`
     position: absolute;
-    height: 90vh;
+    height: ${props => props.theme.heights.desktop};
     width: 100%;
     display: flex;
     overflow: auto;
