@@ -3446,6 +3446,11 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
+datalist-polyfill@^1.23.3:
+  version "1.23.3"
+  resolved "https://registry.yarnpkg.com/datalist-polyfill/-/datalist-polyfill-1.23.3.tgz#6b34c8684c9e52c9506ba8550272fad5ca13d79f"
+  integrity sha512-kE11GGSQ1y2JtbwAe8h7yV/lvyhCplnAQ3R7iWmJ+/1mWbjZ9c0eeN0YlUIRkHOUu0XMKqdMklgYnM3cPSQsIA==
+
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"

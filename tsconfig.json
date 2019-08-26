@@ -21,7 +21,8 @@
     "jsx": "preserve",
     "noEmit": true,
     "strict": true,
-    "strictNullChecks": false
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false
   },
   "include": [
     "src"

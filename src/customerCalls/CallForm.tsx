@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import usingOracleAbi from '../abi/usingOracle.abi';
-import { bitcoinPriceUrl, pressure, usdPriceUrl } from '../config';
+import { bitcoinPriceUrl, pressureUrl, usdPriceUrl } from '../config';
 import { Button } from '../utils/Button';
 import web3 from '../utils/createAndUnlockWeb3';
 import { CallFormDataList, CallFormInput, CallFormOption, CallFormWrapper } from './components';
@@ -43,6 +43,7 @@ export class CallForm extends PureComponent<Props, State> {
             query: event.target.value,
         });
     }
+
     passHashAndUrlToProps = (hash: string, url: string) => {
         this.props.handleTransactionHashAndUrl(hash, url);
     }
@@ -113,7 +114,7 @@ export class CallForm extends PureComponent<Props, State> {
                         EUR price based on USD
                         </CallFormOption>
                     <CallFormOption
-                        value={pressure}
+                        value={pressureUrl}
                     >
                         Pressure in New York
                     </CallFormOption>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import {
-  AppFooter,
   AppHeader,
   AppHeaderCenter,
+  AppFooter,
   AppHeaderLeft,
   AppHeaderNews,
   AppHeaderProof,
@@ -12,9 +12,9 @@ import {
   AppWrapper,
 } from './components';
 import Pagination from './AppPagination';
-import { LinkWrapper } from './utils/LinkWrapper'
 import { RequestStatus } from './domain/requestStatus';
 import { defaultTheme } from './theme/defaultTheme';
+import { LinkWrapper } from './utils/LinkWrapper';
 import Modal from './utils/Modal';
 
 import { gardenerWebsiteUrl } from './config';
