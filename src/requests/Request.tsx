@@ -55,7 +55,6 @@ class Request extends PureComponent<RequestStatus> {
         <RequestTableCell>
           <RequestLabel>{Labels.call}</RequestLabel>
           <RequestContent>
-            {/* {url ? url : <Loader>Loading...</Loader>} */}
             {url ? url : <Loader>Mining, it can take a while...</Loader>}
           </RequestContent>
         </RequestTableCell>

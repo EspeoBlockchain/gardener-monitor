@@ -88,9 +88,7 @@ class App extends React.Component<{}, State> {
 
   render() {
     const { currentPage, postsPerPage } = this.state;
-    const requestsArray = Object.entries(this.state.requests).reverse().map(element => {
-      return element[1];
-    });
+    const requestsArray = Object.values(this.state.requests).reverse();
 
     const getIndexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = getIndexOfLastPost - postsPerPage;

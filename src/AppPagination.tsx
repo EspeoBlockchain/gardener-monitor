@@ -4,7 +4,7 @@ import { AppFooterSpan } from './components/AppFooterSpan';
 interface Pagination {
     postsPerPage: number;
     totalPosts: number;
-    paginate: (arg1: number) => void;
+    paginate: (page: number) => void;
     currentPage: number;
 }
 
