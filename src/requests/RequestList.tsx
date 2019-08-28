@@ -6,13 +6,13 @@ import { Labels, RequestStatus } from '../domain';
 import convertUnixToDate from '../utils/convertUnixToDate';
 import web3 from '../utils/createAndUnlockWeb3';
 import {
+  FetchingDataLoader,
   RequestTable,
   RequestTableBody,
   RequestTableHead,
   RequestTableHeadCell,
   RequestTableHeadRow,
   RequestTableWrapper,
-  FetchingDataLoader,
 } from './components';
 import Request from './Request';
 
@@ -22,16 +22,17 @@ interface Props {
   };
   requestsArray: RequestStatus[];
   handleUpdateState: (requestStatus: RequestStatus) => void;
+  paginate: (pageNumber: number) => void;
 }
 
 interface State {
   lastBlock: number;
   isLoading: boolean;
+  countOfBlocks: number;
 }
 
 class RequestList extends PureComponent<Props, State> {
-  public oracleContract: any;
-  public handleUpdateState: any;
+  public oracleContract: web3Contract.Contract;
 
   get tableHeaders(): JSX.Element[] {
     return Object.values(Labels).map((label) => (
@@ -42,14 +43,11 @@ class RequestList extends PureComponent<Props, State> {
   state = {
     lastBlock: 0,
     isLoading: true,
-  }
+    countOfBlocks: 10000,
+  };
 
   constructor(props: Props) {
     super(props);
-
-    this.handleUpdateState = (updatedState: RequestStatus) => {
-      this.props.handleUpdateState(updatedState);
-    };
 
     this.oracleContract = new web3.eth.Contract(
       oracleAbi,
@@ -73,9 +71,11 @@ class RequestList extends PureComponent<Props, State> {
             hash: transactionHash,
             validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
           };
-          this.handleUpdateState(updatedRequest);
+          this.updateState(updatedRequest);
+          this.setState({
+            isLoading: false,
+          });
         }
-
         if (event.event === 'RequestFulfilled') {
           const { requests } = this.props;
           if (Object.entries(requests).length === 0 && requests.constructor === Object) {
@@ -87,15 +87,19 @@ class RequestList extends PureComponent<Props, State> {
             return;
           }
           const updatedRequest = { ...requests[id], value, errorCode };
-          this.handleUpdateState(updatedRequest);
+          this.updateState(updatedRequest);
         }
       })
       .on('error', console.error);
   }
 
+  public updateState = (updatedState: any) => {
+    this.props.handleUpdateState(updatedState);
+  }
+
   public getLastRequests = (numOfBlocks: number) => {
     const eventsCount = this.state.lastBlock - numOfBlocks;
-    this.oracleContract.getPastEvents("allEvents",
+    this.oracleContract.getPastEvents('allEvents',
       {
         fromBlock: eventsCount,
         toBlock: 'latest',
@@ -110,8 +114,8 @@ class RequestList extends PureComponent<Props, State> {
               validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
               url,
               hash: transactionHash,
-            }
-            this.handleUpdateState(newRequest);
+            };
+            this.updateState(newRequest);
           }
 
           if (event.event === 'RequestFulfilled') {
@@ -121,13 +125,13 @@ class RequestList extends PureComponent<Props, State> {
               return;
             }
             const updatedRequest = { ...requests[id], value, errorCode };
-            this.handleUpdateState(updatedRequest);
+            this.updateState(updatedRequest);
           }
           this.setState({
             isLoading: false,
-          })
-        })
-      })
+          });
+        });
+      });
   }
 
   componentDidMount() {
@@ -136,36 +140,46 @@ class RequestList extends PureComponent<Props, State> {
         this.setState({
           lastBlock: data,
         }, () => {
-          this.getLastRequests(50000);
-        })
+          this.getLastRequests(this.state.countOfBlocks);
+          this.props.paginate(1);
+        });
+      })
+      .catch(error => {
+        console.error(error);
       });
   }
 
   render() {
     const { requestsArray } = this.props;
     return (
-      <RequestTableWrapper>
-        <RequestTable>
-          <RequestTableHead>
-            <RequestTableHeadRow>
-              {this.tableHeaders}
-            </RequestTableHeadRow>
-          </RequestTableHead>
-          <RequestTableBody>
-
-            {
-              (!this.state.isLoading) ?
-                Object.values(requestsArray).map((request, index) => (
-                  <Request labels={this.tableHeaders} isOdd={Boolean(index % 2)} key={index} {...request} />
-                ))
-                :
-                <FetchingDataLoader>
-                  Fetching data from the last 50 000 blocks...
-              </FetchingDataLoader>
-            }
-          </RequestTableBody>
-        </RequestTable>
-      </RequestTableWrapper >
+      (!this.state.isLoading) ?
+        <RequestTableWrapper>
+          <RequestTable>
+            <RequestTableHead>
+              <RequestTableHeadRow>
+                {this.tableHeaders}
+              </RequestTableHeadRow>
+            </RequestTableHead>
+            <RequestTableBody>
+              {Object.values(requestsArray).map((request, index) => (
+                <Request labels={this.tableHeaders} isOdd={Boolean(index % 2)} key={index} {...request} />
+              ))}
+            </RequestTableBody>
+          </RequestTable>
+        </RequestTableWrapper >
+        :
+        <RequestTableWrapper>
+          <RequestTable>
+            <RequestTableHead>
+              <RequestTableHeadRow>
+                {this.tableHeaders}
+              </RequestTableHeadRow>
+            </RequestTableHead>
+          </RequestTable>
+          <FetchingDataLoader>
+            {`Fetching data from the last ${this.state.countOfBlocks} blocks...`}
+          </FetchingDataLoader>
+        </RequestTableWrapper >
     );
   }
 }

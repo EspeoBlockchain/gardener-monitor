@@ -1,9 +1,10 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
+import Pagination from './AppPagination';
 import {
+  AppFooter,
   AppHeader,
   AppHeaderCenter,
-  AppFooter,
   AppHeaderLeft,
   AppHeaderNews,
   AppHeaderProof,
@@ -11,7 +12,6 @@ import {
   AppLogo,
   AppWrapper,
 } from './components';
-import Pagination from './AppPagination';
 import { RequestStatus } from './domain/requestStatus';
 import { defaultTheme } from './theme/defaultTheme';
 import { LinkWrapper } from './utils/LinkWrapper';
@@ -42,7 +42,6 @@ class App extends React.Component<{}, State> {
     currentPage: 1,
     postsPerPage: 10,
   };
-
 
   handleTransactionHashAndUrl = (hash: string, url: string) => {
     const { requests } = this.state;
@@ -80,9 +79,9 @@ class App extends React.Component<{}, State> {
     });
   }
 
-  handlePaginate = (number: number) => {
+  handlePaginate = (pageNumber: number) => {
     this.setState({
-      currentPage: number,
+      currentPage: pageNumber,
     });
   }
 
@@ -94,7 +93,6 @@ class App extends React.Component<{}, State> {
     const indexOfFirstPost = getIndexOfLastPost - postsPerPage;
     const currentPosts = requestsArray.slice(indexOfFirstPost, getIndexOfLastPost);
     const totalPosts = requestsArray.length;
-
     return (
       !this.state.isModalOpen ?
         <ThemeProvider theme={defaultTheme}>
@@ -108,13 +106,22 @@ class App extends React.Component<{}, State> {
                 <LinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
                   <AppLogo src={logo} alt='logo' />
                 </LinkWrapper>
-                <CallForm handleModal={this.handleModal} handleTransactionHashAndUrl={this.handleTransactionHashAndUrl} />
+                <CallForm
+                  paginate={this.handlePaginate}
+                  handleModal={this.handleModal}
+                  handleTransactionHashAndUrl={this.handleTransactionHashAndUrl}
+                />
               </AppHeaderCenter>
               <AppHeaderRight>
                 <ServerStatus />
               </AppHeaderRight>
             </AppHeader>
-            <RequestList requests={this.state.requests} requestsArray={currentPosts} handleUpdateState={this.handleUpdateState} />
+            <RequestList
+              paginate={this.handlePaginate}
+              requests={this.state.requests}
+              requestsArray={currentPosts}
+              handleUpdateState={this.handleUpdateState}
+            />
             <AppFooter>
               <Pagination currentPage={currentPage} postsPerPage={postsPerPage} totalPosts={totalPosts} paginate={this.handlePaginate} />
             </AppFooter>

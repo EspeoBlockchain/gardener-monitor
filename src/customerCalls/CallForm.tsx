@@ -9,14 +9,14 @@ interface State {
     query: string;
     networkType: string;
 }
+
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
-
-
 
 interface Props {
     handleTransactionHashAndUrl: (arg1: string, arg2: string) => void;
     handleModal: (arg1: boolean, arg2: JSX.Element | string) => void;
+    paginate: (arg1: number) => void;
 }
 export const usingOracleContract = new web3.eth.Contract(
     usingOracleAbi,
@@ -91,6 +91,7 @@ export class CallForm extends PureComponent<Props, State> {
         this.setState({
             query: '',
         });
+        this.props.paginate(1);
     }
 
     render() {
