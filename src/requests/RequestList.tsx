@@ -97,6 +97,35 @@ class RequestList extends PureComponent<Props, State> {
     this.props.handleUpdateState(updatedState);
   }
 
+  public getLastEvents = (events: web3Contract.EventData[]) => {
+    events.forEach((event) => {
+      if (event.event === 'DataRequested') {
+        const { id, validFrom, url } = event.returnValues;
+        const { transactionHash } = event;
+        const newRequest = {
+          id,
+          validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
+          url,
+          hash: transactionHash,
+        };
+        this.updateState(newRequest);
+      }
+
+      if (event.event === 'RequestFulfilled') {
+        const { requests } = this.props;
+        const { id, errorCode, value } = event.returnValues;
+        if (!requests[id]) {
+          return;
+        }
+        const updatedRequest = { ...requests[id], value, errorCode };
+        this.updateState(updatedRequest);
+      }
+      this.setState({
+        isLoading: false,
+      });
+    });
+  }
+
   public getLastRequests = (numOfBlocks: number) => {
     const eventsCount = this.state.lastBlock - numOfBlocks;
     this.oracleContract.getPastEvents('allEvents',
@@ -104,33 +133,8 @@ class RequestList extends PureComponent<Props, State> {
         fromBlock: eventsCount,
         toBlock: 'latest',
       })
-      .then((events: any) => {
-        events.forEach((event: any) => {
-          if (event.event === 'DataRequested') {
-            const { id, validFrom, url } = event.returnValues;
-            const { transactionHash } = event;
-            const newRequest = {
-              id,
-              validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
-              url,
-              hash: transactionHash,
-            };
-            this.updateState(newRequest);
-          }
-
-          if (event.event === 'RequestFulfilled') {
-            const { requests } = this.props;
-            const { id, errorCode, value } = event.returnValues;
-            if (!requests[id]) {
-              return;
-            }
-            const updatedRequest = { ...requests[id], value, errorCode };
-            this.updateState(updatedRequest);
-          }
-          this.setState({
-            isLoading: false,
-          });
-        });
+      .then((events: web3Contract.EventData[]) => {
+        this.getLastEvents(events);
       });
   }
 
