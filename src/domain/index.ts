@@ -1,2 +1,2 @@
-export * from './requestStatus';
+export * from './requestObject';
 export * from './namespace';

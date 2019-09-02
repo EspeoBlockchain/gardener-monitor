@@ -12,7 +12,7 @@ import {
   AppLogo,
   AppWrapper,
 } from './components';
-import { RequestStatus } from './domain/requestStatus';
+import { RequestObject } from './domain/requestObject';
 import { defaultTheme } from './theme/defaultTheme';
 import { LinkWrapper } from './utils/LinkWrapper';
 import Modal from './utils/Modal';
@@ -25,7 +25,7 @@ import ServerStatus from './status/ServerStatus';
 
 interface State {
   requests: {
-    [key: string]: RequestStatus,
+    [key: string]: RequestObject,
   };
   isModalOpen: boolean;
   modalMessage: JSX.Element | string;
@@ -56,7 +56,7 @@ class App extends React.Component<{}, State> {
       },
     });
   }
-  handleUpdateState = (updatedState: RequestStatus) => {
+  handleUpdateState = (updatedState: RequestObject) => {
     const { requests } = this.state;
     this.setState({
       requests: {
@@ -83,6 +83,7 @@ class App extends React.Component<{}, State> {
     this.setState({
       currentPage: pageNumber,
     });
+    window.scrollTo(0, 0);
   }
 
   render() {
@@ -123,7 +124,12 @@ class App extends React.Component<{}, State> {
               handleUpdateState={this.handleUpdateState}
             />
             <AppFooter>
-              <Pagination currentPage={currentPage} postsPerPage={postsPerPage} totalPosts={totalPosts} paginate={this.handlePaginate} />
+              <Pagination
+                currentPage={currentPage}
+                postsPerPage={postsPerPage}
+                totalPosts={totalPosts}
+                paginate={this.handlePaginate}
+              />
             </AppFooter>
           </AppWrapper>
         </ThemeProvider>

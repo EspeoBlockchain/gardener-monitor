@@ -10,6 +10,6 @@ export const RequestLabel = styled.div`
         background-color: ${props => props.theme.colors.gardenerBackgroundColor};
         box-sizing: border-box;
         color: ${props => props.theme.colors.light};
-        padding: 10px;
+        padding: ${props => props.theme.appHeader.padding}px;
     }
 `;

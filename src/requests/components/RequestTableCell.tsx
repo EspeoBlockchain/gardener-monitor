@@ -3,11 +3,10 @@ import styled from 'styled-components';
 export const RequestTableCell = styled.td`
     box-sizing: border-box;
     text-align: center;
-    padding: 10px;
+    padding: ${props => props.theme.appHeader.padding};
     width: 100vw;
     word-wrap: break-word;
     font-size: ${props => props.theme.fontSizes.medium};
-    border-bottom: 1px solid ${props => props.theme.colors.grey};
     @media (max-width: ${props => props.theme.maxWidths.mobile}) {
         box-sizing: border-box;
         display: flex;
@@ -16,5 +15,6 @@ export const RequestTableCell = styled.td`
         align-items: stretch;
         width: 100%;
         padding: 0;
+        border-bottom: 1px solid ${props => props.theme.colors.grey};
     }
 `;

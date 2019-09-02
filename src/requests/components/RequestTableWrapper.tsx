@@ -5,13 +5,12 @@ export const RequestTableWrapper = styled.div`
     overflow: auto;
     width: 100%;
     @media (max-width: ${props => props.theme.maxWidths.mobile}) {
-        position: absolute;
-        top: ${props => props.theme.appHeader.desktopHeight};
+        top: ${props => props.theme.appHeader.desktopHeight}px;
         bottom: 0;
         left: 0;
         overflow: auto;
     };
     @media (max-width: ${props => props.theme.maxWidths.smallMobile}) {
-        top: ${props => props.theme.appHeader.smallMobileHeight};
+        top: ${props => props.theme.appHeader.smallMobileHeight}px;
     };
 `;

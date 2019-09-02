@@ -1,7 +1,7 @@
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { PureComponent } from 'react';
-import { RequestStatus } from '../domain';
+import { RequestObject } from '../domain';
 
 import { etherScanUrl } from '../config';
 import { Labels } from '../domain/namespace';
@@ -17,7 +17,7 @@ enum ErrorCodes {
   OK = '0',
 }
 
-class Request extends PureComponent<RequestStatus> {
+class Request extends PureComponent<RequestObject> {
 
   codeMapper(code: string): string {
     switch (code) {

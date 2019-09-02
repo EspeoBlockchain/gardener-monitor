@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const RequestTableHeadCell = styled.th`
     box-sizing: border-box;
     text-align: center;
-    padding: 10px;
+    padding: ${props => props.theme.appHeader.padding}px;
     width: 16.7%;
     @media (max-width: ${props => props.theme.maxWidths.mobile}) {
         display: none;

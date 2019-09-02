@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import * as web3Contract from 'web3-eth-contract';
 
 import oracleAbi from '../abi/oracle.abi';
-import { Labels, RequestStatus } from '../domain';
+import { Labels, RequestObject } from '../domain';
 import convertUnixToDate from '../utils/convertUnixToDate';
 import web3 from '../utils/createAndUnlockWeb3';
 import {
@@ -18,10 +18,10 @@ import Request from './Request';
 
 interface Props {
   requests: {
-    [key: string]: RequestStatus,
+    [key: string]: RequestObject,
   };
-  requestsArray: RequestStatus[];
-  handleUpdateState: (requestStatus: RequestStatus) => void;
+  requestsArray: RequestObject[];
+  handleUpdateState: (requestObject: RequestObject) => void;
   paginate: (pageNumber: number) => void;
 }
 
@@ -43,7 +43,7 @@ class RequestList extends PureComponent<Props, State> {
   state = {
     lastBlock: 0,
     isLoading: true,
-    countOfBlocks: 10000,
+    countOfBlocks: 50000,
   };
 
   constructor(props: Props) {
@@ -97,7 +97,7 @@ class RequestList extends PureComponent<Props, State> {
     this.props.handleUpdateState(updatedState);
   }
 
-  public getLastEvents = (events: web3Contract.EventData[]) => {
+  public showEvents = (events: web3Contract.EventData[]) => {
     events.forEach((event) => {
       if (event.event === 'DataRequested') {
         const { id, validFrom, url } = event.returnValues;
@@ -126,7 +126,7 @@ class RequestList extends PureComponent<Props, State> {
     });
   }
 
-  public getLastRequests = (numOfBlocks: number) => {
+  public getPastRequests = (numOfBlocks: number) => {
     const eventsCount = this.state.lastBlock - numOfBlocks;
     this.oracleContract.getPastEvents('allEvents',
       {
@@ -134,7 +134,7 @@ class RequestList extends PureComponent<Props, State> {
         toBlock: 'latest',
       })
       .then((events: web3Contract.EventData[]) => {
-        this.getLastEvents(events);
+        this.showEvents(events);
       });
   }
 
@@ -144,7 +144,7 @@ class RequestList extends PureComponent<Props, State> {
         this.setState({
           lastBlock: data,
         }, () => {
-          this.getLastRequests(this.state.countOfBlocks);
+          this.getPastRequests(this.state.countOfBlocks);
           this.props.paginate(1);
         });
       })
