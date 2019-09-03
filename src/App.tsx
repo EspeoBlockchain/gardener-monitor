@@ -1,5 +1,6 @@
 import React from 'react';
-import { ThemeProvider, createGlobalStyle } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyles } from './utils/components';
 import Pagination from './AppPagination';
 import {
   AppFooter,
@@ -32,12 +33,6 @@ interface State {
   currentPage: number;
   postsPerPage: number;
 }
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: ${props => props.theme.margins.default};
-  }
-`
 
 class App extends React.Component<{}, State> {
 
@@ -104,54 +99,54 @@ class App extends React.Component<{}, State> {
       !this.state.isModalOpen ?
         <ThemeProvider theme={defaultTheme}>
           <>
-          <GlobalStyle />
-          <AppWrapper>
-            <AppHeader>
-              <AppHeaderLeft>
-                <AppHeaderNews>NEWS</AppHeaderNews>
-                <AppHeaderProof>PROOF</AppHeaderProof>
-              </AppHeaderLeft>
-              <AppHeaderCenter>
-                <LinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
-                  <AppLogo src={logo} alt='logo' />
-                </LinkWrapper>
-                <CallForm
-                  paginate={this.handlePaginate}
-                  handleModal={this.handleModal}
-                  handleTransactionHashAndUrl={this.handleTransactionHashAndUrl}
-                />
-              </AppHeaderCenter>
-              <AppHeaderRight>
-                <ServerStatus />
-              </AppHeaderRight>
-            </AppHeader>
-            <RequestList
-              paginate={this.handlePaginate}
-              requests={this.state.requests}
-              requestsArray={currentPosts}
-              handleUpdateState={this.handleUpdateState}
-            />
-            <AppFooter>
-              <Pagination
-                currentPage={currentPage}
-                postsPerPage={postsPerPage}
-                totalPosts={totalPosts}
+            <GlobalStyles />
+            <AppWrapper>
+              <AppHeader>
+                <AppHeaderLeft>
+                  <AppHeaderNews>NEWS</AppHeaderNews>
+                  <AppHeaderProof>PROOF</AppHeaderProof>
+                </AppHeaderLeft>
+                <AppHeaderCenter>
+                  <LinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
+                    <AppLogo src={logo} alt='logo' />
+                  </LinkWrapper>
+                  <CallForm
+                    paginate={this.handlePaginate}
+                    handleModal={this.handleModal}
+                    handleTransactionHashAndUrl={this.handleTransactionHashAndUrl}
+                  />
+                </AppHeaderCenter>
+                <AppHeaderRight>
+                  <ServerStatus />
+                </AppHeaderRight>
+              </AppHeader>
+              <RequestList
                 paginate={this.handlePaginate}
+                requests={this.state.requests}
+                requestsArray={currentPosts}
+                handleUpdateState={this.handleUpdateState}
               />
-            </AppFooter>
-          </AppWrapper>
+              <AppFooter>
+                <Pagination
+                  currentPage={currentPage}
+                  postsPerPage={postsPerPage}
+                  totalPosts={totalPosts}
+                  paginate={this.handlePaginate}
+                />
+              </AppFooter>
+            </AppWrapper>
           </>
         </ThemeProvider>
         :
         <ThemeProvider theme={defaultTheme}>
           <>
-          <GlobalStyle />
-          <Modal
-            show={this.state.isModalOpen}
-            onClose={this.toggleModal}
-          >
-            {this.state.modalMessage}
-          </Modal>
+            <GlobalStyles />
+            <Modal
+              show={this.state.isModalOpen}
+              onClose={this.toggleModal}
+            >
+              {this.state.modalMessage}
+            </Modal>
           </>
         </ThemeProvider>
     );
