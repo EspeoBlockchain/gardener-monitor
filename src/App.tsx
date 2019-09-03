@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import Pagination from './AppPagination';
 import {
   AppFooter,
@@ -32,6 +32,12 @@ interface State {
   currentPage: number;
   postsPerPage: number;
 }
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: ${props => props.theme.margins.default};
+  }
+`
 
 class App extends React.Component<{}, State> {
 
@@ -97,6 +103,8 @@ class App extends React.Component<{}, State> {
     return (
       !this.state.isModalOpen ?
         <ThemeProvider theme={defaultTheme}>
+          <>
+          <GlobalStyle />
           <AppWrapper>
             <AppHeader>
               <AppHeaderLeft>
@@ -132,15 +140,19 @@ class App extends React.Component<{}, State> {
               />
             </AppFooter>
           </AppWrapper>
+          </>
         </ThemeProvider>
         :
         <ThemeProvider theme={defaultTheme}>
+          <>
+          <GlobalStyle />
           <Modal
             show={this.state.isModalOpen}
             onClose={this.toggleModal}
           >
             {this.state.modalMessage}
           </Modal>
+          </>
         </ThemeProvider>
     );
   }

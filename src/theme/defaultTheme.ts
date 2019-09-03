@@ -10,6 +10,9 @@ export const defaultTheme = {
     lightGrey: '#F1F1F1',
     grey: '#808080',
   },
+  margins: {
+    default: 0,
+  },
   appHeader: {
     desktopHeight: 170,
     mobileHeight: 70,
