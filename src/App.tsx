@@ -32,6 +32,7 @@ interface State {
   modalMessage: JSX.Element | string;
   currentPage: number;
   postsPerPage: number;
+  isLoading: boolean;
 }
 
 class App extends React.Component<{}, State> {
@@ -42,6 +43,7 @@ class App extends React.Component<{}, State> {
     modalMessage: '',
     currentPage: 1,
     postsPerPage: 10,
+    isLoading: true,
   };
 
   handleTransactionHashAndUrl = (hash: string, url: string) => {
@@ -87,6 +89,12 @@ class App extends React.Component<{}, State> {
     window.scrollTo(0, 0);
   }
 
+  handleChangeLoader = (state: boolean) => {
+    this.setState({
+      isLoading: state,
+    })
+  }
+
   render() {
     const { currentPage, postsPerPage } = this.state;
     const requestsArray = Object.values(this.state.requests).reverse();
@@ -121,18 +129,25 @@ class App extends React.Component<{}, State> {
                 </AppHeaderRight>
               </AppHeader>
               <RequestList
+                isLoading={this.state.isLoading}
                 paginate={this.handlePaginate}
                 requests={this.state.requests}
                 requestsArray={currentPosts}
                 handleUpdateRequest={this.handleUpdateRequest}
+                changeLoader={this.handleChangeLoader}
               />
               <AppFooter>
-                <Pagination
-                  currentPage={currentPage}
-                  postsPerPage={postsPerPage}
-                  totalPosts={totalPosts}
-                  paginate={this.handlePaginate}
-                />
+                {
+                  !this.state.isLoading ?
+                    <Pagination
+                      currentPage={currentPage}
+                      postsPerPage={postsPerPage}
+                      totalPosts={totalPosts}
+                      paginate={this.handlePaginate}
+                    />
+                    :
+                    ''
+                }
               </AppFooter>
             </AppWrapper>
           </>
