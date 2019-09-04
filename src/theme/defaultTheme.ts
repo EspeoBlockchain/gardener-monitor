@@ -10,11 +10,14 @@ export const defaultTheme = {
     lightGrey: '#F1F1F1',
     grey: '#808080',
   },
+  margins: {
+    default: 0,
+  },
   appHeader: {
-    desktopHeight: '170px',
-    mobileHeight: '70px',
-    smallMobileHeight: '180px',
-    padding: '10px',
+    desktopHeight: 170,
+    mobileHeight: 70,
+    smallMobileHeight: 180,
+    padding: 10,
   },
   fonts: {
     primary: 'Montserrat',
@@ -27,6 +30,15 @@ export const defaultTheme = {
   maxWidths: {
     mobile: '768px',
     smallMobile: '415px',
+  },
+  heights: {
+    desktop: '850px',
+  },
+  table: {
+    padding: {
+      desktop: 8,
+    },
+    headerHeight: 33,
   },
   fadeInfadeOut:
     keyframes`

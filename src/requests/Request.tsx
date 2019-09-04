@@ -1,7 +1,7 @@
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { PureComponent } from 'react';
-import { RequestStatus } from '../domain';
+import { RequestObject } from '../domain';
 
 import { etherScanUrl } from '../config';
 import { Labels } from '../domain/namespace';
@@ -17,7 +17,7 @@ enum ErrorCodes {
   OK = '0',
 }
 
-class Request extends PureComponent<RequestStatus> {
+class Request extends PureComponent<RequestObject> {
 
   codeMapper(code: string): string {
     switch (code) {
@@ -55,7 +55,7 @@ class Request extends PureComponent<RequestStatus> {
         <RequestTableCell>
           <RequestLabel>{Labels.call}</RequestLabel>
           <RequestContent>
-            {url ? url : <Loader>Loading...</Loader>}
+            {url ? url : <Loader>Mining, it can take a while...</Loader>}
           </RequestContent>
         </RequestTableCell>
         <RequestTableCell>
@@ -84,7 +84,7 @@ class Request extends PureComponent<RequestStatus> {
               errorCode ?
                 this.codeMapper(errorCode.toString()) === 'OK' ? value : 'ERROR'
                 :
-                <Loader>Loading...</Loader>
+                <Loader>Mining, it can take a while...</Loader>
             }
           </RequestContent>
         </RequestTableCell>
@@ -95,7 +95,7 @@ class Request extends PureComponent<RequestStatus> {
               errorCode ?
                 this.codeMapper(errorCode.toString())
                 :
-                <Loader>Loading...</Loader>
+                <Loader>Mining, it can take a while...</Loader>
             }
           </RequestContent>
         </RequestTableCell>
@@ -114,7 +114,7 @@ class Request extends PureComponent<RequestStatus> {
                   />
                 </LinkWrapper>
                 :
-                <Loader>Loading...</Loader>
+                <Loader>Mining, it can take a while...</Loader>
             }
           </RequestContent>
         </RequestTableCell>

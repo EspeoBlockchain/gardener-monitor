@@ -9,12 +9,14 @@ interface State {
     query: string;
     networkType: string;
 }
+
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type SelectEvent = React.ChangeEvent<HTMLSelectElement>;
 
 interface Props {
     handleTransactionHashAndUrl: (arg1: string, arg2: string) => void;
-    handleModal: (arg1: boolean, arg2: any) => void;
+    handleModal: (arg1: boolean, arg2: JSX.Element | string) => void;
+    paginate: (arg1: number) => void;
 }
 export const usingOracleContract = new web3.eth.Contract(
     usingOracleAbi,
@@ -57,8 +59,7 @@ export class CallForm extends PureComponent<Props, State> {
             return;
         }
         if (this.state.networkType !== process.env.REACT_APP_NETWORK_TYPE) {
-            const message = 'Please use Ropsten test network.';
-            this.props.handleModal(true, message);
+            this.props.handleModal(true, 'Please use Ropsten test network.');
             return;
         }
         if (this.state.query === '') {
@@ -90,6 +91,7 @@ export class CallForm extends PureComponent<Props, State> {
         this.setState({
             query: '',
         });
+        this.props.paginate(1);
     }
 
     render() {

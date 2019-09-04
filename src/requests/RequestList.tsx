@@ -2,10 +2,11 @@ import React, { PureComponent } from 'react';
 import * as web3Contract from 'web3-eth-contract';
 
 import oracleAbi from '../abi/oracle.abi';
-import { Labels, RequestStatus } from '../domain';
+import { Labels, RequestObject } from '../domain';
 import convertUnixToDate from '../utils/convertUnixToDate';
 import web3 from '../utils/createAndUnlockWeb3';
 import {
+  FetchingDataLoader,
   RequestTable,
   RequestTableBody,
   RequestTableHead,
@@ -15,22 +16,23 @@ import {
 } from './components';
 import Request from './Request';
 
-interface State {
-  requests: {
-    [key: string]: RequestStatus,
-  };
-}
-
 interface Props {
   requests: {
-    [key: string]: RequestStatus,
+    [key: string]: RequestObject,
   };
-  handleUpdateState: (requestStatus: RequestStatus) => void;
+  requestsArray: RequestObject[];
+  handleUpdateRequest: (requestObject: RequestObject) => void;
+  paginate: (pageNumber: number) => void;
 }
+
+interface State {
+  lastBlock: number;
+  isLoading: boolean;
+  countOfBlocks: number;
+}
+
 class RequestList extends PureComponent<Props, State> {
-  state: State = {
-    requests: {},
-  };
+  public oracleContract: web3Contract.Contract;
 
   get tableHeaders(): JSX.Element[] {
     return Object.values(Labels).map((label) => (
@@ -38,19 +40,21 @@ class RequestList extends PureComponent<Props, State> {
     ));
   }
 
+  state = {
+    lastBlock: 0,
+    isLoading: true,
+    countOfBlocks: 20000,
+  };
+
   constructor(props: Props) {
     super(props);
 
-    const handleUpdateState = (updatedState: RequestStatus) => {
-      this.props.handleUpdateState(updatedState);
-    };
-
-    const oracleContract = new web3.eth.Contract(
+    this.oracleContract = new web3.eth.Contract(
       oracleAbi,
       process.env.REACT_APP_ORACLE_ADDRESS,
     );
 
-    oracleContract.events.allEvents()
+    this.oracleContract.events.allEvents()
       .on('data', (event: web3Contract.EventData) => {
         if (['DataRequested', 'DelayedDataRequested'].includes(event.event)) {
           const { requests } = this.props;
@@ -67,9 +71,11 @@ class RequestList extends PureComponent<Props, State> {
             hash: transactionHash,
             validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
           };
-          handleUpdateState(updatedRequest);
+          this.updateRequest(updatedRequest);
+          this.setState({
+            isLoading: false,
+          });
         }
-
         if (event.event === 'RequestFulfilled') {
           const { requests } = this.props;
           if (Object.entries(requests).length === 0 && requests.constructor === Object) {
@@ -81,31 +87,109 @@ class RequestList extends PureComponent<Props, State> {
             return;
           }
           const updatedRequest = { ...requests[id], value, errorCode };
-          handleUpdateState(updatedRequest);
+          this.updateRequest(updatedRequest);
         }
       })
       .on('error', console.error);
   }
 
+  public updateRequest = (updatedState: any) => {
+    this.props.handleUpdateRequest(updatedState);
+  }
+
+  public showEvents = (events: web3Contract.EventData[]) => {
+    setTimeout(() => {
+      events.forEach((event) => {
+        if (event.event === 'DataRequested') {
+          const { id, validFrom, url } = event.returnValues;
+          const { transactionHash } = event;
+          const newRequest = {
+            id,
+            validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
+            url,
+            hash: transactionHash,
+          };
+          this.updateRequest(newRequest);
+        }
+
+        if (event.event === 'RequestFulfilled') {
+          const { requests } = this.props;
+          const { id, errorCode, value } = event.returnValues;
+          if (!requests[id]) {
+            return;
+          }
+          const updatedRequest = { ...requests[id], value, errorCode };
+          this.updateRequest(updatedRequest);
+        }
+        this.setState({
+          isLoading: false,
+        });
+      });
+
+      this.setState({
+        isLoading: false,
+      });
+    }, 5000);
+  }
+
+  public getPastRequests = (numOfBlocks: number) => {
+    const eventsCount = this.state.lastBlock - numOfBlocks;
+    this.oracleContract.getPastEvents('allEvents',
+      {
+        fromBlock: eventsCount,
+        toBlock: 'latest',
+      })
+      .then((events: web3Contract.EventData[]) => {
+        this.showEvents(events);
+      });
+  }
+
+  componentDidMount() {
+    web3.eth.getBlockNumber()
+      .then(data => {
+        this.setState({
+          lastBlock: data,
+        }, () => {
+          this.getPastRequests(this.state.countOfBlocks);
+          this.props.paginate(1);
+        });
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
   render() {
-    const { requests } = this.props;
+    const { requestsArray } = this.props;
     return (
-      <RequestTableWrapper>
-        <RequestTable>
-          <RequestTableHead>
-            <RequestTableHeadRow>
-              {this.tableHeaders}
-            </RequestTableHeadRow>
-          </RequestTableHead>
-          <RequestTableBody>
-            {
-              Object.values(requests).map((request, index) => (
+      (!this.state.isLoading) ?
+        <RequestTableWrapper>
+          <RequestTable>
+            <RequestTableHead>
+              <RequestTableHeadRow>
+                {this.tableHeaders}
+              </RequestTableHeadRow>
+            </RequestTableHead>
+            <RequestTableBody>
+              {Object.values(requestsArray).map((request, index) => (
                 <Request labels={this.tableHeaders} isOdd={Boolean(index % 2)} key={index} {...request} />
-              ))
-            }
-          </RequestTableBody>
-        </RequestTable>
-      </RequestTableWrapper>
+              ))}
+            </RequestTableBody>
+          </RequestTable>
+        </RequestTableWrapper >
+        :
+        <RequestTableWrapper>
+          <RequestTable>
+            <RequestTableHead>
+              <RequestTableHeadRow>
+                {this.tableHeaders}
+              </RequestTableHeadRow>
+            </RequestTableHead>
+          </RequestTable>
+          <FetchingDataLoader>
+            {`Fetching data from the last ${this.state.countOfBlocks} blocks...`}
+          </FetchingDataLoader>
+        </RequestTableWrapper >
     );
   }
 }

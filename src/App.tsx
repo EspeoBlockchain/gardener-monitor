@@ -1,6 +1,9 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
+import { GlobalStyles } from './utils/components';
+import Pagination from './AppPagination';
 import {
+  AppFooter,
   AppHeader,
   AppHeaderCenter,
   AppHeaderLeft,
@@ -10,7 +13,7 @@ import {
   AppLogo,
   AppWrapper,
 } from './components';
-import { RequestStatus } from './domain/requestStatus';
+import { RequestObject } from './domain/requestObject';
 import { defaultTheme } from './theme/defaultTheme';
 import { LinkWrapper } from './utils/LinkWrapper';
 import Modal from './utils/Modal';
@@ -23,10 +26,12 @@ import ServerStatus from './status/ServerStatus';
 
 interface State {
   requests: {
-    [key: string]: RequestStatus,
+    [key: string]: RequestObject,
   };
   isModalOpen: boolean;
-  modalMessage: string;
+  modalMessage: JSX.Element | string;
+  currentPage: number;
+  postsPerPage: number;
 }
 
 class App extends React.Component<{}, State> {
@@ -35,6 +40,8 @@ class App extends React.Component<{}, State> {
     requests: {},
     isModalOpen: false,
     modalMessage: '',
+    currentPage: 1,
+    postsPerPage: 10,
   };
 
   handleTransactionHashAndUrl = (hash: string, url: string) => {
@@ -50,7 +57,7 @@ class App extends React.Component<{}, State> {
       },
     });
   }
-  handleUpdateState = (updatedState: RequestStatus) => {
+  handleUpdateRequest = (updatedState: RequestObject) => {
     const { requests } = this.state;
     this.setState({
       requests: {
@@ -66,44 +73,81 @@ class App extends React.Component<{}, State> {
     });
   }
 
-  handleModal = (modalState: boolean, modalMessage: string) => {
+  handleModal = (modalState: boolean, modalMessage: JSX.Element | string) => {
     this.setState({
       isModalOpen: modalState,
       modalMessage,
     });
   }
 
+  handlePaginate = (pageNumber: number) => {
+    this.setState({
+      currentPage: pageNumber,
+    });
+    window.scrollTo(0, 0);
+  }
+
   render() {
+    const { currentPage, postsPerPage } = this.state;
+    const requestsArray = Object.values(this.state.requests).reverse();
+
+    const getIndexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = getIndexOfLastPost - postsPerPage;
+    const currentPosts = requestsArray.slice(indexOfFirstPost, getIndexOfLastPost);
+    const totalPosts = requestsArray.length;
     return (
       !this.state.isModalOpen ?
         <ThemeProvider theme={defaultTheme}>
-          <AppWrapper>
-            <AppHeader>
-              <AppHeaderLeft>
-                <AppHeaderNews>NEWS</AppHeaderNews>
-                <AppHeaderProof>PROOF</AppHeaderProof>
-              </AppHeaderLeft>
-              <AppHeaderCenter>
-                <LinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
-                  <AppLogo src={logo} alt='logo' />
-                </LinkWrapper>
-                <CallForm handleModal={this.handleModal} handleTransactionHashAndUrl={this.handleTransactionHashAndUrl} />
-              </AppHeaderCenter>
-              <AppHeaderRight>
-                <ServerStatus />
-              </AppHeaderRight>
-            </AppHeader>
-            <RequestList requests={this.state.requests} handleUpdateState={this.handleUpdateState} />
-          </AppWrapper>
+          <>
+            <GlobalStyles />
+            <AppWrapper>
+              <AppHeader>
+                <AppHeaderLeft>
+                  <AppHeaderNews>NEWS</AppHeaderNews>
+                  <AppHeaderProof>PROOF</AppHeaderProof>
+                </AppHeaderLeft>
+                <AppHeaderCenter>
+                  <LinkWrapper href={gardenerWebsiteUrl} target='_blank' rel='noopener noreferrer'>
+                    <AppLogo src={logo} alt='logo' />
+                  </LinkWrapper>
+                  <CallForm
+                    paginate={this.handlePaginate}
+                    handleModal={this.handleModal}
+                    handleTransactionHashAndUrl={this.handleTransactionHashAndUrl}
+                  />
+                </AppHeaderCenter>
+                <AppHeaderRight>
+                  <ServerStatus />
+                </AppHeaderRight>
+              </AppHeader>
+              <RequestList
+                paginate={this.handlePaginate}
+                requests={this.state.requests}
+                requestsArray={currentPosts}
+                handleUpdateRequest={this.handleUpdateRequest}
+              />
+              <AppFooter>
+                <Pagination
+                  currentPage={currentPage}
+                  postsPerPage={postsPerPage}
+                  totalPosts={totalPosts}
+                  paginate={this.handlePaginate}
+                />
+              </AppFooter>
+            </AppWrapper>
+          </>
         </ThemeProvider>
-        :   
-        <ThemeProvider  theme={defaultTheme}>
-          <Modal
-        show={this.state.isModalOpen}
-        onClose={this.toggleModal}
-      >
-        {this.state.modalMessage}
-        </Modal>
+        :
+        <ThemeProvider theme={defaultTheme}>
+          <>
+            <GlobalStyles />
+            <Modal
+              show={this.state.isModalOpen}
+              onClose={this.toggleModal}
+            >
+              {this.state.modalMessage}
+            </Modal>
+          </>
         </ThemeProvider>
     );
   }

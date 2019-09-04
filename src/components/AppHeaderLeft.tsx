@@ -12,6 +12,6 @@ export const AppHeaderLeft = styled.div`
         height: auto;
         width: 100%;
         justify-content: space-around;
-        padding: 10px;
+        padding: ${props => props.theme.appHeader.padding}px;
 }
 `;

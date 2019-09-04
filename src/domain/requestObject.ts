@@ -1,4 +1,4 @@
-export interface RequestStatus {
+export interface RequestObject {
     id: string;
     errorCode: BigInteger;
     value: string;
