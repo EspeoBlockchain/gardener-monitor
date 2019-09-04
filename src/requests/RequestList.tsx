@@ -21,7 +21,7 @@ interface Props {
     [key: string]: RequestObject,
   };
   requestsArray: RequestObject[];
-  handleUpdateState: (requestObject: RequestObject) => void;
+  handleUpdateRequest: (requestObject: RequestObject) => void;
   paginate: (pageNumber: number) => void;
 }
 
@@ -43,7 +43,7 @@ class RequestList extends PureComponent<Props, State> {
   state = {
     lastBlock: 0,
     isLoading: true,
-    countOfBlocks: 50000,
+    countOfBlocks: 20000,
   };
 
   constructor(props: Props) {
@@ -71,7 +71,7 @@ class RequestList extends PureComponent<Props, State> {
             hash: transactionHash,
             validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
           };
-          this.updateState(updatedRequest);
+          this.updateRequest(updatedRequest);
           this.setState({
             isLoading: false,
           });
@@ -87,43 +87,49 @@ class RequestList extends PureComponent<Props, State> {
             return;
           }
           const updatedRequest = { ...requests[id], value, errorCode };
-          this.updateState(updatedRequest);
+          this.updateRequest(updatedRequest);
         }
       })
       .on('error', console.error);
   }
 
-  public updateState = (updatedState: any) => {
-    this.props.handleUpdateState(updatedState);
+  public updateRequest = (updatedState: any) => {
+    this.props.handleUpdateRequest(updatedState);
   }
 
   public showEvents = (events: web3Contract.EventData[]) => {
-    events.forEach((event) => {
-      if (event.event === 'DataRequested') {
-        const { id, validFrom, url } = event.returnValues;
-        const { transactionHash } = event;
-        const newRequest = {
-          id,
-          validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
-          url,
-          hash: transactionHash,
-        };
-        this.updateState(newRequest);
-      }
-
-      if (event.event === 'RequestFulfilled') {
-        const { requests } = this.props;
-        const { id, errorCode, value } = event.returnValues;
-        if (!requests[id]) {
-          return;
+    setTimeout(() => {
+      events.forEach((event) => {
+        if (event.event === 'DataRequested') {
+          const { id, validFrom, url } = event.returnValues;
+          const { transactionHash } = event;
+          const newRequest = {
+            id,
+            validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
+            url,
+            hash: transactionHash,
+          };
+          this.updateRequest(newRequest);
         }
-        const updatedRequest = { ...requests[id], value, errorCode };
-        this.updateState(updatedRequest);
-      }
+
+        if (event.event === 'RequestFulfilled') {
+          const { requests } = this.props;
+          const { id, errorCode, value } = event.returnValues;
+          if (!requests[id]) {
+            return;
+          }
+          const updatedRequest = { ...requests[id], value, errorCode };
+          this.updateRequest(updatedRequest);
+        }
+        this.setState({
+          isLoading: false,
+        });
+      });
+
       this.setState({
         isLoading: false,
       });
-    });
+    }, 5000);
   }
 
   public getPastRequests = (numOfBlocks: number) => {

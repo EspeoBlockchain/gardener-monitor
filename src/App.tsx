@@ -57,7 +57,7 @@ class App extends React.Component<{}, State> {
       },
     });
   }
-  handleUpdateState = (updatedState: RequestObject) => {
+  handleUpdateRequest = (updatedState: RequestObject) => {
     const { requests } = this.state;
     this.setState({
       requests: {
@@ -124,7 +124,7 @@ class App extends React.Component<{}, State> {
                 paginate={this.handlePaginate}
                 requests={this.state.requests}
                 requestsArray={currentPosts}
-                handleUpdateState={this.handleUpdateState}
+                handleUpdateRequest={this.handleUpdateRequest}
               />
               <AppFooter>
                 <Pagination
