@@ -21,13 +21,14 @@ interface Props {
     [key: string]: RequestObject,
   };
   requestsArray: RequestObject[];
+  isLoading: boolean;
   handleUpdateRequest: (requestObject: RequestObject) => void;
   paginate: (pageNumber: number) => void;
+  changeLoader: (state: boolean) => void;
 }
 
 interface State {
   lastBlock: number;
-  isLoading: boolean;
   countOfBlocks: number;
 }
 
@@ -42,13 +43,11 @@ class RequestList extends PureComponent<Props, State> {
 
   state = {
     lastBlock: 0,
-    isLoading: true,
-    countOfBlocks: 20000,
+    countOfBlocks: 50000,
   };
 
   constructor(props: Props) {
     super(props);
-
     this.oracleContract = new web3.eth.Contract(
       oracleAbi,
       process.env.REACT_APP_ORACLE_ADDRESS,
@@ -72,9 +71,7 @@ class RequestList extends PureComponent<Props, State> {
             validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
           };
           this.updateRequest(updatedRequest);
-          this.setState({
-            isLoading: false,
-          });
+          this.props.changeLoader(false);
         }
         if (event.event === 'RequestFulfilled') {
           const { requests } = this.props;
@@ -121,14 +118,9 @@ class RequestList extends PureComponent<Props, State> {
           const updatedRequest = { ...requests[id], value, errorCode };
           this.updateRequest(updatedRequest);
         }
-        this.setState({
-          isLoading: false,
-        });
+        this.props.changeLoader(false);
       });
-
-      this.setState({
-        isLoading: false,
-      });
+      this.props.changeLoader(false);
     }, 5000);
   }
 
@@ -162,7 +154,7 @@ class RequestList extends PureComponent<Props, State> {
   render() {
     const { requestsArray } = this.props;
     return (
-      (!this.state.isLoading) ?
+      (!this.props.isLoading) ?
         <RequestTableWrapper>
           <RequestTable>
             <RequestTableHead>
