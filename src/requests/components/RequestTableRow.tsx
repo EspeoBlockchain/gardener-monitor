@@ -7,10 +7,9 @@ export const RequestTableRow = styled.tr`
     justify-content: center;
     align-items: center;
     min-height: 100px;
-
     word-break: break-word;
     background-color: ${(
-    props: { isOdd: boolean, theme: Theme }) =>
+    props: { isOdd?: boolean, theme: Theme }) =>
         props && props.isOdd ? props.theme.colors.light : props.theme.colors.lightGrey};
     border-bottom: 1px solid grey;
     @media (max-width: ${props => props.theme.maxWidths.mobile}) {

@@ -4,7 +4,7 @@ export interface RequestObject {
     value: string;
     validFrom: Date;
     url: string;
-    isOdd: boolean;
+    isOdd?: boolean;
     hash: string;
     labels: JSX.Element[] | null;
     transactionHash: string;
