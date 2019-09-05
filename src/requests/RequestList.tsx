@@ -43,7 +43,7 @@ class RequestList extends PureComponent<Props, State> {
 
   state = {
     lastBlock: 0,
-    countOfBlocks: 50000,
+    countOfBlocks: 1000,
   };
 
   constructor(props: Props) {
@@ -90,7 +90,7 @@ class RequestList extends PureComponent<Props, State> {
       .on('error', console.error);
   }
 
-  public updateRequest = (updatedState: any) => {
+  public updateRequest = (updatedState: RequestObject) => {
     this.props.handleUpdateRequest(updatedState);
   }
 
@@ -105,6 +105,11 @@ class RequestList extends PureComponent<Props, State> {
             validFrom: validFrom ? convertUnixToDate(validFrom) : new Date(),
             url,
             hash: transactionHash,
+            errorCode: null,
+            value: '',
+            isOdd: false,
+            labels: null,
+            transactionHash: '',
           };
           this.updateRequest(newRequest);
         }
