@@ -16,5 +16,8 @@ export const RequestTableCell = styled.td`
         width: 100%;
         padding: 0;
         border-bottom: 1px solid ${props => props.theme.colors.grey};
+        :first-of-type {
+            border-top: 1px solid ${props => props.theme.colors.grey};
+        }
     }
 `;
