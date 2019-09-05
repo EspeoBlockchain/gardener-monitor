@@ -107,7 +107,6 @@ class RequestList extends PureComponent<Props, State> {
             hash: transactionHash,
             errorCode: null,
             value: '',
-            isOdd: false,
             labels: null,
             transactionHash: '',
           };
