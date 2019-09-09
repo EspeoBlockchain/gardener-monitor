@@ -13,6 +13,7 @@ import {
   RequestTableHeadCell,
   RequestTableHeadRow,
   RequestTableWrapper,
+  DataResponse,
 } from './components';
 import Request from './Request';
 
@@ -166,11 +167,16 @@ class RequestList extends PureComponent<Props, State> {
                 {this.tableHeaders}
               </RequestTableHeadRow>
             </RequestTableHead>
-            <RequestTableBody>
-              {Object.values(requestsArray).map((request, index) => (
-                <Request labels={this.tableHeaders} isOdd={Boolean(index % 2)} key={index} {...request} />
-              ))}
-            </RequestTableBody>
+            {
+              requestsArray.length === 0 ?
+                <DataResponse>There is no data to show</DataResponse>
+                :
+                <RequestTableBody>
+                  {Object.values(requestsArray).map((request, index) => (
+                    <Request labels={this.tableHeaders} isOdd={Boolean(index % 2)} key={index} {...request} />
+                  ))}
+                </RequestTableBody>
+            }
           </RequestTable>
         </RequestTableWrapper >
         :
