@@ -105,7 +105,7 @@ export class CallForm extends PureComponent<Props, State> {
                 </CallFormInput>
                 <CallFormDataList
                     id='endpoints'
-                    title="Choose one"
+                    title='Choose one'
                 >
                     <CallFormOption
                         value={bitcoinPriceUrl}

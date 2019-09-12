@@ -1,6 +1,5 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { GlobalStyles } from './utils/components';
 import Pagination from './AppPagination';
 import {
   AppFooter,
@@ -15,6 +14,7 @@ import {
 } from './components';
 import { RequestObject } from './domain/requestObject';
 import { defaultTheme } from './theme/defaultTheme';
+import { GlobalStyles } from './utils/components';
 import { LinkWrapper } from './utils/LinkWrapper';
 import Modal from './utils/Modal';
 
@@ -92,7 +92,7 @@ class App extends React.Component<{}, State> {
   handleChangeLoader = (state: boolean) => {
     this.setState({
       isLoading: state,
-    })
+    });
   }
 
   render() {
