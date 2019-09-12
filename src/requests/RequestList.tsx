@@ -6,6 +6,7 @@ import { Labels, RequestObject } from '../domain';
 import convertUnixToDate from '../utils/convertUnixToDate';
 import web3 from '../utils/createAndUnlockWeb3';
 import {
+  DataResponse,
   FetchingDataLoader,
   RequestTable,
   RequestTableBody,
@@ -13,7 +14,6 @@ import {
   RequestTableHeadCell,
   RequestTableHeadRow,
   RequestTableWrapper,
-  DataResponse,
 } from './components';
 import Request from './Request';
 
